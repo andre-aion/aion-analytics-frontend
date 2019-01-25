@@ -1,40 +1,39 @@
 from flask import render_template
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from app import appbuilder, db
-from app.models import Tool_event, Tool_event_name
+from app.models import ToolEvent, Tool, ToolClassification, ToolHasClassification, ToolEventName
 from flask_appbuilder import AppBuilder, expose, BaseView, has_access,ModelView
 
-"""
-    Create your Views::
 
-
-    class MyModelView(ModelView):
-        datamodel = SQLAInterface(MyModel)
-
-
-    Next, register your Views::
-
-
-    appbuilder.add_view(MyModelView, "My View", icon="fa-folder-open-o", category="My Category", category_icon='fa-envelope')
-"""
-
-"""
-    Application wide 404 error handler
-"""
-
-class Tool_eventView(ModelView):
-    datamodel = SQLAInterface(Tool_event)
-    list_columns = ['tool','event']
+class ToolEventView(ModelView):
+    datamodel = SQLAInterface(ToolEvent)
+    list_columns = ['tool_.name','event_.name']
     search_columns = ['timestamp']
+    related_views = [Tool,ToolEventName]
 
-class Tool_event_nameView(ModelView):
-    datamodel = SQLAInterface(Tool_event_name)
+class ToolEventNameView(ModelView):
+    datamodel = SQLAInterface(ToolEventName)
     search_columns = ['name']
     list_columns = ['name','desc']
 
+class ToolView(ModelView):
+    datamodel = SQLAInterface(Tool)
+    search_columns = ['name']
+    list_columns = ['name','desc']
+
+class ToolClassificationView(ModelView):
+    datamodel = SQLAInterface(ToolClassification)
+    search_columns = ['name']
+    list_columns = ['name','desc']
+
+class ToolHasClassificationView(ModelView):
+    datamodel = SQLAInterface(ToolHasClassification)
+    list_columns = ['tool_.name','classification_.name']
+
+
+
 class DatascienceView(BaseView):
     route_base = 'datascience'
-    related_views = [Tool_event_name]
 
     @expose('/rf_tree')
     def rf_tree(self):
@@ -44,14 +43,32 @@ appbuilder.add_link('Rf_tree',
                     href='/datascience/rf_tree',
                     icon='fa-tree',
                     category='Datascience')
-appbuilder.add_view(Tool_eventView,
-                    'Show events',
+
+appbuilder.add_view(ToolEventView,
+                    'Tool events',
                     icon="fa-edit",
-                    category='View_tool_events_name'
+                    category='Tools'
                     )
-appbuilder.add_view(Tool_event_nameView,
-                    'Show events names',
+appbuilder.add_view(ToolEventNameView,
+                    'events',
                     icon="fa-calendar",
-                    category='View_tool_events'
+                    category='Tools'
                     )
 
+appbuilder.add_view(ToolClassificationView,
+                    'classification',
+                    icon="fa-folder",
+                    category='Tools'
+                    )
+
+appbuilder.add_view(ToolHasClassificationView,
+                    'tool classification',
+                    icon="fa-folder",
+                    category='Tools'
+                    )
+
+appbuilder.add_view(ToolView,
+                    'tool',
+                    icon="fa-wrench",
+                    category='Tools'
+                    )

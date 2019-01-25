@@ -1326,7 +1326,7 @@
       <DataType>varchar(100)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="318" parent="237" name="description">
+    <column id="318" parent="237" name="desc">
       <Position>3</Position>
       <DataType>mediumtext|0s</DataType>
       <ColumnKind>normal</ColumnKind>
