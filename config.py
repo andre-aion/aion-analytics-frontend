@@ -102,3 +102,7 @@ IMG_UPLOAD_URL = '/static/uploads/'
 #APP_THEME = "united.css"
 #APP_THEME = "yeti.css"
 
+RECAPTCHA_USE_SSL = False
+RECAPTCHA_PUBLIC_KEY = 'public'
+RECAPTCHA_PRIVATE_KEY = 'private'
+RECAPTCHA_OPTIONS = {'theme': 'white'}
