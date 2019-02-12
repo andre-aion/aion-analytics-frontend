@@ -1,18 +1,30 @@
+import calendar
+
 from bokeh.client import pull_session
 from bokeh.util.session_id import generate_session_id
 from flask import render_template, Flask, url_for
 from flask_appbuilder.filemanager import ImageManager
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from app import appbuilder, db
-from app.models import ToolEvent, Tool, ToolClassification, ToolHasClassification, ToolEventName
-from flask_appbuilder import expose, BaseView, has_access,ModelView
-from config import basedir
+from app.models import ToolEvent, Tool, ToolClassification, \
+    ToolHasClassification, ToolEventName, ToolEventAll
+from flask_appbuilder import expose, BaseView, has_access, ModelView, action
+from flask_appbuilder.charts.views import DirectByChartView, ChartView
+from flask_appbuilder.charts.views import GroupByChartView
+from flask_appbuilder.models.group import aggregate_count, aggregate_sum, aggregate_avg
 
+# MYSQL VIEWS
 class ToolEventView(ModelView):
     datamodel = SQLAInterface(ToolEvent)
-    list_columns = ['tool_.name','event_.name']
+    list_columns = ['tool_.name','event_.name','timestamp']
     search_columns = ['timestamp']
     related_views = [Tool,ToolEventName]
+
+# MYSQL TABLES
+class ToolEventAllView(ModelView):
+    datamodel = SQLAInterface(ToolEventAll)
+    list_columns = ['tool','event','classification','timestamp']
+    search_columns = ['timestamp']
 
 class ToolEventNameView(ModelView):
     datamodel = SQLAInterface(ToolEventName)
@@ -24,6 +36,7 @@ class ToolView(ModelView):
     search_columns = ['name']
     list_columns = ['name','desc']
 
+@action("muldelete", "Delete", "Delete all Really?", "fa-rocket", single=False)
 class ToolClassificationView(ModelView):
     datamodel = SQLAInterface(ToolClassification)
     search_columns = ['name']
@@ -46,12 +59,11 @@ class Rf_treeView(BaseView):
 '''
 class DatascienceView(BaseView):
     default_view = 'analytics'
-
     @expose('/analytics')
     @has_access
     def analytics(self):
         # pull a new session from a running Bokeh server
-        bokeh_server_url = 'http://localhost:5006'
+        bokeh_server_url = 'http://amdatt.ml:5006'
         #bokeh_session = pull_session(url=bokeh_server_url)
         bokeh_session = generate_session_id()
         script = "{}?bokeh-session-id={}".format(bokeh_server_url, bokeh_session)
@@ -65,6 +77,38 @@ class DatascienceView(BaseView):
         src = '/static/img/tier1_tree.png'
         return render_template('rf_tree.html', base_template=appbuilder.base_template,
                                data=src, appbuilder=appbuilder)
+
+
+# #####################################
+#          ADD CHARTS
+def pretty_month_year(value):
+    return str(value.year)
+
+class EventChartGroupbyView(GroupByChartView):
+    datamodel = SQLAInterface(ToolEventAll)
+    chart_title = 'Tool events'
+    definitions = [
+        {
+            'label': 'Events',
+            'group': 'event',
+            'series': [(aggregate_count,'event')]
+        },
+        {
+            'label': 'class',
+            'group': 'classification',
+            'series': [(aggregate_count, 'classification')]
+        },
+
+    ]
+
+class EventChartView(ChartView):
+    datamodel = SQLAInterface(ToolEventAll)
+    chart_title = 'Tool events'
+    search_columns = ['tool','timestamp']
+    label_columns = ToolEventAllView.label_columns
+    group_by_columns = ['classification','event']
+
+
 
 # #####################################
 #          ADD VIEWS
@@ -86,6 +130,13 @@ appbuilder.add_view(ToolEventView,
                     icon="fa-edit",
                     category='Tools'
                     )
+
+appbuilder.add_view(ToolEventAllView,
+                    'Tool events info',
+                    icon="fa-edit",
+                    category='Tools'
+                    )
+
 appbuilder.add_view(ToolEventNameView,
                     'events',
                     icon="fa-calendar",
@@ -109,3 +160,9 @@ appbuilder.add_view(ToolView,
                     icon="fa-wrench",
                     category='Tools'
                     )
+
+#   CHART VIEWS
+appbuilder.add_view(EventChartView,
+                    "Event charts",
+                    icon="fa-dashboard",
+                    category="Statistics")

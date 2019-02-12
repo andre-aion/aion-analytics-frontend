@@ -2,7 +2,7 @@
 <dataSource name="aion_analytics.mysql@localhost">
   <database-model serializer="dbm" rdbms="MYSQL" format-version="4.11">
     <root id="1">
-      <ServerVersion>5.7.24</ServerVersion>
+      <ServerVersion>5.7.25</ServerVersion>
       <DefaultEngine>InnoDB</DefaultEngine>
       <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
       <DefaultCasing>exact</DefaultCasing>
@@ -1408,9 +1408,7 @@
     </column>
     <column id="334" parent="239" name="timestamp">
       <Position>4</Position>
-      <DataType>timestamp|0s</DataType>
-      <NotNull>1</NotNull>
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+      <DataType>date|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <index id="335" parent="239" name="tool_id_uindex">
@@ -1536,8 +1534,7 @@
     </column>
     <column id="359" parent="242" name="timestamp">
       <Position>2</Position>
-      <DataType>timestamp|0s</DataType>
-      <NotNull>1</NotNull>
+      <DataType>date|0s</DataType>
     </column>
     <column id="360" parent="242" name="tool">
       <Position>3</Position>

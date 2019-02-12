@@ -1,0 +1,10 @@
+    server_addr: 104.200.110.155:5223
+    tunnels:
+      webui:
+        proto: http
+        addr: localhost:8080
+        host: www.amdatt.ml
+      ssh:
+        proto: tcp
+        addr: 192.168.1.15:22
+        remote_addr: 0.0.0.0:22

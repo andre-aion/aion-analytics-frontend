@@ -17,7 +17,7 @@ CSRF_ENABLED = True
 # GLOBALS FOR APP Builder 
 #------------------------------
 # Uncomment to setup Your App name
-APP_NAME = "aion-analytics"
+APP_NAME = "analytics-frontend"
 
 # Uncomment to setup Setup an App icon
 APP_ICON = "/static/img/logo.png"
@@ -39,10 +39,16 @@ AUTH_ROLE_ADMIN = 'admin'
 #AUTH_ROLE_PUBLIC = 'Public'
 
 # Will allow user self registration
-AUTH_USER_REGISTRATION = True
+AUTH_USER_REGISTRATION = False
 
 # The default user self registration role
 AUTH_USER_REGISTRATION_ROLE = "Public"
+# Config for Flask-Mail necessary for user registration
+MAIL_SERVER = 'smtp.gmail.com'
+MAIL_USE_TLS = True
+MAIL_USERNAME = 'mayersandre@gmail.com'
+MAIL_PASSWORD = 'w@rAngel12'
+MAIL_DEFAULT_SENDER = 'mayersandre@gmail.com'
 
 # When using LDAP Auth, setup the ldap server
 #AUTH_LDAP_SERVER = "ldap://ldapserver.new"
@@ -102,7 +108,9 @@ IMG_UPLOAD_URL = '/static/uploads/'
 #APP_THEME = "united.css"
 #APP_THEME = "yeti.css"
 
+# Config for Flask-WTF Recaptcha necessary for user registration
+
 RECAPTCHA_USE_SSL = False
-RECAPTCHA_PUBLIC_KEY = 'public'
-RECAPTCHA_PRIVATE_KEY = 'private'
+RECAPTCHA_PUBLIC_KEY = '6LeZ6Y8UAAAAAKEZ2jmkZ9D9ZnHu_lbjEjninVuc'
+RECAPTCHA_PRIVATE_KEY = '6LeZ6Y8UAAAAAI9Z40erBlNJIiUvnp4NwaTrYYyU'
 RECAPTCHA_OPTIONS = {'theme': 'white'}

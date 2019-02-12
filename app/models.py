@@ -1,7 +1,8 @@
 from flask_appbuilder import Model
 from flask_appbuilder.models.mixins import AuditMixin, FileColumn, ImageColumn
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Table
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Table, Date
 from sqlalchemy.orm import relationship
+
 """
 
 You can use the extra Flask-AppBuilder fields and Mixin's
@@ -41,9 +42,6 @@ class ToolHasClassification(Model):
     classification = Column(String, ForeignKey('tool_classification.id'))
     classification_ = relationship("ToolClassification")
 
-    def __repr__(self):
-        self.output = self.tool_.name + ',' + self.classification_.name
-        return self.output
 
 """
 assoc_tool_classification = Table('tool_has_classification',Model.metadata,
@@ -58,8 +56,20 @@ class ToolEvent(Model):
     tool_ = relationship("Tool")
     event = Column(Integer,ForeignKey('tool_event_name.id'))
     event_ = relationship("ToolEventName")
-    timestamp = Column(DateTime)
+    timestamp = Column(Date)
+
+    def toolname(self):
+        return self.tool_.name
+
+    def eventname(self):
+        return self.event_.name
 
 
-    def __repr__(self):
-        return self.event
+# MYSQL VIEWS
+class ToolEventAll(Model):
+    __tablename__ = 'view_tool_events'
+    id = Column(Integer,primary_key=True)
+    tool = Column(String)
+    event = Column(String)
+    timestamp = Column(Date)
+    classification = Column(String)

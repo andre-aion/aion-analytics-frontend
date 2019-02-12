@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/aion-analytics.iml" filepath="$PROJECT_DIR$/.idea/aion-analytics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../analytics-app/.idea/analytics-app.iml" filepath="$PROJECT_DIR$/../analytics-app/.idea/analytics-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/analytics-frontend.iml" filepath="$PROJECT_DIR$/.idea/analytics-frontend.iml" />
     </modules>
   </component>
 </project>
