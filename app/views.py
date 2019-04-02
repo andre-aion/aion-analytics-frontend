@@ -1,17 +1,21 @@
-import calendar
 
-from bokeh.client import pull_session
 from bokeh.util.session_id import generate_session_id
-from flask import render_template, Flask, url_for
-from flask_appbuilder.filemanager import ImageManager
+from flask import render_template
 from flask_appbuilder.models.sqla.interface import SQLAInterface
+from flask_appbuilder.widgets import ListBlock
+from wtforms import SelectField
+
 from app import appbuilder, db
+from app.forms import ContactForm
 from app.models import ToolEvent, Tool, ToolClassification, \
-    ToolHasClassification, ToolEventName, ToolEventAll
-from flask_appbuilder import expose, BaseView, has_access, ModelView, action
+    ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo
+from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
 from flask_appbuilder.models.group import aggregate_count, aggregate_sum, aggregate_avg
+from flask_appbuilder.fieldwidgets import DateTimePickerWidget, Select2Widget
+from flask_appbuilder.forms import DateTimeField
+
 
 # MYSQL VIEWS
 class ToolEventView(ModelView):
@@ -46,17 +50,27 @@ class ToolHasClassificationView(ModelView):
     datamodel = SQLAInterface(ToolHasClassification)
     list_columns = ['tool_.name','classification_.name']
 
-'''
-class Rf_treeView(BaseView):
-    default_view = 'rf_tree'
-    @expose('/rf_tree')
-    def rf_tree(self):
-        # im = ImageManager()
-        src='/static/img/tier1_tree.png'
-        return render_template('rf_tree.html', base_template=appbuilder.base_template,
-                               data=src,appbuilder=appbuilder)
+class ContactInfoView(ModelView):
+    datamodel = SQLAInterface(ContactInfo)
+    '''
+    label_columns = {
+        'name':'Full name',
+        'company':"Company/gov't agency",
+        'email':'Email',
+        'phone':'Contact number',
+        'current_ds':'Is your organization currently data-driven?',
+        'intend_ds':'How long (months) before your organization intend to become data-driven?',
+        'current_bi_tool':'What BI tool does your organization currently use?',
+        'contact_you':'Would you like us to contact you?',
+        'contact_timestamp':'If you would like us to contact you please select a date and time that works for you',
+        'pain_points':"If you have pain points for us to discuss please list them, separated by a comma",
+        'interest_in_conference':"Are you interested in attending the conference?"
+        }
+    '''
+    list_columns = ['sector']
+    search_columns = ['sector']
+    add_form = ContactForm
 
-'''
 class DatascienceView(BaseView):
     default_view = 'analytics'
     @expose('/analytics')
@@ -77,6 +91,7 @@ class DatascienceView(BaseView):
         src = '/static/img/tier1_tree.png'
         return render_template('rf_tree.html', base_template=appbuilder.base_template,
                                data=src, appbuilder=appbuilder)
+
 
 
 # #####################################
@@ -160,6 +175,11 @@ appbuilder.add_view(ToolView,
                     icon="fa-wrench",
                     category='Tools'
                     )
+
+appbuilder.add_view(ContactInfoView,
+                    'Contact info',
+                    icon='fa-address-card-o',
+                    category='Contacts')
 
 #   CHART VIEWS
 appbuilder.add_view(EventChartView,

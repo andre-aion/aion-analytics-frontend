@@ -1,6 +1,5 @@
 from flask_appbuilder import Model
-from flask_appbuilder.models.mixins import AuditMixin, FileColumn, ImageColumn
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Table, Date
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Date
 from sqlalchemy.orm import relationship
 
 """
@@ -64,6 +63,25 @@ class ToolEvent(Model):
     def eventname(self):
         return self.event_.name
 
+class ContactInfo(Model):
+    __tablename__ = 'contact_info'
+    id = Column(Integer,primary_key=True)
+    name = Column(String)
+    company = Column(String)
+    position = Column(String)
+    sector = Column(String)
+    email = Column(String)
+    phone = Column(String)
+    current_ds = Column(String)
+    intend_ds = Column(Integer)
+    current_bi_tool = Column(String)
+    contact_you = Column(String)
+    interest_in_conference = Column(String)
+    pain_points = Column(String)
+
+    def __repr__(self):
+        return self.name
+
 
 # MYSQL VIEWS
 class ToolEventAll(Model):
@@ -73,3 +91,7 @@ class ToolEventAll(Model):
     event = Column(String)
     timestamp = Column(Date)
     classification = Column(String)
+
+
+
+
