@@ -1,6 +1,12 @@
 from flask_appbuilder import Model
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Date
 from sqlalchemy.orm import relationship
+from flask_appbuilder.models.mixins import AuditMixin
+from mongoengine import Document
+from mongoengine import DateTimeField, StringField, ReferenceField, ListField, FloatField, IntField
+from wtforms import SelectField
+
+from app import dbmongo
 
 """
 
@@ -63,7 +69,7 @@ class ToolEvent(Model):
     def eventname(self):
         return self.event_.name
 
-class ContactInfo(Model):
+class ContactInfo(Model): # carry out surveys
     __tablename__ = 'contact_info'
     id = Column(Integer,primary_key=True)
     name = Column(String)
@@ -82,8 +88,14 @@ class ContactInfo(Model):
     def __repr__(self):
         return self.name
 
+class Glossary(Model):
+    __tablename = 'glossary'
+    id = Column(Integer,primary_key=True)
+    term = Column(String(100), unique=True, nullable=False)
+    description = Column(String)
+    note = Column(String)
 
-# MYSQL VIEWS
+# /////////////////////////////////// MYSQL VIEWS
 class ToolEventAll(Model):
     __tablename__ = 'view_tool_events'
     id = Column(Integer,primary_key=True)
@@ -92,6 +104,64 @@ class ToolEventAll(Model):
     timestamp = Column(Date)
     classification = Column(String)
 
+# ################################# MONGO DB
+class ProjectType(Document):
+    __tablename = ' project_type'
+    type = StringField(required=True)
+    description = StringField(max_length=200)
+
+    def __repr__(self):
+        return self.type
+
+    # return selected attribute in dropddowns
+    def __str__(self):
+        return self.type
 
 
+class Project(Document):
+    __tablename = 'project'
+    name = StringField(max_length=60, required=True, unique=True)
+    type = dbmongo.ReferenceField(ProjectType)
+    status = StringField()
+    startdate_proposed = DateTimeField()
+    enddate_proposed = DateTimeField()
+    startdate_actual = DateTimeField()
+    enddate_actual = DateTimeField()
 
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    # return selected attribute in dropddowns
+    def __str__(self):
+        return self.name
+
+
+class Employee(Document):
+    __tablename = 'employee'
+    name = StringField(required=True,max_length=50)
+    gender = StringField()
+    hourly_rate = FloatField()
+    department = StringField()
+    title = StringField()
+    dob = DateTimeField()
+
+    def __repr__(self):
+        return self.name
+
+    # return selected attribute in dropddowns
+    def __str__(self):
+        return self.name
+
+
+class ProjectTask(Document):
+    __tablename='project_task'
+    project = StringField()
+    employee = StringField()
+    start = DateTimeField()
+    end = DateTimeField()
+
+    def __repr__(self):
+        return self.project +':' +self.employee

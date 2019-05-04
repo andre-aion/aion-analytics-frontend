@@ -2,13 +2,16 @@
 from bokeh.util.session_id import generate_session_id
 from flask import render_template
 from flask_appbuilder.models.sqla.interface import SQLAInterface
+from flask_appbuilder.models.mongoengine.interface import MongoEngineInterface
+
 from flask_appbuilder.widgets import ListBlock
 from wtforms import SelectField
 
 from app import appbuilder, db
 from app.forms import ContactForm
 from app.models import ToolEvent, Tool, ToolClassification, \
-    ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo
+    ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo, Glossary, Project, Employee, \
+    ProjectType, ProjectTask
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -71,6 +74,10 @@ class ContactInfoView(ModelView):
     search_columns = ['sector']
     add_form = ContactForm
 
+class GlossaryView(ModelView):
+    datamodel = SQLAInterface(Glossary)
+    list_columns = ['term','description','note']
+
 class DatascienceView(BaseView):
     default_view = 'analytics'
     @expose('/analytics')
@@ -93,6 +100,24 @@ class DatascienceView(BaseView):
                                data=src, appbuilder=appbuilder)
 
 
+# ################### MONGO MODELS ####
+class ProjectView(ModelView):
+    datamodel = MongoEngineInterface(Project)
+    list_columns = ['name','status','startdate_proposed','enddate_proposed','startdate_actual','enddate_actual']
+
+
+class EmployeeView(ModelView):
+    datamodel = MongoEngineInterface(Employee)
+    list_columns = ['name','gender','title','hourly_rate']
+
+
+class ProjectTaskView(ModelView):
+    datamodel = MongoEngineInterface(ProjectTask)
+    list_columns = ['project','employee','start','end']
+
+
+class ProjectTypeView(ModelView):
+    datamodel = MongoEngineInterface(ProjectType)
 
 # #####################################
 #          ADD CHARTS
@@ -180,6 +205,33 @@ appbuilder.add_view(ContactInfoView,
                     'Contact info',
                     icon='fa-address-card-o',
                     category='Contacts')
+
+appbuilder.add_view(GlossaryView,
+                    'Glossary',
+                    icon='fa-book',
+                    category='Glossary')
+
+# MONGO VIEWS
+appbuilder.add_view(ProjectView,
+                    'Projects',
+                    icon='fa-industry',
+                    category='Projects')
+
+appbuilder.add_view(EmployeeView,
+                    'Workers',
+                    icon='fa-users',
+                    category='Projects')
+
+appbuilder.add_view(ProjectTaskView,
+                    'Tasks',
+                    icon='fa-tasks',
+                    category='Projects')
+
+appbuilder.add_view(ProjectTypeView,
+                    'Type',
+                    icon='fa-folder',
+                    category='Projects')
+
 
 #   CHART VIEWS
 appbuilder.add_view(EventChartView,

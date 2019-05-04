@@ -10,6 +10,10 @@ SECRET_KEY = '\2\1thisismyscretkey\1\2\e\y\y\h'
 SQLALCHEMY_DATABASE_URI = 'mysql://admin:password@127.0.0.1:3306/aion_analytics'
 #SQLALCHEMY_DATABASE_URI = 'postgresql://root:password@localhost/myapp'
 
+MONGODB_SETTINGS = {
+    'db': 'aion',
+}
+
 # Flask-WTF flag for CSRF
 CSRF_ENABLED = True
 
