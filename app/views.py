@@ -1,14 +1,15 @@
 
 from bokeh.util.session_id import generate_session_id
 from flask import render_template
+from flask_appbuilder.fields import QuerySelectField
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_appbuilder.models.mongoengine.interface import MongoEngineInterface
 
 from flask_appbuilder.widgets import ListBlock
 from wtforms import SelectField
 
-from app import appbuilder, db
-from app.forms import ContactForm
+from app import appbuilder, db, dbmongo
+from app.forms import ContactForm, EmployeeForm, ProjectForm, ProjectTaskForm
 from app.models import ToolEvent, Tool, ToolClassification, \
     ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo, Glossary, Project, Employee, \
     ProjectType, ProjectTask
@@ -101,23 +102,39 @@ class DatascienceView(BaseView):
 
 
 # ################### MONGO MODELS ####
+
 class ProjectView(ModelView):
     datamodel = MongoEngineInterface(Project)
     list_columns = ['name','status','startdate_proposed','enddate_proposed','startdate_actual','enddate_actual']
-
+    '''
+    edit_form_extra_fields = {
+        "employee": QuerySelectField(
+            "Employee",
+            query_factory=employee_query,
+            widget=Select2Widget(extra_classes="readonly"),
+        )
+    }
+    '''
+    add_form = ProjectForm
+    #add_form.manager_gender.choices = [('male','male'),('female','female')]
+    #add_form.status.choices = [('open', 'open'), ('closed', 'closed')]
+    #add_form.manager.choices = [(e, e) for e in employees()]
 
 class EmployeeView(ModelView):
     datamodel = MongoEngineInterface(Employee)
     list_columns = ['name','gender','title','hourly_rate']
+    add_form = EmployeeForm
+    add_form.gender.choices = [('male','male'),('female','female')]
 
 
 class ProjectTaskView(ModelView):
     datamodel = MongoEngineInterface(ProjectTask)
     list_columns = ['project','employee','start','end']
-
+    add_form = ProjectTaskForm
 
 class ProjectTypeView(ModelView):
     datamodel = MongoEngineInterface(ProjectType)
+
 
 # #####################################
 #          ADD CHARTS
@@ -218,7 +235,7 @@ appbuilder.add_view(ProjectView,
                     category='Projects')
 
 appbuilder.add_view(EmployeeView,
-                    'Workers',
+                    'Staff',
                     icon='fa-users',
                     category='Projects')
 
@@ -238,3 +255,4 @@ appbuilder.add_view(EventChartView,
                     "Event charts",
                     icon="fa-dashboard",
                     category="Statistics")
+

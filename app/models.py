@@ -89,7 +89,7 @@ class ContactInfo(Model): # carry out surveys
         return self.name
 
 class Glossary(Model):
-    __tablename = 'glossary'
+    __tablename__ = 'glossary'
     id = Column(Integer,primary_key=True)
     term = Column(String(100), unique=True, nullable=False)
     description = Column(String)
@@ -106,7 +106,7 @@ class ToolEventAll(Model):
 
 # ################################# MONGO DB
 class ProjectType(Document):
-    __tablename = ' project_type'
+    __tablename__ = ' project_type'
     type = StringField(required=True)
     description = StringField(max_length=200)
 
@@ -117,16 +117,18 @@ class ProjectType(Document):
     def __str__(self):
         return self.type
 
-
 class Project(Document):
-    __tablename = 'project'
+    __tablename__ = 'project'
     name = StringField(max_length=60, required=True, unique=True)
     type = dbmongo.ReferenceField(ProjectType)
-    status = StringField()
+    manager = ListField()
+    manager_gender = StringField()
+    manager_age = StringField()
     startdate_proposed = DateTimeField()
     enddate_proposed = DateTimeField()
     startdate_actual = DateTimeField()
     enddate_actual = DateTimeField()
+    status = StringField()
 
     def __unicode__(self):
         return self.name
@@ -140,7 +142,7 @@ class Project(Document):
 
 
 class Employee(Document):
-    __tablename = 'employee'
+    __tablename__ = 'employee'
     name = StringField(required=True,max_length=50)
     gender = StringField()
     hourly_rate = FloatField()
@@ -156,8 +158,10 @@ class Employee(Document):
         return self.name
 
 
+
+
 class ProjectTask(Document):
-    __tablename='project_task'
+    __tablename__ ='project_task'
     project = StringField()
     employee = StringField()
     start = DateTimeField()

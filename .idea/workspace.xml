@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="a0b312d1-a235-4b89-9f97-6eb49eb85eed" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notebooks/generate _data/project.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/generate _data/project.ipynb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -161,15 +164,15 @@
     <session id="-1616772655">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="27" />
+          <entry key="project.closed" value="28" />
           <entry key="project.open.time.0" value="14" />
-          <entry key="project.open.time.1" value="6" />
+          <entry key="project.open.time.1" value="7" />
           <entry key="project.open.time.18" value="1" />
           <entry key="project.open.time.2" value="3" />
           <entry key="project.open.time.22" value="1" />
           <entry key="project.open.time.3" value="2" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.opened" value="28" />
+          <entry key="project.opened" value="29" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -182,15 +185,15 @@
           <entry key="html" value="8" />
           <entry key="ipynb" value="1" />
           <entry key="null/aion/employee" value="7" />
-          <entry key="null/aion/project" value="8" />
+          <entry key="null/aion/project" value="13" />
           <entry key="null/aion/project_composite" value="8" />
           <entry key="null/aion/project_task" value="7" />
-          <entry key="null/aion/project_type" value="3" />
+          <entry key="null/aion/project_type" value="4" />
           <entry key="png" value="1" />
           <entry key="project" value="4" />
           <entry key="project_employees" value="1" />
           <entry key="project_goal_type" value="2" />
-          <entry key="py" value="28" />
+          <entry key="py" value="32" />
           <entry key="sql" value="1" />
           <entry key="tool" value="2" />
           <entry key="tool_classification" value="2" />
@@ -208,8 +211,8 @@
           <entry key="HTML" value="8" />
           <entry key="IPNB" value="1" />
           <entry key="Image" value="1" />
-          <entry key="MONGO" value="33" />
-          <entry key="Python" value="28" />
+          <entry key="MONGO" value="39" />
+          <entry key="Python" value="32" />
           <entry key="SQL" value="1" />
           <entry key="YAML" value="1" />
         </counts>
@@ -218,7 +221,7 @@
         <counts>
           <entry key="cell" value="206" />
           <entry key="dummy" value="8" />
-          <entry key="py" value="11189" />
+          <entry key="py" value="12956" />
           <entry key="sql" value="288" />
           <entry key="txt" value="4" />
         </counts>
@@ -226,7 +229,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="12" />
-          <entry key="Python" value="11189" />
+          <entry key="Python" value="12956" />
           <entry key="SQL" value="288" />
           <entry key="Scratch" value="206" />
         </counts>
@@ -238,21 +241,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2988">
-              <caret line="166" column="31" selection-start-line="166" selection-start-column="31" selection-end-line="166" selection-end-column="31" />
+            <state relative-caret-position="335">
+              <caret line="165" column="23" lean-forward="true" selection-start-line="164" selection-start-column="4" selection-end-line="167" selection-end-column="25" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
-                <marker date="1557008426873" expanded="true" signature="2740:2932" ph="..." />
+                <marker date="1557230669649" expanded="true" signature="2740:2934" ph="..." />
+                <marker date="1557230669649" expanded="true" signature="3550:3551" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/notebooks/generate _data/project.ipynb">
-          <provider selected="true" editor-type-id="ipnb-editor">
-            <state>
-              <selected id="2" />
             </state>
           </provider>
         </entry>
@@ -260,13 +255,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2070">
-              <caret line="115" column="55" selection-start-line="115" selection-start-column="55" selection-end-line="115" selection-end-column="55" />
+            <state relative-caret-position="328">
+              <caret line="135" column="49" lean-forward="true" selection-start-line="135" selection-start-column="49" selection-end-line="135" selection-end-column="49" />
               <folding>
                 <element signature="e#1#54#0" expanded="true" />
-                <marker date="1557008598031" expanded="true" signature="1466:3172" ph="..." />
-                <marker date="1557008598031" expanded="true" signature="3171:3172" ph="..." />
-                <marker date="1557008598031" expanded="true" signature="4782:4783" ph="..." />
+                <marker date="1557233265190" expanded="true" signature="1572:3278" ph="..." />
+                <marker date="1557233265190" expanded="true" signature="3277:3278" ph="..." />
+                <marker date="1557233265190" expanded="true" signature="5359:5361" ph="..." />
+                <marker date="1557233265190" expanded="true" signature="5480:5481" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/forms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="155">
+              <caret line="61" column="12" selection-start-line="61" selection-start-column="12" selection-end-line="61" selection-end-column="12" />
+              <folding>
+                <element signature="e#0#83#0" expanded="true" />
+                <marker date="1557233502646" expanded="true" signature="2503:2508" ph="..." />
+                <marker date="1557233502646" expanded="true" signature="3028:3159" ph="..." />
+                <marker date="1557233502646" expanded="true" signature="4003:4004" ph="..." />
               </folding>
             </state>
           </provider>
@@ -310,13 +321,13 @@
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/a9a5ec60-1448-481f-83b0-85af5f778edb/console_5.sql" />
         <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/run.py" />
-        <option value="$PROJECT_DIR$/app/forms.py" />
         <option value="$PROJECT_DIR$/wsgi.py" />
         <option value="$PROJECT_DIR$/app/__init__.py" />
         <option value="$PROJECT_DIR$/config.py" />
+        <option value="$PROJECT_DIR$/notebooks/generate _data/project.ipynb" />
         <option value="$PROJECT_DIR$/app/models.py" />
         <option value="$PROJECT_DIR$/app/views.py" />
-        <option value="$PROJECT_DIR$/notebooks/generate _data/project.ipynb" />
+        <option value="$PROJECT_DIR$/app/forms.py" />
       </list>
     </option>
   </component>
@@ -327,10 +338,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1920" />
-    <option name="y" value="29" />
+    <option name="x" value="1939" />
+    <option name="y" value="34" />
     <option name="width" value="1843" />
-    <option name="height" value="1051" />
+    <option name="height" value="1046" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -501,8 +512,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1920" y="29" width="1843" height="1051" extended-state="0" />
-    <editor active="true" />
+    <frame x="1939" y="34" width="1843" height="1046" extended-state="0" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.22271964" />
@@ -517,11 +527,11 @@
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
       <window_info anchor="bottom" id="Database Console" order="9" weight="0.39145106" />
-      <window_info anchor="bottom" id="Run" order="10" visible="true" weight="0.3288889" />
+      <window_info anchor="bottom" id="Run" order="10" weight="0.3288889" />
       <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="12" weight="0.32908162" />
       <window_info anchor="bottom" id="TODO" order="13" />
-      <window_info anchor="bottom" id="Terminal" order="14" sideWeight="0.49944994" weight="0.34333333" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="14" sideWeight="0.49944994" visible="true" weight="0.4" />
       <window_info anchor="right" id="R Graphics" order="0" />
       <window_info anchor="right" id="Mongo Explorer" order="1" weight="0.33911583" />
       <window_info anchor="right" id="R Packages" order="2" />
@@ -533,7 +543,7 @@
     </layout>
     <layout-to-restore>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.22148025" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.22271964" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="1" />
@@ -545,15 +555,15 @@
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
       <window_info anchor="bottom" id="Database Console" order="9" weight="0.39145106" />
-      <window_info anchor="bottom" id="Run" order="10" weight="0.32998884" />
+      <window_info anchor="bottom" id="Run" order="10" weight="0.3288889" />
       <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="12" weight="0.32908162" />
       <window_info anchor="bottom" id="TODO" order="13" />
-      <window_info anchor="bottom" id="Terminal" order="14" sideWeight="0.49944994" visible="true" weight="0.34336677" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="14" sideWeight="0.49944994" visible="true" weight="0.41340783" />
       <window_info anchor="right" id="R Graphics" order="0" />
-      <window_info active="true" anchor="right" id="Mongo Explorer" order="1" visible="true" weight="0.32943794" />
+      <window_info anchor="right" id="Mongo Explorer" order="1" weight="0.33911583" />
       <window_info anchor="right" id="R Packages" order="2" />
-      <window_info anchor="right" id="Database" order="3" weight="0.27434614" />
+      <window_info anchor="right" id="Database" order="3" weight="0.2742026" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="4" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="5" weight="0.25" />
       <window_info anchor="right" id="SciView" order="6" weight="0.32917705" />
@@ -576,12 +586,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/app/views.py</url>
-          <line>23</line>
+          <line>24</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/models.py</url>
-          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -759,13 +765,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-612">
@@ -773,48 +772,63 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/forms.py">
+    <entry file="file://$PROJECT_DIR$/notebooks/generate _data/project.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="93" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="95" />
+        <state relative-caret-position="414">
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/run.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
-          <caret line="9" column="27" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="28" />
+          <caret line="9" column="28" lean-forward="true" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2988">
-          <caret line="166" column="31" selection-start-line="166" selection-start-column="31" selection-end-line="166" selection-end-column="31" />
+        <state relative-caret-position="335">
+          <caret line="165" column="23" lean-forward="true" selection-start-line="164" selection-start-column="4" selection-end-line="167" selection-end-column="25" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
-            <marker date="1557008426873" expanded="true" signature="2740:2932" ph="..." />
+            <marker date="1557230669649" expanded="true" signature="2740:2934" ph="..." />
+            <marker date="1557230669649" expanded="true" signature="3550:3551" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2070">
-          <caret line="115" column="55" selection-start-line="115" selection-start-column="55" selection-end-line="115" selection-end-column="55" />
+        <state relative-caret-position="328">
+          <caret line="135" column="49" lean-forward="true" selection-start-line="135" selection-start-column="49" selection-end-line="135" selection-end-column="49" />
           <folding>
             <element signature="e#1#54#0" expanded="true" />
-            <marker date="1557008598031" expanded="true" signature="1466:3172" ph="..." />
-            <marker date="1557008598031" expanded="true" signature="3171:3172" ph="..." />
-            <marker date="1557008598031" expanded="true" signature="4782:4783" ph="..." />
+            <marker date="1557233265190" expanded="true" signature="1572:3278" ph="..." />
+            <marker date="1557233265190" expanded="true" signature="3277:3278" ph="..." />
+            <marker date="1557233265190" expanded="true" signature="5359:5361" ph="..." />
+            <marker date="1557233265190" expanded="true" signature="5480:5481" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/notebooks/generate _data/project.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="2" />
+    <entry file="file://$PROJECT_DIR$/app/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="61" column="12" selection-start-line="61" selection-start-column="12" selection-end-line="61" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#83#0" expanded="true" />
+            <marker date="1557233502646" expanded="true" signature="2503:2508" ph="..." />
+            <marker date="1557233502646" expanded="true" signature="3028:3159" ph="..." />
+            <marker date="1557233502646" expanded="true" signature="4003:4004" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

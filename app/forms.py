@@ -1,8 +1,12 @@
 from flask_appbuilder.forms import DynamicForm, DateTimeField, DateTimePickerWidget
+from flask_mongoengine.wtf import model_form
 
-from wtforms import SelectField, StringField, IntegerField, TextAreaField
+from wtforms import SelectField, StringField, IntegerField, TextAreaField, FloatField, FieldList
 from wtforms.validators import DataRequired, Email, Length, Optional, NumberRange
 from wtforms.widgets import TextArea
+from app import dbmongo
+from app.models import Employee, ProjectType, Project
+
 
 class ContactForm(DynamicForm):
     name = StringField('Full name')
@@ -29,3 +33,49 @@ class ContactForm(DynamicForm):
     pain_points = TextAreaField('If you have pain points for us to discuss please list them (separated by a comma)')
     interest_in_conference = SelectField("Are you interested in attending the conference?",
                                          choices=[('', ''), ('yes', 'Yes'), ('no', 'No')])
+
+
+class EmployeeForm(DynamicForm):
+    name = StringField('Name')
+    gender = SelectField('Gender',choices=[('male','male'),('female','female')])
+    hourly_rate = FloatField('Hourly rate($)')
+    department = StringField('Department')
+    title = StringField('Title')
+    dob = DateTimeField('Date of Birth',widget=DateTimePickerWidget())
+
+def employees():
+    lst = []
+    for employee in Employee.objects:
+        lst.append(employee.name)
+    return lst
+
+def project_type():
+    lst = []
+    for item in ProjectType.objects:
+        lst.append(item.type)
+    return lst
+
+def project():
+    lst = []
+    for item in Project.objects:
+        if item.status == 'open':
+            lst.append(item.name)
+    return lst
+
+class ProjectForm(DynamicForm):
+    name = StringField('Project name')
+    type = SelectField('ProjectType',choices=[(i, i) for i in project_type()])
+    manager = SelectField('Manager',choices=[(e, e) for e in employees()])
+    manager_gender = SelectField('Gender',choices=[('male','male'),('female','female')])
+    manager_age = IntegerField("Manager's age")
+    startdate_proposed = DateTimeField('Actual start date',widget=DateTimePickerWidget())
+    enddate_proposed = DateTimeField('Actual start date',widget=DateTimePickerWidget())
+    startdate_actual = DateTimeField('Actual start date',widget=DateTimePickerWidget())
+    enddate_actual = DateTimeField('Actual start date',widget=DateTimePickerWidget())
+    status = SelectField('Project status',choices = [('open', 'open'), ('closed', 'closed')])
+
+class ProjectTaskForm(DynamicForm):
+    project = SelectField('Project',choices=[(i, i) for i in project()])
+    employee = SelectField('Manager',choices=[(e, e) for e in employees()])
+    start = DateTimeField('Task start date',widget=DateTimePickerWidget())
+    end = DateTimeField('Task start date',widget=DateTimePickerWidget())
