@@ -1,11 +1,12 @@
 from flask_appbuilder.forms import DynamicForm, DateTimeField, DateTimePickerWidget
 from flask_mongoengine.wtf import model_form
+from mongoengine import ReferenceField
 
 from wtforms import SelectField, StringField, IntegerField, TextAreaField, FloatField, FieldList
 from wtforms.validators import DataRequired, Email, Length, Optional, NumberRange
 from wtforms.widgets import TextArea
 from app import dbmongo
-from app.models import Employee, ProjectType, Project
+from app.models import Employee, ProjectType, Project, Risk
 
 
 class ContactForm(DynamicForm):
@@ -35,6 +36,7 @@ class ContactForm(DynamicForm):
                                          choices=[('', ''), ('yes', 'Yes'), ('no', 'No')])
 
 
+# ------------  PROJECT
 class EmployeeForm(DynamicForm):
     name = StringField('Name')
     gender = SelectField('Gender',choices=[('male','male'),('female','female')])
@@ -75,7 +77,15 @@ class ProjectForm(DynamicForm):
     status = SelectField('Project status',choices = [('open', 'open'), ('closed', 'closed')])
 
 class ProjectTaskForm(DynamicForm):
-    project = SelectField('Project',choices=[(i, i) for i in project()])
+    project = SelectField('Project',choices=[(e, e) for e in project()])
     employee = SelectField('Manager',choices=[(e, e) for e in employees()])
     start = DateTimeField('Task start date',widget=DateTimePickerWidget())
     end = DateTimeField('Task start date',widget=DateTimePickerWidget())
+
+# ------------  RISK ASSESSMENT
+class RiskMatrixForm(DynamicForm):
+    name = StringField('Matrix name')
+    project = SelectField('Project',choices=[(e, e) for e in project()])
+    analysis_date = DateTimeField('Analysis date',widget=DateTimePickerWidget())
+    analyst = SelectField('Analyst',choices=[(e, e) for e in employees()])
+    desc = StringField('Description')

@@ -9,10 +9,10 @@ from flask_appbuilder.widgets import ListBlock
 from wtforms import SelectField
 
 from app import appbuilder, db, dbmongo
-from app.forms import ContactForm, EmployeeForm, ProjectForm, ProjectTaskForm
+from app.forms import ContactForm, EmployeeForm, ProjectForm, ProjectTaskForm, RiskMatrixForm
 from app.models import ToolEvent, Tool, ToolClassification, \
     ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo, Glossary, Project, Employee, \
-    ProjectType, ProjectTask
+    ProjectType, ProjectTask, RiskMatrix, RiskLikelihood, RiskSeverity, Risk, RiskSolution, RiskCategory, RiskAnalysis
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -116,9 +116,7 @@ class ProjectView(ModelView):
     }
     '''
     add_form = ProjectForm
-    #add_form.manager_gender.choices = [('male','male'),('female','female')]
-    #add_form.status.choices = [('open', 'open'), ('closed', 'closed')]
-    #add_form.manager.choices = [(e, e) for e in employees()]
+
 
 class EmployeeView(ModelView):
     datamodel = MongoEngineInterface(Employee)
@@ -166,6 +164,39 @@ class EventChartView(ChartView):
     group_by_columns = ['classification','event']
 
 
+# -----------------------------------------------------
+class RiskMatrixView(ModelView):
+    datamodel = MongoEngineInterface(RiskMatrix)
+    list_columns = ['name','project','analyst','analysis_date']
+    add_form = RiskMatrixForm
+
+class RiskLikelihoodView(ModelView):
+    datamodel = MongoEngineInterface(RiskLikelihood)
+    list_columns = ['level','value', 'desc']
+
+
+class RiskSeverityView(ModelView):
+    datamodel = MongoEngineInterface(RiskSeverity)
+    list_columns = ['level', 'value','desc']
+
+
+class RiskView(ModelView):
+    datamodel = MongoEngineInterface(Risk)
+    list_columns = ['risk','matrix','category','desc','created_at']
+
+class RiskAnalysisView(ModelView):
+    datamodel = MongoEngineInterface(RiskAnalysis)
+    list_columns = ['risk','likelihood','likelihood_comment','severity','severity_comment']
+
+
+class RiskSolutionView(ModelView):
+    datamodel = MongoEngineInterface(RiskSolution)
+    list_columns = ['risk','solution','suggestion_date']
+
+
+class RiskCategoryView(ModelView):
+    datamodel = MongoEngineInterface(RiskCategory)
+    list_columns = ['name','desc']
 
 # #####################################
 #          ADD VIEWS
@@ -228,7 +259,7 @@ appbuilder.add_view(GlossaryView,
                     icon='fa-book',
                     category='Glossary')
 
-# MONGO VIEWS
+# --------------------- MONGO VIEWS
 appbuilder.add_view(ProjectView,
                     'Projects',
                     icon='fa-industry',
@@ -249,10 +280,48 @@ appbuilder.add_view(ProjectTypeView,
                     icon='fa-folder',
                     category='Projects')
 
+# -- RISK
+appbuilder.add_view(RiskCategoryView,
+                    'Risk category',
+                    icon='fa-folder',
+                    category='Risk Assessment')
+
+appbuilder.add_view(RiskSeverityView,
+                    'Severity',
+                    icon='fa-folder',
+                    category='Risk Assessment')
+
+appbuilder.add_view(RiskLikelihoodView,
+                    'Likelihood',
+                    icon='fa-folder',
+                    category='Risk Assessment')
+
+appbuilder.add_view(RiskMatrixView,
+                    'Risk Matrix',
+                    icon='fa-folder',
+                    category='Risk Assessment')
+
+appbuilder.add_view(RiskView,
+                    'Risks',
+                    icon='fa-folder',
+                    category='Risk Assessment')
+
+appbuilder.add_view(RiskSolutionView,
+                    'Risk solutions',
+                    icon='fa-folder',
+                    category='Risk Assessment')
+
+appbuilder.add_view(RiskAnalysisView,
+                    'Risks analysis',
+                    icon='fa-folder',
+                    category='Risk Assessment')
+
 
 #   CHART VIEWS
 appbuilder.add_view(EventChartView,
                     "Event charts",
                     icon="fa-dashboard",
                     category="Statistics")
+
+
 

@@ -158,10 +158,8 @@ class Employee(Document):
         return self.name
 
 
-
-
 class ProjectTask(Document):
-    __tablename__ ='project_task'
+    __tablename__ = 'project_task'
     project = StringField()
     employee = StringField()
     start = DateTimeField()
@@ -169,3 +167,112 @@ class ProjectTask(Document):
 
     def __repr__(self):
         return self.project +':' +self.employee
+
+# -------  RISK ---------------------
+
+class RiskMatrix(Document):
+    __tablename__= 'risk_matrix'
+    name = StringField(required=True)
+    project = StringField()
+    analysis_date = DateTimeField()
+    analyst = StringField()
+    desc =    StringField(max_length=500)
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    # return selected attribute in dropddowns
+    def __str__(self):
+        return self.name
+
+class RiskLikelihood(Document):
+    __tablename__ = 'risk_likelihood'
+    level = StringField(max_length=20)
+    value = IntField()
+    desc = StringField(max_length=300)
+
+    def __unicode__(self):
+        return self.level
+
+    def __repr__(self):
+        return self.level
+
+    # return selected attribute in dropddowns
+
+    def __str__(self):
+        return self.level
+
+class RiskSeverity(Document):
+    __tablename__ = 'risk_severity'
+    level = StringField(max_length=20)
+    value = IntField()
+    desc = StringField(max_length=300)
+
+    def __unicode__(self):
+        return self.level
+
+    def __repr__(self):
+        return self.level
+
+    # return selected attribute in dropddowns
+
+    def __str__(self):
+        return self.level
+
+class RiskCategory(Document):
+    __tablename__ = 'risk_category'
+    name = StringField(max_length=50)
+    desc = StringField(max_length=500)
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    # return selected attribute in dropddowns
+    def __str__(self):
+        return self.name
+
+
+class Risk(Document):
+    __tablename__ = 'risk'
+    matrix = ReferenceField(RiskMatrix, required=True)
+    risk = StringField(required=True,max_length=200)
+    category = ReferenceField(RiskCategory, required=True)
+    desc = StringField(max_length=500)
+    created_at = DateTimeField()
+
+
+    def __unicode__(self):
+        return self.risk
+
+    def __repr__(self):
+        return self.risk
+
+        # return selected attribute in dropddowns
+
+    def __str__(self):
+        return self.risk
+
+class RiskAnalysis(Document):
+    __tablename__ = 'risk_analysis'
+    risk = ReferenceField(Risk, required=True)
+    likelihood = ReferenceField(RiskLikelihood, required=True)
+    likelihood_comment = StringField(max_length=200)
+    severity = ReferenceField(RiskSeverity, required=True)
+    severity_comment = StringField(max_length=200)
+
+class RiskSolution(Document):
+    __tablename__ = 'risk_solution'
+    risk = ReferenceField(Risk, required=True)
+    solution = StringField(max_length=500)
+    suggestion_date = DateTimeField()
+    desc = StringField(max_length=500)
+
+
+
+
