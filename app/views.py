@@ -12,7 +12,8 @@ from app import appbuilder, db, dbmongo
 from app.forms import ContactForm, EmployeeForm, ProjectForm, ProjectTaskForm, RiskMatrixForm
 from app.models import ToolEvent, Tool, ToolClassification, \
     ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo, Glossary, Project, Employee, \
-    ProjectType, ProjectTask, RiskMatrix, RiskLikelihood, RiskSeverity, Risk, RiskSolution, RiskCategory, RiskAnalysis
+    ProjectType, ProjectTask, RiskMatrix, RiskLikelihood, RiskSeverity, Risk, RiskSolution, RiskCategory, RiskAnalysis, \
+    ProjectRating, ProjectMilestone
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -124,15 +125,22 @@ class EmployeeView(ModelView):
     add_form = EmployeeForm
     add_form.gender.choices = [('male','male'),('female','female')]
 
+class ProjectMilestoneView(ModelView):
+    datamodel = MongoEngineInterface(ProjectMilestone)
+    list_columns = ['project','owner','startdate_actual','enddate_actual']
+    add_form = ProjectTaskForm
 
 class ProjectTaskView(ModelView):
     datamodel = MongoEngineInterface(ProjectTask)
-    list_columns = ['project','employee','start','end']
+    list_columns = ['milestone','owner','startdate_actual','enddate_actual',
+                    'value_delivered']
     add_form = ProjectTaskForm
 
 class ProjectTypeView(ModelView):
     datamodel = MongoEngineInterface(ProjectType)
 
+class ProjectRatingView(ModelView):
+    datamodel = MongoEngineInterface(ProjectRating)
 
 # #####################################
 #          ADD CHARTS
@@ -262,12 +270,17 @@ appbuilder.add_view(GlossaryView,
 # --------------------- MONGO VIEWS
 appbuilder.add_view(ProjectView,
                     'Projects',
-                    icon='fa-industry',
+                    icon='fa-project-diagram',
                     category='Projects')
 
 appbuilder.add_view(EmployeeView,
                     'Staff',
                     icon='fa-users',
+                    category='Projects')
+
+appbuilder.add_view(ProjectMilestoneView,
+                    'Milestones',
+                    icon='fa-tasks',
                     category='Projects')
 
 appbuilder.add_view(ProjectTaskView,
@@ -280,6 +293,10 @@ appbuilder.add_view(ProjectTypeView,
                     icon='fa-folder',
                     category='Projects')
 
+appbuilder.add_view(ProjectRatingView,
+                    'Project success rating',
+                    icon='fa-clipboard-check',
+                    category='Projects')
 # -- RISK
 appbuilder.add_view(RiskCategoryView,
                     'Risk category',
@@ -288,12 +305,12 @@ appbuilder.add_view(RiskCategoryView,
 
 appbuilder.add_view(RiskSeverityView,
                     'Severity',
-                    icon='fa-folder',
+                    icon='fa-balance-scale',
                     category='Risk Assessment')
 
 appbuilder.add_view(RiskLikelihoodView,
                     'Likelihood',
-                    icon='fa-folder',
+                    icon='fa-percentage',
                     category='Risk Assessment')
 
 appbuilder.add_view(RiskMatrixView,
@@ -303,17 +320,17 @@ appbuilder.add_view(RiskMatrixView,
 
 appbuilder.add_view(RiskView,
                     'Risks',
-                    icon='fa-folder',
+                    icon='fa-clipboard-list',
                     category='Risk Assessment')
 
 appbuilder.add_view(RiskSolutionView,
                     'Risk solutions',
-                    icon='fa-folder',
+                    icon='fa-sticky-note',
                     category='Risk Assessment')
 
 appbuilder.add_view(RiskAnalysisView,
                     'Risks analysis',
-                    icon='fa-folder',
+                    icon='fa-calculator',
                     category='Risk Assessment')
 
 

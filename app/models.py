@@ -2,7 +2,7 @@ from flask_appbuilder import Model
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Date
 from sqlalchemy.orm import relationship
 from flask_appbuilder.models.mixins import AuditMixin
-from mongoengine import Document
+from mongoengine import Document, DateField
 from mongoengine import DateTimeField, StringField, ReferenceField, ListField, FloatField, IntField
 from wtforms import SelectField
 
@@ -121,9 +121,8 @@ class Project(Document):
     __tablename__ = 'project'
     name = StringField(max_length=60, required=True, unique=True)
     type = dbmongo.ReferenceField(ProjectType)
-    manager = ListField()
-    manager_gender = StringField()
-    manager_age = StringField()
+    manager = StringField()
+    key_delivery = StringField(max_length=100)
     startdate_proposed = DateTimeField()
     enddate_proposed = DateTimeField()
     startdate_actual = DateTimeField()
@@ -150,6 +149,32 @@ class Employee(Document):
     title = StringField()
     dob = DateTimeField()
 
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    # return selected attribute in dropddowns
+    def __str__(self):
+        return self.name
+
+
+class ProjectMilestone(Document):
+    __tablename__ = 'project_milestone'
+    name = StringField(max_length=60, required=True, unique=True)
+    project = StringField()
+    owner = StringField()
+    key_delivery = StringField(max_length=100)
+    startdate_proposed = DateTimeField()
+    enddate_proposed = DateTimeField()
+    startdate_actual = DateTimeField()
+    enddate_actual = DateTimeField()
+    notes = StringField(max_length=1000)
+
+    def __unicode__(self):
+        return self.name
+
     def __repr__(self):
         return self.name
 
@@ -160,13 +185,36 @@ class Employee(Document):
 
 class ProjectTask(Document):
     __tablename__ = 'project_task'
-    project = StringField()
-    employee = StringField()
-    start = DateTimeField()
-    end = DateTimeField()
+    name = StringField(max_length=60, required=True, unique=True)
+    milestone = StringField()
+    owner = StringField()
+    key_delivery = StringField(max_length=100)
+    startdate_proposed = DateTimeField()
+    enddate_proposed = DateTimeField()
+    startdate_actual = DateTimeField()
+    enddate_actual = DateTimeField()
+    value_proposed = FloatField()
+    value_delivered = FloatField()
+    notes = StringField(max_length=1000)
+
+    def __unicode__(self):
+        return self.name
 
     def __repr__(self):
-        return self.project +':' +self.employee
+        return self.name
+
+    # return selected attribute in dropddowns
+    def __str__(self):
+        return self.name
+
+
+class ProjectRating(Document):
+    __tablename__ = 'project_rating'
+    project = ReferenceField(Project, required=True)
+    timestamp = DateField()
+    rating = IntField(min_value=1,max_value=100)
+    analyst = ReferenceField(Employee, required=True)
+    note = StringField(max_length=500)
 
 # -------  RISK ---------------------
 
@@ -271,7 +319,9 @@ class RiskSolution(Document):
     risk = ReferenceField(Risk, required=True)
     solution = StringField(max_length=500)
     suggestion_date = DateTimeField()
+    success_rating = IntField(min_value=1,max_value=100)
     desc = StringField(max_length=500)
+
 
 
 
