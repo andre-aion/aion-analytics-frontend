@@ -117,27 +117,6 @@ class ProjectType(Document):
     def __str__(self):
         return self.type
 
-class Project(Document):
-    __tablename__ = 'project'
-    name = StringField(max_length=60, required=True, unique=True)
-    type = dbmongo.ReferenceField(ProjectType)
-    manager = StringField()
-    key_delivery = StringField(max_length=100)
-    startdate_proposed = DateTimeField()
-    enddate_proposed = DateTimeField()
-    startdate_actual = DateTimeField()
-    enddate_actual = DateTimeField()
-    status = StringField()
-
-    def __unicode__(self):
-        return self.name
-
-    def __repr__(self):
-        return self.name
-
-    # return selected attribute in dropddowns
-    def __str__(self):
-        return self.name
 
 
 class Employee(Document):
@@ -160,11 +139,34 @@ class Employee(Document):
         return self.name
 
 
+class Project(Document):
+    __tablename__ = 'project'
+    name = StringField(max_length=60, required=True, unique=True)
+    type = dbmongo.ReferenceField(ProjectType)
+    manager = ReferenceField(Employee, required=True)
+    key_delivery = StringField(max_length=100)
+    startdate_proposed = DateTimeField()
+    enddate_proposed = DateTimeField()
+    startdate_actual = DateTimeField()
+    enddate_actual = DateTimeField()
+    status = StringField()
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    # return selected attribute in dropddowns
+    def __str__(self):
+        return self.name
+
+
 class ProjectMilestone(Document):
     __tablename__ = 'project_milestone'
     name = StringField(max_length=60, required=True, unique=True)
-    project = StringField()
-    owner = StringField()
+    project = ReferenceField(Project, required=True)
+    owner = ReferenceField(Employee, required=True)
     key_delivery = StringField(max_length=100)
     startdate_proposed = DateTimeField()
     enddate_proposed = DateTimeField()
@@ -186,8 +188,8 @@ class ProjectMilestone(Document):
 class ProjectTask(Document):
     __tablename__ = 'project_task'
     name = StringField(max_length=60, required=True, unique=True)
-    milestone = StringField()
-    owner = StringField()
+    milestone = ReferenceField(ProjectMilestone, required=True)
+    owner = ReferenceField(Employee, required=True)
     key_delivery = StringField(max_length=100)
     startdate_proposed = DateTimeField()
     enddate_proposed = DateTimeField()
@@ -221,9 +223,9 @@ class ProjectRating(Document):
 class RiskMatrix(Document):
     __tablename__= 'risk_matrix'
     name = StringField(required=True)
-    project = StringField()
+    project = ReferenceField(Project, required=True)
     analysis_date = DateTimeField()
-    analyst = StringField()
+    analyst = ReferenceField(Employee, required=True)
     desc =    StringField(max_length=500)
 
     def __unicode__(self):

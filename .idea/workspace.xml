@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a0b312d1-a235-4b89-9f97-6eb49eb85eed" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notebooks/generate _data/project.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/generate _data/project.ipynb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,7 +13,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/aion_analytics$views.coverage" NAME="views Coverage Results" MODIFIED="1548376640407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
-    <SUITE FILE_PATH="coverage/analytics_frontend$analytics_frontend.coverage" NAME="analytics-frontend Coverage Results" MODIFIED="1557667651618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/analytics_frontend$analytics_frontend.coverage" NAME="analytics-frontend Coverage Results" MODIFIED="1557694844050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -163,15 +161,16 @@
     <session id="-1616772655">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="31" />
+          <entry key="project.closed" value="32" />
           <entry key="project.open.time.0" value="14" />
           <entry key="project.open.time.1" value="8" />
           <entry key="project.open.time.18" value="2" />
           <entry key="project.open.time.2" value="3" />
           <entry key="project.open.time.22" value="2" />
+          <entry key="project.open.time.27" value="1" />
           <entry key="project.open.time.3" value="3" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.opened" value="33" />
+          <entry key="project.opened" value="34" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -187,7 +186,7 @@
           <entry key="ipynb" value="2" />
           <entry key="null/aion/employee" value="7" />
           <entry key="null/aion/project" value="13" />
-          <entry key="null/aion/project_composite" value="9" />
+          <entry key="null/aion/project_composite" value="10" />
           <entry key="null/aion/project_task" value="7" />
           <entry key="null/aion/project_type" value="4" />
           <entry key="null/aion/risk" value="2" />
@@ -199,7 +198,7 @@
           <entry key="project" value="4" />
           <entry key="project_employees" value="1" />
           <entry key="project_goal_type" value="2" />
-          <entry key="py" value="42" />
+          <entry key="py" value="43" />
           <entry key="sql" value="1" />
           <entry key="tool" value="2" />
           <entry key="tool_classification" value="2" />
@@ -217,9 +216,9 @@
           <entry key="HTML" value="8" />
           <entry key="IPNB" value="2" />
           <entry key="Image" value="1" />
-          <entry key="MONGO" value="48" />
+          <entry key="MONGO" value="49" />
           <entry key="PLAIN_TEXT" value="3" />
-          <entry key="Python" value="42" />
+          <entry key="Python" value="43" />
           <entry key="SQL" value="1" />
           <entry key="YAML" value="1" />
         </counts>
@@ -229,7 +228,7 @@
           <entry key="cell" value="206" />
           <entry key="dummy" value="8" />
           <entry key="gitignore" value="99" />
-          <entry key="py" value="18548" />
+          <entry key="py" value="18855" />
           <entry key="sql" value="288" />
           <entry key="txt" value="4" />
         </counts>
@@ -237,7 +236,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="111" />
-          <entry key="Python" value="18548" />
+          <entry key="Python" value="18855" />
           <entry key="SQL" value="288" />
           <entry key="Scratch" value="206" />
         </counts>
@@ -250,7 +249,22 @@
         <entry file="file://$PROJECT_DIR$/run.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="162">
-              <caret line="9" column="28" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
+              <caret line="9" column="28" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="311">
+              <caret line="196" column="34" lean-forward="true" selection-start-line="196" selection-start-column="34" selection-end-line="196" selection-end-column="34" />
+              <folding>
+                <element signature="e#0#34#0" expanded="true" />
+                <marker date="1557664761843" expanded="true" signature="2751:2945" ph="..." />
+                <marker date="1557664761843" expanded="true" signature="3561:3562" ph="..." />
+                <marker date="1557664761843" expanded="true" signature="6333:6338" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -275,7 +289,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
+            <state relative-caret-position="513">
               <caret line="77" selection-start-line="77" selection-end-line="77" />
               <folding>
                 <element signature="e#0#83#0" expanded="true" />
@@ -285,20 +299,6 @@
               </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/notebooks/generate _data/project.ipynb">
-          <provider selected="true" editor-type-id="ipnb-editor">
-            <state>
-              <selected id="3" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="mongo://null/aion/project_composite">
-          <provider selected="true" editor-type-id="MongoData" />
         </entry>
       </file>
     </leaf>
@@ -362,10 +362,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1932" />
-    <option name="y" value="4" />
-    <option name="width" value="1843" />
-    <option name="height" value="871" />
+    <option name="x" value="2016" />
+    <option name="y" value="38" />
+    <option name="width" value="1647" />
+    <option name="height" value="924" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -373,7 +373,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -405,6 +404,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -543,7 +543,36 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-2" width="1920" height="1082" extended-state="6" />
+    <editor active="true" />
     <layout>
+      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.14806867" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.32960895" />
+      <window_info anchor="bottom" id="Database Changes" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.50055003" side_tool="true" weight="0.29191798" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Python Console" order="6" weight="0.3295838" />
+      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
+      <window_info anchor="bottom" id="Database Console" order="9" weight="0.39145106" />
+      <window_info anchor="bottom" id="Run" order="10" weight="0.39957035" />
+      <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
+      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="12" weight="0.32908162" />
+      <window_info anchor="bottom" id="TODO" order="13" />
+      <window_info anchor="bottom" id="Terminal" order="14" sideWeight="0.49944994" visible="true" weight="0.14607948" />
+      <window_info anchor="right" id="R Graphics" order="0" />
+      <window_info anchor="right" id="Mongo Explorer" order="1" visible="true" weight="0.29291844" />
+      <window_info anchor="right" id="R Packages" order="2" />
+      <window_info anchor="right" id="Database" order="3" weight="0.2742026" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="4" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="5" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="6" weight="0.32917705" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
+    </layout>
+    <layout-to-restore>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.14806867" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
@@ -557,41 +586,13 @@
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
       <window_info anchor="bottom" id="Database Console" order="9" weight="0.39145106" />
-      <window_info anchor="bottom" id="Run" order="10" visible="true" weight="0.39957035" />
+      <window_info anchor="bottom" id="Run" order="10" weight="0.39957035" />
       <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="12" weight="0.32908162" />
       <window_info anchor="bottom" id="TODO" order="13" />
-      <window_info anchor="bottom" id="Terminal" order="14" sideWeight="0.49944994" weight="0.1465909" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="14" sideWeight="0.49944994" visible="true" weight="0.14607948" />
       <window_info anchor="right" id="R Graphics" order="0" />
-      <window_info active="true" anchor="right" id="Mongo Explorer" order="1" visible="true" weight="0.14324035" />
-      <window_info anchor="right" id="R Packages" order="2" />
-      <window_info anchor="right" id="Database" order="3" weight="0.2742026" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="4" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="5" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="6" weight="0.32917705" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
-    </layout>
-    <layout-to-restore>
-      <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.22271964" />
-      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.32960895" />
-      <window_info anchor="bottom" id="Database Changes" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.50055003" side_tool="true" weight="0.29191798" />
-      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
-      <window_info anchor="bottom" id="Python Console" order="6" weight="0.3295838" />
-      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
-      <window_info anchor="bottom" id="Database Console" order="9" weight="0.39145106" />
-      <window_info anchor="bottom" id="Run" order="10" weight="0.3288889" />
-      <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
-      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="12" weight="0.32908162" />
-      <window_info anchor="bottom" id="TODO" order="13" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="14" sideWeight="0.49944994" visible="true" weight="0.41340783" />
-      <window_info anchor="right" id="R Graphics" order="0" />
-      <window_info anchor="right" id="Mongo Explorer" order="1" weight="0.33911583" />
+      <window_info anchor="right" id="Mongo Explorer" order="1" visible="true" weight="0.29291844" />
       <window_info anchor="right" id="R Packages" order="2" />
       <window_info anchor="right" id="Database" order="3" weight="0.2742026" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="4" type="SLIDING" weight="0.4" />
@@ -823,29 +824,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="28" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="196" column="34" lean-forward="true" selection-start-line="196" selection-start-column="34" selection-end-line="196" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-            <marker date="1557664761843" expanded="true" signature="2751:2945" ph="..." />
-            <marker date="1557664761843" expanded="true" signature="3561:3562" ph="..." />
-            <marker date="1557664761843" expanded="true" signature="6333:6338" ph="..." />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/notebooks/generate _data/project.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/forms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
+        <state relative-caret-position="513">
           <caret line="77" selection-start-line="77" selection-end-line="77" />
           <folding>
             <element signature="e#0#83#0" expanded="true" />
@@ -871,10 +859,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/notebooks/generate _data/project.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="3" />
+    <entry file="file://$PROJECT_DIR$/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="28" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="311">
+          <caret line="196" column="34" lean-forward="true" selection-start-line="196" selection-start-column="34" selection-end-line="196" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+            <marker date="1557664761843" expanded="true" signature="2751:2945" ph="..." />
+            <marker date="1557664761843" expanded="true" signature="3561:3562" ph="..." />
+            <marker date="1557664761843" expanded="true" signature="6333:6338" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

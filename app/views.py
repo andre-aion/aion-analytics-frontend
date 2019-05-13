@@ -29,21 +29,25 @@ class ToolEventView(ModelView):
     search_columns = ['timestamp']
     related_views = [Tool,ToolEventName]
 
+
 # MYSQL TABLES
 class ToolEventAllView(ModelView):
     datamodel = SQLAInterface(ToolEventAll)
     list_columns = ['tool','event','classification','timestamp']
     search_columns = ['timestamp']
 
+
 class ToolEventNameView(ModelView):
     datamodel = SQLAInterface(ToolEventName)
     search_columns = ['name']
     list_columns = ['name','desc']
 
+
 class ToolView(ModelView):
     datamodel = SQLAInterface(Tool)
     search_columns = ['name']
     list_columns = ['name','desc']
+
 
 @action("muldelete", "Delete", "Delete all Really?", "fa-rocket", single=False)
 class ToolClassificationView(ModelView):
@@ -51,9 +55,11 @@ class ToolClassificationView(ModelView):
     search_columns = ['name']
     list_columns = ['name','desc']
 
+
 class ToolHasClassificationView(ModelView):
     datamodel = SQLAInterface(ToolHasClassification)
     list_columns = ['tool_.name','classification_.name']
+
 
 class ContactInfoView(ModelView):
     datamodel = SQLAInterface(ContactInfo)
@@ -107,16 +113,7 @@ class DatascienceView(BaseView):
 class ProjectView(ModelView):
     datamodel = MongoEngineInterface(Project)
     list_columns = ['name','status','startdate_proposed','enddate_proposed','startdate_actual','enddate_actual']
-    '''
-    edit_form_extra_fields = {
-        "employee": QuerySelectField(
-            "Employee",
-            query_factory=employee_query,
-            widget=Select2Widget(extra_classes="readonly"),
-        )
-    }
-    '''
-    add_form = ProjectForm
+
 
 
 class EmployeeView(ModelView):
@@ -125,27 +122,32 @@ class EmployeeView(ModelView):
     add_form = EmployeeForm
     add_form.gender.choices = [('male','male'),('female','female')]
 
+
 class ProjectMilestoneView(ModelView):
     datamodel = MongoEngineInterface(ProjectMilestone)
     list_columns = ['project','owner','startdate_actual','enddate_actual']
-    add_form = ProjectTaskForm
+
 
 class ProjectTaskView(ModelView):
     datamodel = MongoEngineInterface(ProjectTask)
     list_columns = ['milestone','owner','startdate_actual','enddate_actual',
                     'value_delivered']
-    add_form = ProjectTaskForm
+
 
 class ProjectTypeView(ModelView):
     datamodel = MongoEngineInterface(ProjectType)
+
 
 class ProjectRatingView(ModelView):
     datamodel = MongoEngineInterface(ProjectRating)
 
 # #####################################
 #          ADD CHARTS
+
+
 def pretty_month_year(value):
     return str(value.year)
+
 
 class EventChartGroupbyView(GroupByChartView):
     datamodel = SQLAInterface(ToolEventAll)
@@ -164,6 +166,7 @@ class EventChartGroupbyView(GroupByChartView):
 
     ]
 
+
 class EventChartView(ChartView):
     datamodel = SQLAInterface(ToolEventAll)
     chart_title = 'Tool events'
@@ -176,7 +179,7 @@ class EventChartView(ChartView):
 class RiskMatrixView(ModelView):
     datamodel = MongoEngineInterface(RiskMatrix)
     list_columns = ['name','project','analyst','analysis_date']
-    add_form = RiskMatrixForm
+
 
 class RiskLikelihoodView(ModelView):
     datamodel = MongoEngineInterface(RiskLikelihood)
@@ -191,6 +194,7 @@ class RiskSeverityView(ModelView):
 class RiskView(ModelView):
     datamodel = MongoEngineInterface(Risk)
     list_columns = ['risk','matrix','category','desc','created_at']
+
 
 class RiskAnalysisView(ModelView):
     datamodel = MongoEngineInterface(RiskAnalysis)
@@ -208,6 +212,7 @@ class RiskCategoryView(ModelView):
 
 # #####################################
 #          ADD VIEWS
+
 
 appbuilder.add_view(DatascienceView,
                     'Analytics',
