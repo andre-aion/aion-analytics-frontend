@@ -121,7 +121,7 @@ class ProjectType(Document):
 
 class Employee(Document):
     __tablename__ = 'employee'
-    name = StringField(required=True,max_length=50)
+    name = StringField(required=True,max_length=50, unique=True)
     gender = StringField()
     hourly_rate = FloatField()
     department = StringField()
@@ -187,7 +187,7 @@ class ProjectMilestone(Document):
 
 class ProjectTask(Document):
     __tablename__ = 'project_task'
-    name = StringField(max_length=60, required=True, unique=True)
+    name = StringField(max_length=60, required=True)
     milestone = ReferenceField(ProjectMilestone, required=True)
     owner = ReferenceField(Employee, required=True)
     key_delivery = StringField(max_length=100)
@@ -222,7 +222,7 @@ class ProjectRating(Document):
 
 class RiskMatrix(Document):
     __tablename__= 'risk_matrix'
-    name = StringField(required=True)
+    name = StringField(required=True,unique=True)
     project = ReferenceField(Project, required=True)
     analysis_date = DateTimeField()
     analyst = ReferenceField(Employee, required=True)
@@ -274,7 +274,7 @@ class RiskSeverity(Document):
 
 class RiskCategory(Document):
     __tablename__ = 'risk_category'
-    name = StringField(max_length=50)
+    name = StringField(max_length=50,unique=True)
     desc = StringField(max_length=500)
 
     def __unicode__(self):
@@ -291,7 +291,7 @@ class RiskCategory(Document):
 class Risk(Document):
     __tablename__ = 'risk'
     matrix = ReferenceField(RiskMatrix, required=True)
-    risk = StringField(required=True,max_length=200)
+    risk = StringField(required=True,max_length=200,unique=True)
     category = ReferenceField(RiskCategory, required=True)
     desc = StringField(max_length=500)
     created_at = DateTimeField()
@@ -319,7 +319,7 @@ class RiskAnalysis(Document):
 class RiskSolution(Document):
     __tablename__ = 'risk_solution'
     risk = ReferenceField(Risk, required=True)
-    solution = StringField(max_length=500)
+    solution = StringField(max_length=500,unique=True)
     suggestion_date = DateTimeField()
     success_rating = IntField(min_value=1,max_value=100)
     desc = StringField(max_length=500)

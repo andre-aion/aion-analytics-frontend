@@ -9,7 +9,7 @@ from flask_appbuilder.widgets import ListBlock
 from wtforms import SelectField
 
 from app import appbuilder, db, dbmongo
-from app.forms import ContactForm, EmployeeForm, ProjectForm, ProjectTaskForm, RiskMatrixForm
+from app.forms import ContactForm, EmployeeForm, ProjectForm, ProjectTaskForm
 from app.models import ToolEvent, Tool, ToolClassification, \
     ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo, Glossary, Project, Employee, \
     ProjectType, ProjectTask, RiskMatrix, RiskLikelihood, RiskSeverity, Risk, RiskSolution, RiskCategory, RiskAnalysis, \
@@ -141,6 +141,42 @@ class ProjectTypeView(ModelView):
 class ProjectRatingView(ModelView):
     datamodel = MongoEngineInterface(ProjectRating)
 
+
+# ---------------- RISK ASSESSMENT ------------------
+class RiskMatrixView(ModelView):
+    datamodel = MongoEngineInterface(RiskMatrix)
+    list_columns = ['name','project','analyst','analysis_date']
+
+
+class RiskLikelihoodView(ModelView):
+    datamodel = MongoEngineInterface(RiskLikelihood)
+    list_columns = ['level','value', 'desc']
+
+
+class RiskSeverityView(ModelView):
+    datamodel = MongoEngineInterface(RiskSeverity)
+    list_columns = ['level', 'value','desc']
+
+
+class RiskView(ModelView):
+    datamodel = MongoEngineInterface(Risk)
+    list_columns = ['risk','matrix','category','desc','created_at']
+
+
+class RiskAnalysisView(ModelView):
+    datamodel = MongoEngineInterface(RiskAnalysis)
+    list_columns = ['risk','likelihood','likelihood_comment','severity','severity_comment']
+
+
+class RiskSolutionView(ModelView):
+    datamodel = MongoEngineInterface(RiskSolution)
+    list_columns = ['risk','solution','suggestion_date']
+
+
+class RiskCategoryView(ModelView):
+    datamodel = MongoEngineInterface(RiskCategory)
+    list_columns = ['name','desc']
+
 # #####################################
 #          ADD CHARTS
 
@@ -175,40 +211,7 @@ class EventChartView(ChartView):
     group_by_columns = ['classification','event']
 
 
-# -----------------------------------------------------
-class RiskMatrixView(ModelView):
-    datamodel = MongoEngineInterface(RiskMatrix)
-    list_columns = ['name','project','analyst','analysis_date']
 
-
-class RiskLikelihoodView(ModelView):
-    datamodel = MongoEngineInterface(RiskLikelihood)
-    list_columns = ['level','value', 'desc']
-
-
-class RiskSeverityView(ModelView):
-    datamodel = MongoEngineInterface(RiskSeverity)
-    list_columns = ['level', 'value','desc']
-
-
-class RiskView(ModelView):
-    datamodel = MongoEngineInterface(Risk)
-    list_columns = ['risk','matrix','category','desc','created_at']
-
-
-class RiskAnalysisView(ModelView):
-    datamodel = MongoEngineInterface(RiskAnalysis)
-    list_columns = ['risk','likelihood','likelihood_comment','severity','severity_comment']
-
-
-class RiskSolutionView(ModelView):
-    datamodel = MongoEngineInterface(RiskSolution)
-    list_columns = ['risk','solution','suggestion_date']
-
-
-class RiskCategoryView(ModelView):
-    datamodel = MongoEngineInterface(RiskCategory)
-    list_columns = ['name','desc']
 
 # #####################################
 #          ADD VIEWS

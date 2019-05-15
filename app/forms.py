@@ -82,10 +82,3 @@ class ProjectTaskForm(DynamicForm):
     start = DateTimeField('Task start date',widget=DateTimePickerWidget())
     end = DateTimeField('Task start date',widget=DateTimePickerWidget())
 
-# ------------  RISK ASSESSMENT
-class RiskMatrixForm(DynamicForm):
-    name = StringField('Matrix name')
-    project = SelectField('Project',choices=[(e, e) for e in project()])
-    analysis_date = DateTimeField('Analysis date',widget=DateTimePickerWidget())
-    analyst = SelectField('Analyst',choices=[(e, e) for e in employees()])
-    desc = StringField('Description')
