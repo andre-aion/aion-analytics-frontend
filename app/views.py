@@ -1,4 +1,4 @@
-
+from flask import g
 from bokeh.util.session_id import generate_session_id
 from flask import render_template
 from flask_appbuilder.fields import QuerySelectField
@@ -6,21 +6,23 @@ from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_appbuilder.models.mongoengine.interface import MongoEngineInterface
 
 from flask_appbuilder.widgets import ListBlock
+from mongoengine import ValidationError
 from wtforms import SelectField
+from wtforms.validators import EqualTo
 
 from app import appbuilder, db, dbmongo
-from app.forms import ContactForm, EmployeeForm, ProjectForm, ProjectTaskForm
+from app.forms import ContactForm, EmployeeForm, Date
 from app.models import ToolEvent, Tool, ToolClassification, \
     ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo, Glossary, Project, Employee, \
     ProjectType, ProjectTask, RiskMatrix, RiskLikelihood, RiskSeverity, Risk, RiskSolution, RiskCategory, RiskAnalysis, \
-    ProjectRating, ProjectMilestone
+    ProjectMilestone, ProjectStatus, ProjectDelivery, ProjectDeliveryTracker, ProjectDeliveryRating
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
 from flask_appbuilder.models.group import aggregate_count, aggregate_sum, aggregate_avg
 from flask_appbuilder.fieldwidgets import DateTimePickerWidget, Select2Widget
 from flask_appbuilder.forms import DateTimeField
-
+from flask_appbuilder.models.mongoengine.filters import FilterStartsWith, FilterEqualFunction
 
 # MYSQL VIEWS
 class ToolEventView(ModelView):
@@ -109,37 +111,74 @@ class DatascienceView(BaseView):
 
 
 # ################### MONGO MODELS ####
+def get_filter_data(item_id,field):
+    for obj in Project.objects:
+        if obj._id == item_id:
+            print(Project[field])
+            return Project[field]
 
-class ProjectView(ModelView):
-    datamodel = MongoEngineInterface(Project)
-    list_columns = ['name','status','startdate_proposed','enddate_proposed','startdate_actual','enddate_actual']
+
 
 
 
 class EmployeeView(ModelView):
     datamodel = MongoEngineInterface(Employee)
     list_columns = ['name','gender','title','hourly_rate']
-    add_form = EmployeeForm
-    add_form.gender.choices = [('male','male'),('female','female')]
 
+
+def get_startdate():
+    return g.project.startdate_proposed
+
+
+class ProjectView(ModelView):
+    datamodel = MongoEngineInterface(Project)
+    list_columns = ['name','owner','startdate_proposed','enddate_proposed','startdate_actual','enddate_actual']
+    validators_columns = {
+        'startdate_proposed': [Date('enddate_proposed')],
+        'startdate_actual': [Date('enddate_actual')]
+    }
 
 class ProjectMilestoneView(ModelView):
     datamodel = MongoEngineInterface(ProjectMilestone)
-    list_columns = ['project','owner','startdate_actual','enddate_actual']
+    list_columns = ['project','owner','startdate_actual','enddate_actual','startdate_proposed','enddate_proposed']
+    validators_columns = {
+        'startdate_proposed':[Date('enddate_proposed')],
+        'startdate_actual':[Date('enddate_actual')]
+    }
 
 
 class ProjectTaskView(ModelView):
     datamodel = MongoEngineInterface(ProjectTask)
     list_columns = ['milestone','owner','startdate_actual','enddate_actual',
                     'value_delivered']
+    validators_columns = {
+        'startdate_proposed': [Date('enddate_proposed')],
+        'startdate_actual': [Date('enddate_actual')]
+    }
 
 
 class ProjectTypeView(ModelView):
     datamodel = MongoEngineInterface(ProjectType)
 
 
-class ProjectRatingView(ModelView):
-    datamodel = MongoEngineInterface(ProjectRating)
+class ProjectDeliveryRatingView(ModelView):
+    datamodel = MongoEngineInterface(ProjectDeliveryRating)
+    list_columns = ['delivery','timestamp','rating','analyst']
+
+
+class ProjectStatusView(ModelView):
+    datamodel = MongoEngineInterface(ProjectStatus)
+    list_columns = ['project', 'status', 'timestamp']
+
+
+class ProjectDeliveryView(ModelView):
+    datamodel = MongoEngineInterface(ProjectDelivery)
+    list_columns = ['name', 'task','metric','unit','target','target_date']
+
+
+class ProjectDeliveryTrackerView(ModelView):
+    datamodel = MongoEngineInterface(ProjectDeliveryTracker)
+    list_columns = ['delivery', 'stat','timestamp']
 
 
 # ---------------- RISK ASSESSMENT ------------------
@@ -278,7 +317,7 @@ appbuilder.add_view(GlossaryView,
 # --------------------- MONGO VIEWS
 appbuilder.add_view(ProjectView,
                     'Projects',
-                    icon='fa-project-diagram',
+                    icon='fa-folder',
                     category='Projects')
 
 appbuilder.add_view(EmployeeView,
@@ -288,7 +327,7 @@ appbuilder.add_view(EmployeeView,
 
 appbuilder.add_view(ProjectMilestoneView,
                     'Milestones',
-                    icon='fa-tasks',
+                    icon='fa-clipboard',
                     category='Projects')
 
 appbuilder.add_view(ProjectTaskView,
@@ -301,14 +340,33 @@ appbuilder.add_view(ProjectTypeView,
                     icon='fa-folder',
                     category='Projects')
 
-appbuilder.add_view(ProjectRatingView,
-                    'Project success rating',
-                    icon='fa-clipboard-check',
+
+appbuilder.add_view(ProjectStatusView,
+                    'Project status',
+                    icon='fa-info',
                     category='Projects')
+
+# -- Delivery rating
+appbuilder.add_view(ProjectDeliveryView,
+                    'Task Delivery',
+                    icon='fa-check-square',
+                    category='Projects')
+
+appbuilder.add_view(ProjectDeliveryTrackerView,
+                    'Delivery Tracker',
+                    icon='fa-industry',
+                    category='Projects')
+
+appbuilder.add_view(ProjectDeliveryRatingView,
+                    'Delivery rating',
+                    icon='fa-star',
+                    category='Projects')
+
+
 # -- RISK
 appbuilder.add_view(RiskCategoryView,
                     'Risk category',
-                    icon='fa-folder',
+                    icon='fa-tags',
                     category='Risk Assessment')
 
 appbuilder.add_view(RiskSeverityView,
@@ -318,22 +376,22 @@ appbuilder.add_view(RiskSeverityView,
 
 appbuilder.add_view(RiskLikelihoodView,
                     'Likelihood',
-                    icon='fa-percentage',
+                    icon='fa-percent',
                     category='Risk Assessment')
 
 appbuilder.add_view(RiskMatrixView,
                     'Risk Matrix',
-                    icon='fa-folder',
+                    icon='fa-th-large',
                     category='Risk Assessment')
 
 appbuilder.add_view(RiskView,
                     'Risks',
-                    icon='fa-clipboard-list',
+                    icon='fa-exclamation-triangle',
                     category='Risk Assessment')
 
 appbuilder.add_view(RiskSolutionView,
                     'Risk solutions',
-                    icon='fa-sticky-note',
+                    icon='fa-ambulance',
                     category='Risk Assessment')
 
 appbuilder.add_view(RiskAnalysisView,

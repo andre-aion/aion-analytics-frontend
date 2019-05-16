@@ -1,9 +1,11 @@
+from datetime import datetime
+
 from flask_appbuilder.forms import DynamicForm, DateTimeField, DateTimePickerWidget
 from flask_mongoengine.wtf import model_form
 from mongoengine import ReferenceField
 
 from wtforms import SelectField, StringField, IntegerField, TextAreaField, FloatField, FieldList
-from wtforms.validators import DataRequired, Email, Length, Optional, NumberRange
+from wtforms.validators import DataRequired, Email, Length, Optional, NumberRange, ValidationError
 from wtforms.widgets import TextArea
 from app import dbmongo
 from app.models import Employee, ProjectType, Project, Risk
@@ -64,6 +66,7 @@ def project():
             lst.append(item.name)
     return lst
 
+'''
 class ProjectForm(DynamicForm):
     name = StringField('Project name')
     type = SelectField('ProjectType',choices=[(i, i) for i in project_type()])
@@ -76,9 +79,36 @@ class ProjectForm(DynamicForm):
     enddate_actual = DateTimeField('Actual start date',widget=DateTimePickerWidget())
     status = SelectField('Project status',choices = [('open', 'open'), ('closed', 'closed')])
 
-class ProjectTaskForm(DynamicForm):
-    project = SelectField('Project',choices=[(e, e) for e in project()])
-    employee = SelectField('Manager',choices=[(e, e) for e in employees()])
-    start = DateTimeField('Task start date',widget=DateTimePickerWidget())
-    end = DateTimeField('Task start date',widget=DateTimePickerWidget())
+'''
 
+
+# --------------------  CUSTOM VALIDATORS ----------------------------------
+
+
+class Date(object):
+    def __init__(self, enddate, message=None):
+        self.enddate = enddate
+        self.DATEFORMAT = "%Y-%m-%d %H:%M:%S"
+        if not message:
+            arr = enddate.split('_')
+            print(arr)
+            message = 'startdate_{} cannot be less than {}'.format(arr[-1],enddate)
+        self.message = message
+
+    def __call__(self, form, field):
+        if field.data is not None and self.enddate is not None:
+            mydate = form[self.enddate].data
+            print(mydate)
+            if isinstance(mydate,str):
+                mydate = datetime.strptime(mydate,self.DATEFORMAT)
+            if field.data >= mydate:
+                raise ValidationError(self.message)
+
+date = Date
+
+
+# --------------------------------------------------------------------------
+'''
+class ProjectMilestoneForm(DynamicForm):
+    startdate_proposed = DateTimeField('Proposed start date',[date('enddate_proposed')],widget=DateTimePickerWidget())
+'''
