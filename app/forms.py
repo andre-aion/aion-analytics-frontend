@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import bson
 from flask_appbuilder.forms import DynamicForm, DateTimeField, DateTimePickerWidget
 from flask_mongoengine.wtf import model_form
 from mongoengine import ReferenceField
@@ -10,7 +11,7 @@ from wtforms.widgets import TextArea
 from app import dbmongo
 from app.models import Employee, ProjectType, Project, Risk
 
-
+DATEFORMAT = "%Y-%m-%d %H:%M:%S"
 class ContactForm(DynamicForm):
     name = StringField('Full name')
     email = StringField('Email',validators=[Optional(),Email(), Length(min=6, max=40)])
@@ -84,16 +85,35 @@ class ProjectForm(DynamicForm):
 
 # --------------------  CUSTOM VALIDATORS ----------------------------------
 
+def get_parent_date(id,type='milestone',datetype='startdate'):
+    if type == 'milestone':
+        object = Project.objects.get(id=bson.objectid.ObjectId(id))
+        print('LINE 91:',object)
+        if object is not None:
+            if datetype == 'startdate':
+                if object.startdate_proposed is not None:
+                    tmp_date = object.startdate_proposed
+            elif datetype == 'enddate':
+                if object.enddate_proposed is not None:
+                    tmp_date = object.enddate_proposed
+            if tmp_date is not None:
+                if isinstance(tmp_date,str):
+                    return datetime.strptime(object.startdate_proposed,DATEFORMAT)
+                return tmp_date
+        return None
 
-class Date(object):
-    def __init__(self, enddate, message=None):
+
+class StartDateValidate(object):
+    def __init__(self, enddate,type='project', message=None):
         self.enddate = enddate
         self.DATEFORMAT = "%Y-%m-%d %H:%M:%S"
+        arr = enddate.split('_')
+        self.period = arr[-1]
         if not message:
-            arr = enddate.split('_')
-            print(arr)
             message = 'startdate_{} cannot be less than {}'.format(arr[-1],enddate)
         self.message = message
+        self.type = type
+
 
     def __call__(self, form, field):
         if field.data is not None and self.enddate is not None:
@@ -104,11 +124,31 @@ class Date(object):
             if field.data >= mydate:
                 raise ValidationError(self.message)
 
-date = Date
+        # ensure startdate is not less than parent date
+        if self.type in ['milestone','task']:
+            print('VALIDATING PARENT DATES')
+            parent = 'milestone'
+            if self.type == 'milestone':
+                parent = 'project'
+
+            id = form[parent].data.id
+            print('ID:',id)
+            for item in ['startdate','enddate']:
+                parent_date = get_parent_date(id, self.type,datetype=item)
+                if item == 'startdate':
+                    if parent_date > field.data:
+                        message = '{} proposed startdate cannot preceed proposed {} startdate'.format(self.type,parent)
+                        raise ValidationError(message)
+                elif item == 'enddate':
+                    if self.period != 'actual':
+                        if parent_date < field.data and self:
+                            message = '{} proposed startdate cannot exceed proposed {} enddate'.format(self.type, parent)
+
+                            raise ValidationError(message)
+
+
+
 
 
 # --------------------------------------------------------------------------
-'''
-class ProjectMilestoneForm(DynamicForm):
-    startdate_proposed = DateTimeField('Proposed start date',[date('enddate_proposed')],widget=DateTimePickerWidget())
-'''
+

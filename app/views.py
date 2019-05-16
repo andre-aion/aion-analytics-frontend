@@ -11,11 +11,12 @@ from wtforms import SelectField
 from wtforms.validators import EqualTo
 
 from app import appbuilder, db, dbmongo
-from app.forms import ContactForm, EmployeeForm, Date
+from app.forms import ContactForm, EmployeeForm, StartDateValidate
 from app.models import ToolEvent, Tool, ToolClassification, \
     ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo, Glossary, Project, Employee, \
     ProjectType, ProjectTask, RiskMatrix, RiskLikelihood, RiskSeverity, Risk, RiskSolution, RiskCategory, RiskAnalysis, \
-    ProjectMilestone, ProjectStatus, ProjectDelivery, ProjectDeliveryTracker, ProjectDeliveryRating
+    ProjectMilestone, ProjectStatus, ProjectDelivery, ProjectDeliveryTracker, ProjectDeliveryRating, \
+    ProjectStatuses
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -134,16 +135,16 @@ class ProjectView(ModelView):
     datamodel = MongoEngineInterface(Project)
     list_columns = ['name','owner','startdate_proposed','enddate_proposed','startdate_actual','enddate_actual']
     validators_columns = {
-        'startdate_proposed': [Date('enddate_proposed')],
-        'startdate_actual': [Date('enddate_actual')]
+        'startdate_proposed': [StartDateValidate('enddate_proposed')],
+        'startdate_actual': [StartDateValidate('enddate_actual')]
     }
 
 class ProjectMilestoneView(ModelView):
     datamodel = MongoEngineInterface(ProjectMilestone)
     list_columns = ['project','owner','startdate_actual','enddate_actual','startdate_proposed','enddate_proposed']
     validators_columns = {
-        'startdate_proposed':[Date('enddate_proposed')],
-        'startdate_actual':[Date('enddate_actual')]
+        'startdate_proposed': [StartDateValidate('enddate_proposed','milestone')],
+        'startdate_actual': [StartDateValidate('enddate_actual','milestone')]
     }
 
 
@@ -152,8 +153,8 @@ class ProjectTaskView(ModelView):
     list_columns = ['milestone','owner','startdate_actual','enddate_actual',
                     'value_delivered']
     validators_columns = {
-        'startdate_proposed': [Date('enddate_proposed')],
-        'startdate_actual': [Date('enddate_actual')]
+        'startdate_proposed': [StartDateValidate('enddate_proposed','task')],
+        'startdate_actual': [StartDateValidate('enddate_actual','task')]
     }
 
 
@@ -168,8 +169,11 @@ class ProjectDeliveryRatingView(ModelView):
 
 class ProjectStatusView(ModelView):
     datamodel = MongoEngineInterface(ProjectStatus)
-    list_columns = ['project', 'status', 'timestamp']
+    list_columns = ['project','status','timestamp']
 
+class ProjectStatusesView(ModelView):
+    datamodel = MongoEngineInterface(ProjectStatuses)
+    list_columns = ['status']
 
 class ProjectDeliveryView(ModelView):
     datamodel = MongoEngineInterface(ProjectDelivery)
@@ -362,6 +366,10 @@ appbuilder.add_view(ProjectDeliveryRatingView,
                     icon='fa-star',
                     category='Projects')
 
+appbuilder.add_view(ProjectStatusesView,
+                    'Statuses',
+                    icon='fa-star',
+                    category='Projects')
 
 # -- RISK
 appbuilder.add_view(RiskCategoryView,

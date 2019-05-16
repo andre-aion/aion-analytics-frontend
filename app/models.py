@@ -1,15 +1,10 @@
-import datetime
 from flask_appbuilder import Model
-from flask_appbuilder.models.decorators import renders
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Date
-from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import relationship
 from flask_appbuilder.models.mixins import AuditMixin
 from mongoengine import Document, DateField, DictField
 from mongoengine import DateTimeField, StringField, ReferenceField, ListField, FloatField, IntField
-from wtforms import SelectField
 
-from app import dbmongo
 
 """
 
@@ -72,6 +67,7 @@ class ToolEvent(Model):
     def eventname(self):
         return self.event_.name
 
+
 class ContactInfo(Model): # carry out surveys
     __tablename__ = 'contact_info'
     id = Column(Integer,primary_key=True)
@@ -91,12 +87,14 @@ class ContactInfo(Model): # carry out surveys
     def __repr__(self):
         return self.name
 
+
 class Glossary(Model):
     __tablename__ = 'glossary'
     id = Column(Integer,primary_key=True)
     term = Column(String(100), unique=True, nullable=False)
     description = Column(String)
     note = Column(String)
+
 
 # /////////////////////////////////// MYSQL VIEWS
 class ToolEventAll(Model):
@@ -106,6 +104,7 @@ class ToolEventAll(Model):
     event = Column(String)
     timestamp = Column(Date)
     classification = Column(String)
+
 
 # ################################# MONGO DB
 class ProjectType(Document):
@@ -119,6 +118,7 @@ class ProjectType(Document):
     # return selected attribute in dropddowns
     def __str__(self):
         return self.type
+
 
 class Employee(Document):
     __tablename__ = 'employee'
@@ -139,20 +139,22 @@ class Employee(Document):
     def __str__(self):
         return self.name
 
+
 def get_project_id(self):
     try:
         return g.project.id
     except Exception:
         return None
 
+
 class Project(Document):
     __tablename__ = 'project'
     name = StringField(max_length=60, required=True)
     type = ReferenceField(ProjectType,required=True)
     owner = ReferenceField(Employee, required=True)
-    startdate_proposed = DateTimeField()
+    startdate_proposed = DateTimeField(required=True)
+    enddate_proposed = DateTimeField(required=True)
     startdate_actual = DateTimeField()
-    enddate_proposed = DateTimeField()
     enddate_actual = DateTimeField()
     description = StringField()
 
@@ -173,34 +175,14 @@ class Project(Document):
         return self.enddate_proposed
 
 
-class ProjectStatus(Document):
-    __tablename__ = 'project_status'
-    project = ReferenceField(Project,required=True)
-    status = StringField(required=True,unique=True)
-    timestamp = DateTimeField(required=True)
-    desc = StringField(max_length=500)
-
-    def __unicode__(self):
-        return self.status
-
-    def __repr__(self):
-        return self.status
-
-    # return selected attribute in dropddowns
-    def __str__(self):
-        return self.status
-
-
-
-
 class ProjectMilestone(Document):
     __tablename__ = 'project_milestone'
     name = StringField(max_length=60, required=True, unique=True)
     project = ReferenceField(Project, required=True)
     owner = ReferenceField(Employee, required=True)
     key_delivery = StringField(max_length=100)
-    startdate_proposed = DateTimeField()
-    enddate_proposed = DateTimeField()
+    startdate_proposed = DateTimeField(required=True)
+    enddate_proposed = DateTimeField(required=True)
     startdate_actual = DateTimeField()
     enddate_actual = DateTimeField()
     notes = StringField(max_length=1000)
@@ -214,6 +196,9 @@ class ProjectMilestone(Document):
     # return selected attribute in dropddowns
     def __str__(self):
         return """{}: {} - {}""".format(self.name, self.startdate_proposed.date(), self.enddate_proposed.date())
+
+    def startdate(self):
+        return self.startdate_proposed
 
 
     @classmethod
@@ -231,8 +216,8 @@ class ProjectTask(Document):
     owner = ReferenceField(Employee, required=True)
     key_delivery = StringField(max_length=100)
     type = ReferenceField(ProjectType, required=True)
-    startdate_proposed = DateTimeField()
-    enddate_proposed = DateTimeField()
+    startdate_proposed = DateTimeField(required=True)
+    enddate_proposed = DateTimeField(required=True)
     startdate_actual = DateTimeField()
     enddate_actual = DateTimeField()
     value_proposed = FloatField()
@@ -248,6 +233,39 @@ class ProjectTask(Document):
     # return selected attribute in dropddowns
     def __str__(self):
         return self.name
+
+
+class ProjectStatuses(Document):
+    __tablename__ = 'project_statuses'
+    status = StringField(required=True,unique=True)
+
+    def __unicode__(self):
+        return self.status
+
+    def __repr__(self):
+        return self.status
+
+    # return selected attribute in dropddowns
+    def __str__(self):
+        return self.status
+
+
+class ProjectStatus(Document):
+    __tablename__ = 'project_status'
+    project = ReferenceField(Project,required=True)
+    status = ReferenceField(ProjectStatuses,required=True)
+    timestamp = DateTimeField(required=True)
+    desc = StringField(max_length=500)
+
+    def __unicode__(self):
+        return self.status
+
+    def __repr__(self):
+        return self.status
+
+    # return selected attribute in dropddowns
+    def __str__(self):
+        return self.project+': ' + self.status
 
 class ProjectDeliveryMetric(Document):
     metric = StringField(max_length=60, required=True,unique=True)
