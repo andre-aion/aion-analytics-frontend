@@ -16,7 +16,7 @@ from app.models import ToolEvent, Tool, ToolClassification, \
     ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo, Glossary, Project, Employee, \
     ProjectType, ProjectTask, RiskMatrix, RiskLikelihood, RiskSeverity, Risk, RiskSolution, RiskCategory, RiskAnalysis, \
     ProjectMilestone, ProjectStatus, ProjectDelivery, ProjectDeliveryTracker, ProjectDeliveryRating, \
-    ProjectStatuses
+    ProjectStatuses, EtlScheduler, Etl, EtlParameter, EtlParameterType
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -119,9 +119,6 @@ def get_filter_data(item_id,field):
             return Project[field]
 
 
-
-
-
 class EmployeeView(ModelView):
     datamodel = MongoEngineInterface(Employee)
     list_columns = ['name','gender','title','hourly_rate']
@@ -213,12 +210,25 @@ class RiskAnalysisView(ModelView):
 
 class RiskSolutionView(ModelView):
     datamodel = MongoEngineInterface(RiskSolution)
-    list_columns = ['risk','solution','suggestion_date']
+    list_columns = ['project','solution','suggestion_date']
 
 
 class RiskCategoryView(ModelView):
     datamodel = MongoEngineInterface(RiskCategory)
     list_columns = ['name','desc']
+
+
+# --------------------------------- ETL SCHEDULER ------------------------
+
+class EtlView(ModelView):
+    datamodel = MongoEngineInterface(Etl)
+
+class EtlParameterTypeView(ModelView):
+    datamodel = MongoEngineInterface(EtlParameterType)
+
+class EtlParameterView(ModelView):
+    datamodel = MongoEngineInterface(EtlParameter)
+    list_columns = ['etl', 'type','label','handle','startdate']
 
 # #####################################
 #          ADD CHARTS
@@ -407,7 +417,6 @@ appbuilder.add_view(RiskAnalysisView,
                     icon='fa-calculator',
                     category='Risk Assessment')
 
-
 #   CHART VIEWS
 appbuilder.add_view(EventChartView,
                     "Event charts",
@@ -415,4 +424,18 @@ appbuilder.add_view(EventChartView,
                     category="Statistics")
 
 
+#  ETL VIEWS
+appbuilder.add_view(EtlView,
+                    "ETLs",
+                    icon="fa-long-arrow-down",
+                    category="ETLs")
 
+appbuilder.add_view(EtlParameterTypeView,
+                    "Parameter type",
+                    icon="fa-long-arrow-down",
+                    category="ETLs")
+
+appbuilder.add_view(EtlParameterView,
+                    "Parameters",
+                    icon="fa-long-arrow-down",
+                    category="ETLs")

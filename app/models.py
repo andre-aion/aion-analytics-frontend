@@ -3,8 +3,9 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Date
 from sqlalchemy.orm import relationship
 from flask_appbuilder.models.mixins import AuditMixin
 from mongoengine import Document, DateField, DictField
-from mongoengine import DateTimeField, StringField, ReferenceField, ListField, FloatField, IntField
+from mongoengine import DateTimeField, StringField, ReferenceField, ListField, FloatField, IntField,BooleanField
 
+from app import dbmongo
 
 """
 
@@ -140,13 +141,6 @@ class Employee(Document):
         return self.name
 
 
-def get_project_id(self):
-    try:
-        return g.project.id
-    except Exception:
-        return None
-
-
 class Project(Document):
     __tablename__ = 'project'
     name = StringField(max_length=60, required=True)
@@ -199,14 +193,6 @@ class ProjectMilestone(Document):
 
     def startdate(self):
         return self.startdate_proposed
-
-
-    @classmethod
-    def get_id(self):
-        try:
-            return g.project._id
-        except Exception:
-            return None
 
 
 class ProjectTask(Document):
@@ -320,6 +306,7 @@ class ProjectDeliveryRating(Document):
 
 # -------  RISK ---------------------
 
+
 class RiskMatrix(Document):
     __tablename__= 'risk_matrix'
     name = StringField(required=True,unique=True)
@@ -374,7 +361,7 @@ class RiskSeverity(Document):
 
 class RiskCategory(Document):
     __tablename__ = 'risk_category'
-    name = StringField(max_length=50,unique=True)
+    name = StringField(max_length=50)
     desc = StringField(max_length=500)
 
     def __unicode__(self):
@@ -418,13 +405,59 @@ class RiskAnalysis(Document):
 
 class RiskSolution(Document):
     __tablename__ = 'risk_solution'
-    risk = ReferenceField(Risk, required=True)
+    project = ReferenceField(Project, required=True)
     solution = StringField(max_length=500,unique=True)
     suggestion_date = DateTimeField()
     success_rating = IntField(min_value=1,max_value=100)
     desc = StringField(max_length=500)
 
+# -------------- ETL -------------------
+class EtlScheduler(Document):
+    __tablename__ = 'etl_scheduler'
+    job = StringField(required=True,unique=True)
+    run_hour = IntField(min_value=0,max_value=23,required=True)
+    run_minute = IntField(min_value=0,max_value=59,required=True)
+    reset_flag = StringField()
+    reset_startdate = DateTimeField()
+    reset_enddate = DateTimeField()
 
 
+# -------------- ETL -------------------
+class Etl(Document):
+    __tablename__ = 'etl'
+    etl = StringField(required=True)
 
+    def __unicode__(self):
+        return self.etl
 
+    def __repr__(self):
+        return self.etl
+
+        # return selected attribute in dropddowns
+
+    def __str__(self):
+        return self.etl
+
+class EtlParameterType(Document):
+    __tablename__ = 'etl_parameter_type'
+    type = StringField(required=True)
+
+    def __unicode__(self):
+        return self.type
+
+    def __repr__(self):
+        return self.type
+
+        # return selected attribute in dropddowns
+
+    def __str__(self):
+        return self.type
+
+class EtlParameter(Document):
+    __tablename__ = 'etl_parameter'
+    #twitter = ListField(StringField(),default=lambda:['expressupdates'])
+    etl = ReferenceField(Etl, required=True)
+    type = ReferenceField(EtlParameterType, required=True)
+    label = StringField(required=True)
+    handle = StringField(required=True)
+    startdate = DateField()
