@@ -4,9 +4,7 @@
     <list default="true" id="a0b312d1-a235-4b89-9f97-6eb49eb85eed" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/analytics_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/analytics_index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/generate _data/project.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/generate _data/project.ipynb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,9 +13,9 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/analytics_frontend$models.coverage" NAME="models Coverage Results" MODIFIED="1557709841048" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
+    <SUITE FILE_PATH="coverage/analytics_frontend$models.coverage" NAME="models Coverage Results" MODIFIED="1558983821614" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
     <SUITE FILE_PATH="coverage/aion_analytics$views.coverage" NAME="views Coverage Results" MODIFIED="1548376640407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
-    <SUITE FILE_PATH="coverage/analytics_frontend$analytics_frontend.coverage" NAME="analytics-frontend Coverage Results" MODIFIED="1557694844050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/analytics_frontend$analytics_frontend.coverage" NAME="analytics-frontend Coverage Results" MODIFIED="1558980550101" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -173,18 +171,18 @@
     <session id="-1616772655">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="44" />
-          <entry key="project.open.time.0" value="19" />
-          <entry key="project.open.time.1" value="11" />
+          <entry key="project.closed" value="47" />
+          <entry key="project.open.time.0" value="20" />
+          <entry key="project.open.time.1" value="13" />
           <entry key="project.open.time.14" value="1" />
           <entry key="project.open.time.18" value="2" />
-          <entry key="project.open.time.2" value="3" />
+          <entry key="project.open.time.2" value="4" />
           <entry key="project.open.time.22" value="2" />
           <entry key="project.open.time.27" value="1" />
           <entry key="project.open.time.3" value="4" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="45" />
+          <entry key="project.opened" value="49" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -198,11 +196,13 @@
           <entry key="gitignore" value="3" />
           <entry key="glossary" value="1" />
           <entry key="html" value="11" />
-          <entry key="ipynb" value="2" />
+          <entry key="ipynb" value="3" />
           <entry key="null/aion/employee" value="9" />
           <entry key="null/aion/etl_scheduler" value="1" />
           <entry key="null/aion/project" value="18" />
           <entry key="null/aion/project_composite" value="10" />
+          <entry key="null/aion/project_composite1" value="2" />
+          <entry key="null/aion/project_delivery_metric" value="1" />
           <entry key="null/aion/project_status" value="2" />
           <entry key="null/aion/project_task" value="7" />
           <entry key="null/aion/project_type" value="4" />
@@ -216,7 +216,7 @@
           <entry key="project" value="4" />
           <entry key="project_employees" value="1" />
           <entry key="project_goal_type" value="2" />
-          <entry key="py" value="56" />
+          <entry key="py" value="57" />
           <entry key="sql" value="1" />
           <entry key="tool" value="2" />
           <entry key="tool_classification" value="2" />
@@ -232,11 +232,11 @@
           <entry key="CSS" value="3" />
           <entry key="Database Element" value="29" />
           <entry key="HTML" value="11" />
-          <entry key="IPNB" value="2" />
+          <entry key="IPNB" value="3" />
           <entry key="Image" value="1" />
-          <entry key="MONGO" value="62" />
+          <entry key="MONGO" value="65" />
           <entry key="PLAIN_TEXT" value="3" />
-          <entry key="Python" value="56" />
+          <entry key="Python" value="57" />
           <entry key="SQL" value="1" />
           <entry key="YAML" value="1" />
         </counts>
@@ -247,7 +247,7 @@
           <entry key="dummy" value="8" />
           <entry key="gitignore" value="99" />
           <entry key="html" value="25" />
-          <entry key="py" value="27059" />
+          <entry key="py" value="29710" />
           <entry key="sql" value="288" />
           <entry key="txt" value="4" />
         </counts>
@@ -256,7 +256,7 @@
         <counts>
           <entry key="HTML" value="25" />
           <entry key="PLAIN_TEXT" value="111" />
-          <entry key="Python" value="27059" />
+          <entry key="Python" value="29710" />
           <entry key="SQL" value="288" />
           <entry key="Scratch" value="206" />
         </counts>
@@ -265,26 +265,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="162">
-              <caret line="9" column="22" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="28" />
+              <caret line="9" column="26" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="28" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8316">
-              <caret line="462" column="27" selection-start-line="462" selection-start-column="27" selection-end-line="462" selection-end-column="27" />
+            <state relative-caret-position="521">
+              <caret line="620" column="4" selection-start-line="620" selection-start-column="4" selection-end-line="620" selection-end-column="4" />
               <folding>
-                <element signature="e#0#34#0" expanded="true" />
-                <marker date="1558644070837" expanded="true" signature="2745:2940" ph="..." />
-                <marker date="1558644070837" expanded="true" signature="4020:4022" ph="..." />
-                <marker date="1558644070837" expanded="true" signature="4853:4855" ph="..." />
-                <marker date="1558644070837" expanded="true" signature="12161:12743" ph="..." />
+                <marker date="1560414931017" expanded="true" signature="13429:14023" ph="..." />
+                <marker date="1560414931017" expanded="true" signature="14416:14600" ph="..." />
+                <marker date="1560414931017" expanded="true" signature="14931:15189" ph="..." />
+                <marker date="1560414931017" expanded="true" signature="15219:15224" ph="..." />
+                <marker date="1560414931017" expanded="true" signature="15895:16034" ph="..." />
+                <marker date="1560414931017" expanded="true" signature="16034:16036" ph="..." />
+                <marker date="1560414931017" expanded="true" signature="16067:16068" ph="..." />
+                <marker date="1560414931017" expanded="true" signature="16791:16946" ph="..." />
               </folding>
             </state>
           </provider>
@@ -293,41 +296,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="236" column="29" selection-start-line="236" selection-start-column="29" selection-end-line="236" selection-end-column="29" />
+            <state relative-caret-position="252">
+              <caret line="39" column="34" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="34" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
-                <marker date="1558644259164" expanded="true" signature="2021:3731" ph="..." />
-                <marker date="1558644259164" expanded="true" signature="3730:3731" ph="..." />
-                <marker date="1558644259164" expanded="true" signature="5035:5395" ph="..." />
+                <marker date="1558713292057" expanded="true" signature="2021:3731" ph="..." />
+                <marker date="1558713292057" expanded="true" signature="3730:3731" ph="..." />
+                <marker date="1558713292057" expanded="true" signature="5035:5395" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/templates/analytics_index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="14" selection-start-line="14" selection-end-line="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/static/css/analytics_index.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="27" column="1" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/templates/rf_tree.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="4" column="14" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -350,10 +326,12 @@
       <find>'</find>
       <find>=60</find>
       <find>project</find>
+      <find>likelihood</find>
     </findStrings>
     <replaceStrings>
       <replace>task</replace>
       <replace>milestone</replace>
+      <replace>severity</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -377,12 +355,12 @@
         <option value="$PROJECT_DIR$/app/__init__.py" />
         <option value="$PROJECT_DIR$/config.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/notebooks/generate _data/project.ipynb" />
         <option value="$PROJECT_DIR$/app/forms.py" />
         <option value="$PROJECT_DIR$/run.py" />
-        <option value="$PROJECT_DIR$/app/models.py" />
-        <option value="$PROJECT_DIR$/app/views.py" />
         <option value="$PROJECT_DIR$/app/templates/analytics_index.html" />
+        <option value="$PROJECT_DIR$/app/views.py" />
+        <option value="$PROJECT_DIR$/notebooks/generate _data/project.ipynb" />
+        <option value="$PROJECT_DIR$/app/models.py" />
       </list>
     </option>
   </component>
@@ -393,10 +371,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="67" />
-    <option name="y" value="32" />
-    <option name="width" value="1853" />
-    <option name="height" value="1048" />
+    <option name="x" value="-48" />
+    <option name="y" value="130" />
+    <option name="width" value="1843" />
+    <option name="height" value="784" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -404,6 +382,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -418,32 +397,12 @@
             </path>
             <path>
               <item name="analytics-frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="analytics-frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="analytics-frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="analytics-frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="analytics-frontend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="analytics-frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="translations" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="analytics-frontend" type="b2602c69:ProjectViewProjectNode" />
               <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -606,7 +565,36 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="32" width="1853" height="1048" extended-state="6" />
+    <editor active="true" />
     <layout>
+      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.17195326" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.32960895" />
+      <window_info anchor="bottom" id="Database Changes" order="3" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Python Console" order="5" weight="0.3295838" />
+      <window_info anchor="bottom" id="Version Control" order="6" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
+      <window_info anchor="bottom" id="Database Console" order="8" weight="0.39145106" />
+      <window_info anchor="bottom" id="Run" order="9" weight="0.17279822" />
+      <window_info anchor="bottom" id="Debug" order="10" sideWeight="0.49916527" weight="0.39910814" />
+      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="11" weight="0.32908162" />
+      <window_info anchor="bottom" id="TODO" order="12" />
+      <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.49944994" visible="true" weight="0.23411371" />
+      <window_info anchor="bottom" id="Event Log" order="14" sideWeight="0.5008347" side_tool="true" weight="0.39910814" />
+      <window_info anchor="right" id="R Graphics" order="0" />
+      <window_info anchor="right" id="Mongo Explorer" order="1" weight="0.22537562" />
+      <window_info anchor="right" id="Database" order="2" weight="0.50361717" />
+      <window_info anchor="right" id="R Packages" order="3" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="4" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="5" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="6" weight="0.32917705" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
+    </layout>
+    <layout-to-restore>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.17195326" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
@@ -624,39 +612,11 @@
       <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="12" weight="0.32908162" />
       <window_info anchor="bottom" id="TODO" order="13" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="14" sideWeight="0.49944994" visible="true" weight="0.38350055" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="14" sideWeight="0.49944994" visible="true" weight="0.22742476" />
       <window_info anchor="right" id="R Graphics" order="0" />
-      <window_info anchor="right" id="Mongo Explorer" order="1" visible="true" weight="0.21869783" />
+      <window_info anchor="right" id="Mongo Explorer" order="1" weight="0.22537562" />
       <window_info anchor="right" id="R Packages" order="2" />
       <window_info anchor="right" id="Database" order="3" weight="0.50361717" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="4" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="5" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="6" weight="0.32917705" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="7" weight="0.25" />
-    </layout>
-    <layout-to-restore>
-      <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.14806867" />
-      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.32960895" />
-      <window_info anchor="bottom" id="Database Changes" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.50055003" side_tool="true" weight="0.29191798" />
-      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
-      <window_info anchor="bottom" id="Python Console" order="6" weight="0.3295838" />
-      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
-      <window_info anchor="bottom" id="Database Console" order="9" weight="0.39145106" />
-      <window_info anchor="bottom" id="Run" order="10" weight="0.39957035" />
-      <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
-      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="12" weight="0.32908162" />
-      <window_info anchor="bottom" id="TODO" order="13" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="14" sideWeight="0.49944994" visible="true" weight="0.14607948" />
-      <window_info anchor="right" id="R Graphics" order="0" />
-      <window_info anchor="right" id="Mongo Explorer" order="1" visible="true" weight="0.29291844" />
-      <window_info anchor="right" id="R Packages" order="2" />
-      <window_info anchor="right" id="Database" order="3" weight="0.2742026" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="4" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="5" weight="0.25" />
       <window_info anchor="right" id="SciView" order="6" weight="0.32917705" />
@@ -745,59 +705,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/view/view_tool_events">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/tool_event_name">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/tool_event">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/tool">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/tool_classification">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/tool_has_classification">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/view/view_tool_events" />
+    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/tool_event_name" />
+    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/tool_event" />
+    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/tool" />
+    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/tool_classification" />
+    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/tool_has_classification" />
     <entry file="file://$USER_HOME$/anaconda3/envs/analytics/lib/python3.5/site-packages/gunicorn/util.py" />
     <entry file="file://$PROJECT_DIR$/app/static/img/tier1_tree.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/contact_info">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/contact_info" />
     <entry file="file://$USER_HOME$/anaconda3/envs/analytics/lib/python3.6/site-packages/flask_appbuilder/templates/appbuilder/general/widgets/form.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="277">
@@ -805,13 +723,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/glossary">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/glossary" />
     <entry file="file://$USER_HOME$/anaconda3/envs/analytics/lib/python3.6/site-packages/gunicorn/util.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
@@ -823,24 +735,11 @@
     <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/employee_salary" />
     <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/project_employees" />
     <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/project" />
-    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/ab_user">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/ab_user" />
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/notebooks/generate _data/project.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="3" />
         </state>
       </provider>
     </entry>
@@ -886,13 +785,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/ab_role">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://a9a5ec60-1448-481f-83b0-85af5f778edb/schema/aion_analytics/table/ab_role" />
     <entry file="file://$PROJECT_DIR$/app/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="445">
@@ -900,37 +793,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/models.py">
+    <entry file="file://$PROJECT_DIR$/run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8316">
-          <caret line="462" column="27" selection-start-line="462" selection-start-column="27" selection-end-line="462" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-            <marker date="1558644070837" expanded="true" signature="2745:2940" ph="..." />
-            <marker date="1558644070837" expanded="true" signature="4020:4022" ph="..." />
-            <marker date="1558644070837" expanded="true" signature="4853:4855" ph="..." />
-            <marker date="1558644070837" expanded="true" signature="12161:12743" ph="..." />
-          </folding>
+        <state relative-caret-position="162">
+          <caret line="9" column="26" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="236" column="29" selection-start-line="236" selection-start-column="29" selection-end-line="236" selection-end-column="29" />
+        <state relative-caret-position="252">
+          <caret line="39" column="34" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="34" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
-            <marker date="1558644259164" expanded="true" signature="2021:3731" ph="..." />
-            <marker date="1558644259164" expanded="true" signature="3730:3731" ph="..." />
-            <marker date="1558644259164" expanded="true" signature="5035:5395" ph="..." />
+            <marker date="1558713292057" expanded="true" signature="2021:3731" ph="..." />
+            <marker date="1558713292057" expanded="true" signature="3730:3731" ph="..." />
+            <marker date="1558713292057" expanded="true" signature="5035:5395" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/rf_tree.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="14" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
+    <entry file="file://$PROJECT_DIR$/notebooks/generate _data/project.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="3" />
         </state>
       </provider>
     </entry>
@@ -943,15 +829,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/static/css/analytics_index.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
+        <state relative-caret-position="486">
           <caret line="27" column="1" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run.py">
+    <entry file="file://$PROJECT_DIR$/app/templates/rf_tree.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="22" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="28" />
+        <state relative-caret-position="72">
+          <caret line="4" column="14" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="521">
+          <caret line="620" column="4" selection-start-line="620" selection-start-column="4" selection-end-line="620" selection-end-column="4" />
+          <folding>
+            <marker date="1560414931017" expanded="true" signature="13429:14023" ph="..." />
+            <marker date="1560414931017" expanded="true" signature="14416:14600" ph="..." />
+            <marker date="1560414931017" expanded="true" signature="14931:15189" ph="..." />
+            <marker date="1560414931017" expanded="true" signature="15219:15224" ph="..." />
+            <marker date="1560414931017" expanded="true" signature="15895:16034" ph="..." />
+            <marker date="1560414931017" expanded="true" signature="16034:16036" ph="..." />
+            <marker date="1560414931017" expanded="true" signature="16067:16068" ph="..." />
+            <marker date="1560414931017" expanded="true" signature="16791:16946" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

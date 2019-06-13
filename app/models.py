@@ -461,3 +461,201 @@ class EtlParameter(Document):
     label = StringField(required=True)
     handle = StringField(required=True)
     startdate = DateField()
+
+# --------------------- CONSORTIUM -------------------------
+class Gender(Document):
+    __tablename__ = 'gender'
+    gender = StringField()
+    def __unicode__(self):
+        return self.gender
+
+    def __repr__(self):
+        return self.gender
+
+    def __str__(self):
+        return self.gender
+
+class BusinessType(Document):
+    __tablename__ = 'business_type'
+    type = StringField(required=True)
+    desc = StringField()
+    def __unicode__(self):
+        return self.type
+
+    def __repr__(self):
+        return self.type
+
+        # return selected attribute in dropddowns
+
+    def __str__(self):
+        return self.type
+
+class BusinessEventType(Document):
+    __tablename__ = 'business_event_type'
+    type = StringField(required=True)
+    desc = StringField()
+    def __unicode__(self):
+        return self.type
+
+    def __repr__(self):
+        return self.type
+
+    def __str__(self):
+        return self.type
+
+class Business(Document):
+    __tablename__ = 'business'
+    name = StringField(required=True,unique=True)
+    type = StringField(required=True)
+    desc = StringField()
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+class EducationLevel(Document):
+    __tablename__ = 'education_level'
+    level = StringField()
+
+    def __unicode__(self):
+        return self.level
+
+    def __repr__(self):
+        return self.level
+
+    def __str__(self):
+        return self.level
+
+
+class BusinessStaff(Document):
+    __tablename__ = 'business_staff'
+    name = StringField(required=True,unique=True)
+    gender = ReferenceField(Gender)
+    dob = DateField()
+    highest_ed = ReferenceField(EducationLevel)
+    city = StringField()
+    position = StringField()
+    job_title = StringField()
+
+
+class Like(Document):
+    __tablename__ = 'like'
+    name = StringField(required=True, unique=True)
+    desc = StringField()
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+
+class BusinessEvent(Document):
+    __tablename__ = 'business_event'
+    start_proposed = DateTimeField()
+    end_proposed = DateTimeField()
+    start_actual = DateTimeField()
+    end_actual = DateTimeField()
+    manager = ReferenceField(BusinessStaff)
+    name = StringField(required=True)
+    type = ReferenceField(BusinessEventType, required=True)
+    business = ReferenceField(Business, required=True)
+    desc = StringField()
+    rate = FloatField()
+    rate_type = StringField()
+    rate_period = StringField()
+
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+
+class BusinessEventStaff(Document):
+    __tablename__ = 'business_event_staff'
+    event = ReferenceField(BusinessEvent)
+    staff = ReferenceField(BusinessStaff,unique=True)
+
+class BusinessDiscover(Document):
+    __tablename__ = 'business_event_discover'
+    event = ReferenceField(BusinessEvent)
+    method = StringField()
+
+class BusinessPatron(Document):
+    __tablename__ = 'business_patron'
+    name = StringField()
+    dob = DateField()
+    gender = ReferenceField(Gender)
+    address1 = StringField()
+    address2 = StringField()
+    city = StringField()
+    state = StringField()
+    country = StringField()
+    phone_number_mobile = StringField()
+    phone_number_office = StringField()
+    phone_number_home = StringField()
+    twitter = StringField()
+    facebook = StringField()
+    instagram = StringField()
+    email = StringField()
+    discovery_us = ReferenceField()
+    discovery_us_timestamp = DateTimeField()
+
+
+class BusinessPatronLikes(Document):
+    __tablename__ = 'business_patron_like'
+    patron = ReferenceField(BusinessPatron,required=True)
+    like = ReferenceField(Like,required=True)
+    desc = StringField(Like)
+
+class BusinessPatronNetwork(Document):
+    patron1 = ReferenceField(BusinessPatron,required=True)
+    patron2 = ReferenceField(BusinessPatron,required=True)
+    relationship = StringField()
+    discovery_method = StringField()
+    timestamp = DateTimeField()
+
+
+class BusinessEventPatronStatuses(Document):
+    __tablename__ = 'business_event_patron_status'
+    status = StringField(required=True)
+    desc = StringField()
+    def __unicode__(self):
+        return self.status
+
+    def __repr__(self):
+        return self.status
+
+    def __str__(self):
+        return self.status
+
+
+
+class BusinessEventPatronStatus(Document):
+    __tablename__ = 'business_event_patron'
+    event = ReferenceField(BusinessEvent,required=True)
+    patron = ReferenceField(BusinessPatron,required=True)
+    status = ReferenceField(BusinessEventPatronStatuses,required=True)
+    timestamp = DateTimeField()
+    notes = StringField()
+
+
+class BusinessEventRating(Document):
+    __tablename__ = 'risk_solution'
+    event = ReferenceField(BusinessEvent, required=True)
+    timestamp = DateTimeField()
+    rating = IntField(min_value=1,max_value=100)
+    desc = StringField(max_length=500)
