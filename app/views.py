@@ -16,7 +16,10 @@ from app.models import ToolEvent, Tool, ToolClassification, \
     ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo, Glossary, Project, Employee, \
     ProjectType, ProjectTask, RiskMatrix, RiskLikelihood, RiskSeverity, Risk, RiskSolution, RiskCategory, RiskAnalysis, \
     ProjectMilestone, ProjectStatus, ProjectDelivery, ProjectDeliveryTracker, ProjectDeliveryRating, \
-    ProjectStatuses, EtlScheduler, Etl, EtlParameter, EtlParameterType
+    ProjectStatuses, EtlScheduler, Etl, EtlParameter, EtlParameterType, Gender, BusinessEventType, BusinessType, \
+    Business, EducationLevel, BusinessStaff, Like, BusinessEvent, BusinessEventStaff, BusinessDiscover, BusinessPatron, \
+    BusinessPatronLike, BusinessPatronNetwork, BusinessEventPatronStatuses, BusinessEventPatronStatus, \
+    BusinessEventRating
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -229,6 +232,68 @@ class EtlParameterTypeView(ModelView):
 class EtlParameterView(ModelView):
     datamodel = MongoEngineInterface(EtlParameter)
     list_columns = ['etl', 'type','label','handle','startdate']
+
+# ------------------------------- CONSORTIUM --------------------------------
+class GenderView(ModelView):
+    datamodel = MongoEngineInterface(Gender)
+
+class EducationLevelView(ModelView):
+    datamodel = MongoEngineInterface(EducationLevel)
+
+
+class BusinessTypeView(ModelView):
+    datamodel = MongoEngineInterface(BusinessType)
+
+
+class BusinessEventTypeView(ModelView):
+    datamodel = MongoEngineInterface(BusinessEventType)
+
+
+class BusinessView(ModelView):
+    datamodel = MongoEngineInterface(Business)
+
+
+class BusinessStaffView(ModelView):
+    datamodel = MongoEngineInterface(BusinessStaff)
+
+class Like(ModelView):
+    datamodel = MongoEngineInterface(Like)
+
+
+class BusinessEventView(ModelView):
+    datamodel = MongoEngineInterface(BusinessEvent)
+
+
+class BusinessEventStaffView(ModelView):
+    datamodel = MongoEngineInterface(BusinessEventStaff)
+
+
+class BusinessDiscoverView(ModelView):
+    datamodel = MongoEngineInterface(BusinessDiscover)
+
+
+class BusinessPatronView(ModelView):
+    datamodel = MongoEngineInterface(BusinessPatron)
+
+
+class BusinessPatronLikeView(ModelView):
+    datamodel = MongoEngineInterface(BusinessPatronLike)
+
+
+class BusinessPatronNetworkView(ModelView):
+    datamodel = MongoEngineInterface(BusinessPatronNetwork)
+
+
+class BusinessEventPatronStatusesView(ModelView):
+    datamodel = MongoEngineInterface(BusinessEventPatronStatuses)
+
+
+class BusinessEventPatronStatusView(ModelView):
+    datamodel = MongoEngineInterface(BusinessEventPatronStatus)
+
+class BusinessEventRatingView(ModelView):
+    datamodel = MongoEngineInterface(BusinessEventRating)
+
 
 # #####################################
 #          ADD CHARTS

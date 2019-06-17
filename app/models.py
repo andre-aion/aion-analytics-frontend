@@ -463,6 +463,7 @@ class EtlParameter(Document):
     startdate = DateField()
 
 # --------------------- CONSORTIUM -------------------------
+
 class Gender(Document):
     __tablename__ = 'gender'
     gender = StringField()
@@ -474,6 +475,7 @@ class Gender(Document):
 
     def __str__(self):
         return self.gender
+
 
 class BusinessType(Document):
     __tablename__ = 'business_type'
@@ -502,6 +504,8 @@ class BusinessEventType(Document):
 
     def __str__(self):
         return self.type
+
+
 
 class Business(Document):
     __tablename__ = 'business'
@@ -542,6 +546,14 @@ class BusinessStaff(Document):
     position = StringField()
     job_title = StringField()
 
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
 
 class Like(Document):
     __tablename__ = 'like'
@@ -589,10 +601,24 @@ class BusinessEventStaff(Document):
     event = ReferenceField(BusinessEvent)
     staff = ReferenceField(BusinessStaff,unique=True)
 
+
+
+
 class BusinessDiscover(Document):
-    __tablename__ = 'business_event_discover'
+    __tablename__ = 'business_discover'
     event = ReferenceField(BusinessEvent)
     method = StringField()
+
+    def __unicode__(self):
+        return self.event
+
+    def __repr__(self):
+        return self.event
+
+    def __str__(self):
+        return self.event
+
+
 
 class BusinessPatron(Document):
     __tablename__ = 'business_patron'
@@ -611,15 +637,25 @@ class BusinessPatron(Document):
     facebook = StringField()
     instagram = StringField()
     email = StringField()
-    discovery_us = ReferenceField()
-    discovery_us_timestamp = DateTimeField()
+    discovery = ReferenceField(BusinessDiscover)
+    discovery_timestamp = DateTimeField()
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
 
 
-class BusinessPatronLikes(Document):
+
+class BusinessPatronLike(Document):
     __tablename__ = 'business_patron_like'
     patron = ReferenceField(BusinessPatron,required=True)
     like = ReferenceField(Like,required=True)
-    desc = StringField(Like)
+    desc = StringField()
 
 class BusinessPatronNetwork(Document):
     patron1 = ReferenceField(BusinessPatron,required=True)
@@ -633,6 +669,7 @@ class BusinessEventPatronStatuses(Document):
     __tablename__ = 'business_event_patron_status'
     status = StringField(required=True)
     desc = StringField()
+
     def __unicode__(self):
         return self.status
 
@@ -654,8 +691,9 @@ class BusinessEventPatronStatus(Document):
 
 
 class BusinessEventRating(Document):
-    __tablename__ = 'risk_solution'
+    __tablename__ = 'business_event_rating'
     event = ReferenceField(BusinessEvent, required=True)
     timestamp = DateTimeField()
     rating = IntField(min_value=1,max_value=100)
     desc = StringField(max_length=500)
+    
