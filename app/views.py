@@ -17,9 +17,9 @@ from app.models import ToolEvent, Tool, ToolClassification, \
     ProjectType, ProjectTask, RiskMatrix, RiskLikelihood, RiskSeverity, Risk, RiskSolution, RiskCategory, RiskAnalysis, \
     ProjectMilestone, ProjectStatus, ProjectDelivery, ProjectDeliveryTracker, ProjectDeliveryRating, \
     ProjectStatuses, EtlScheduler, Etl, EtlParameter, EtlParameterType, Gender, BusinessEventType, BusinessType, \
-    Business, EducationLevel, BusinessStaff, Like, BusinessEvent, BusinessEventStaff, BusinessDiscover, BusinessPatron, \
+    Business, EducationLevel, BusinessStaff, Like, BusinessEvent, BusinessEventStaff, BusinessPatron, \
     BusinessPatronLike, BusinessPatronNetwork, BusinessEventPatronStatuses, BusinessEventPatronStatus, \
-    BusinessEventRating
+    BusinessEventRating, BusinessDiscoveryMethod, BusinessEventDiscover
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -268,8 +268,12 @@ class BusinessEventStaffView(ModelView):
     datamodel = MongoEngineInterface(BusinessEventStaff)
 
 
+class BusinessDiscoveryMethodView(ModelView):
+    datamodel = MongoEngineInterface(BusinessDiscoveryMethod)
+
+
 class BusinessDiscoverView(ModelView):
-    datamodel = MongoEngineInterface(BusinessDiscover)
+    datamodel = MongoEngineInterface(BusinessEventDiscover)
 
 
 class BusinessPatronView(ModelView):
@@ -291,9 +295,9 @@ class BusinessEventPatronStatusesView(ModelView):
 class BusinessEventPatronStatusView(ModelView):
     datamodel = MongoEngineInterface(BusinessEventPatronStatus)
 
+
 class BusinessEventRatingView(ModelView):
     datamodel = MongoEngineInterface(BusinessEventRating)
-
 
 # #####################################
 #          ADD CHARTS
@@ -504,3 +508,91 @@ appbuilder.add_view(EtlParameterView,
                     "Parameters",
                     icon="fa-long-arrow-down",
                     category="ETLs")
+
+
+# BUSINESS VIEWS
+appbuilder.add_view(GenderView,
+                    "Gender",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(EducationLevelView,
+                    "Educational level",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+
+appbuilder.add_view(BusinessTypeView,
+                    "Company type",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessEventTypeView,
+                    "Company event type",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessView,
+                    "Company info",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessStaffView,
+                    "Employees",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(Like,
+                    "Hobbies and likes",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessEventView,
+                    "Event",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessEventStaffView,
+                    "Event staff",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessDiscoveryMethodView,
+                    "Company discovery options",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessDiscoverView,
+                    "Event discovery",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessPatronView,
+                    "Event patrons",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessPatronLikeView,
+                    "Patron likes",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessPatronNetworkView,
+                    "Patron networks",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessEventPatronStatusesView,
+                    "Event patron status options",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessEventPatronStatusView,
+                    "Event patron status",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessEventRatingView,
+                    "Event rating",
+                    icon="fa-long-arrow-down",
+                    category="Business")

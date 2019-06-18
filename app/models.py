@@ -481,13 +481,14 @@ class BusinessType(Document):
     __tablename__ = 'business_type'
     type = StringField(required=True)
     desc = StringField()
+
     def __unicode__(self):
         return self.type
 
     def __repr__(self):
         return self.type
 
-        # return selected attribute in dropddowns
+    # return selected attribute in dropddowns
 
     def __str__(self):
         return self.type
@@ -510,7 +511,7 @@ class BusinessEventType(Document):
 class Business(Document):
     __tablename__ = 'business'
     name = StringField(required=True,unique=True)
-    type = StringField(required=True)
+    type = ReferenceField(BusinessType,required=True)
     desc = StringField()
 
     def __unicode__(self):
@@ -602,21 +603,25 @@ class BusinessEventStaff(Document):
     staff = ReferenceField(BusinessStaff,unique=True)
 
 
+class BusinessDiscoveryMethod(Document):
+    __tablename__ = 'business_event_discovery_method'
 
-
-class BusinessDiscover(Document):
-    __tablename__ = 'business_discover'
-    event = ReferenceField(BusinessEvent)
     method = StringField()
 
     def __unicode__(self):
-        return self.event
+        return self.method
 
     def __repr__(self):
-        return self.event
+        return self.method
 
     def __str__(self):
-        return self.event
+        return self.method
+
+class BusinessEventDiscover(Document):
+    __tablename__ = 'business_event_discover'
+    event = ReferenceField(BusinessEvent)
+    method = ReferenceField(BusinessDiscoveryMethod)
+    discovery_timestamp = DateTimeField()
 
 
 
@@ -637,8 +642,6 @@ class BusinessPatron(Document):
     facebook = StringField()
     instagram = StringField()
     email = StringField()
-    discovery = ReferenceField(BusinessDiscover)
-    discovery_timestamp = DateTimeField()
 
     def __unicode__(self):
         return self.name
