@@ -573,17 +573,16 @@ class Like(Document):
 
 class BusinessEvent(Document):
     __tablename__ = 'business_event'
+    name = StringField(required=True)
     start_proposed = DateTimeField()
     end_proposed = DateTimeField()
     start_actual = DateTimeField()
     end_actual = DateTimeField()
     manager = ReferenceField(BusinessStaff)
-    name = StringField(required=True)
     type = ReferenceField(BusinessEventType, required=True)
     business = ReferenceField(Business, required=True)
     desc = StringField()
     rate = FloatField()
-    rate_type = StringField()
     rate_period = StringField()
 
 
@@ -700,3 +699,236 @@ class BusinessEventRating(Document):
     rating = IntField(min_value=1,max_value=100)
     desc = StringField(max_length=500)
     
+
+# ---------------------- MEETINGS -------------------------- #
+
+class MeetingType(Document):
+    __tablename__ = 'meeting_type'
+    type = StringField(required=True)
+    desc = StringField()
+
+    def __unicode__(self):
+        return self.type
+
+    def __repr__(self):
+        return self.type
+
+    # return selected attribute in dropddowns
+    def __str__(self):
+        return self.type
+
+
+class Meeting(Document):
+    __tablename__ = 'meeting'
+    name = StringField(required=True)
+    topic = StringField(required=True)
+    start_proposed = DateTimeField()
+    end_proposed = DateTimeField()
+    start_actual = DateTimeField()
+    end_actual = DateTimeField()
+    owner = ReferenceField(Employee)
+    type = ReferenceField(MeetingType, required=True)
+    project = ReferenceField(Project, required=True)
+    desc = StringField()
+    rate = FloatField()
+    rate_period = StringField()
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+
+class MeetingAttendee(Document):
+    __tablename__ = 'meeting_attendee'
+    meeting = ReferenceField(Meeting)
+    name = StringField(required=True,unique=True)
+    gender = ReferenceField(Gender)
+    dob = DateField()
+    highest_ed = ReferenceField(EducationLevel)
+    location = StringField()
+    position = StringField()
+    prep_time = FloatField()
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+############### -------------------------  CRUISING CLUB
+class BCCCountry(Document):
+    __tablename__ = 'bcc_country'
+    country = StringField(required=True,max_length=60)
+
+
+class BCCMembershipType(Document):
+    __tablename__ = 'bcc_membership_type'
+    type = StringField(max_length=30)
+    description = StringField(max_length=500)
+
+    def __unicode__(self):
+        return self.type
+
+    def __repr__(self):
+        return self.type
+
+    def __str__(self):
+        return self.type
+
+
+class BCCHobby(Document):
+    __tablename__ = 'bcc_hobby'
+    hobby = StringField()
+    def __unicode__(self):
+        return self.hobby
+
+    def __repr__(self):
+        return self.hobby
+
+    def __str__(self):
+        return self.hobby
+
+
+class BCCReasonJoin(Document):
+    __tablename__ = 'bcc_reason_join'
+    reason = StringField()
+    def __unicode__(self):
+        return self.reason
+
+    def __repr__(self):
+        return self.reason
+
+    def __str__(self):
+        return self.reason
+
+class BCCPerson(Document):
+    __tablename__ = 'bcc_person'
+    name = StringField(required=True,unique=True)
+    gender = ReferenceField(Gender)
+    dob = DateField()
+    highest_ed = ReferenceField(EducationLevel)
+    job_title = StringField()
+    place_of_employment = StringField()
+    referrer = StringField()
+    address_1 = StringField(required=True)
+    address_2 = StringField()
+    city = StringField(required=True)
+    state = StringField()
+    parish = StringField()
+    country = StringField(required=True,default='Barbados')
+    postal_code = StringField()
+
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+
+class BCCPersonHobbies(Document):
+    __tablename__ = 'bcc_person_hobbies'
+    person = ReferenceField(BCCPerson)
+    hobby = ReferenceField(BCCHobby)
+
+class BCCDuesList(Document):
+    __tablename__ = 'bcc_dues_list'
+    month = StringField(required=True)
+    amount = FloatField(required=True)
+
+
+class BCCRegistration(Document):
+    __tablename__ = 'bcc_dues_list'
+    timestamp = DateTimeField()
+    type = ReferenceField(BCCMembershipType)
+    person = ReferenceField(BCCPerson)
+    registration_no = StringField(max_length=8)
+
+
+class BCCPersonReasonJoin(Document):
+    __tablename__ = 'bcc_reason_join'
+    person = ReferenceField(BCCPerson)
+    reason = ReferenceField(BCCReasonJoin)
+
+
+class BCCActivity(Document):
+    __tablename__ = 'bcc_activity'
+
+    activity = StringField()
+    
+    def __unicode__(self):
+        return self.activity
+
+    def __repr__(self):
+        return self.activity
+
+    def __str__(self):
+        return self.activity
+
+
+class BCCVisit(Document):
+    __tablename__ = 'bcc_visit'
+    person = ReferenceField()
+    arrived = DateTimeField()
+    departed = DateTimeField()
+
+    def __unicode__(self):
+        return self.person
+
+    def __repr__(self):
+        return self.person
+
+    def __str__(self):
+        return self.person
+
+
+
+class BCCVisitActivity(Document):
+    __tablename__ = 'bcc_visit_activity'
+    visit = ReferenceField(BCCPerson)
+    activity = ReferenceField(BCCActivity)
+    
+    
+
+class BCCVisitNetwork(Document):
+    __tablename__ = 'bcc_visit_network'
+    visitor = ReferenceField(BCCVisit)
+    friend = ReferenceField(BCCPerson)
+
+
+class BCCBarItems(Document):
+    __tablename__ = 'bcc_bar_items'
+    item = StringField(max_length=40,required=True)
+    price = FloatField(required=True)
+
+    def __unicode__(self):
+        return self.item
+
+    def __repr__(self):
+        return self.item
+
+    def __str__(self):
+        return self.item
+
+
+class BCCTab(Document):
+    __tablename__ = 'bcc_tab'
+    visitor = ReferenceField(BCCVisit,Required=True)
+    item = ReferenceField(Required=True)
+    amount = IntField(required=True,default=1)
+    timestamp = DateTimeField(required=True)
+    
+
+
+

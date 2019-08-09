@@ -19,7 +19,7 @@ from app.models import ToolEvent, Tool, ToolClassification, \
     ProjectStatuses, EtlScheduler, Etl, EtlParameter, EtlParameterType, Gender, BusinessEventType, BusinessType, \
     Business, EducationLevel, BusinessStaff, Like, BusinessEvent, BusinessEventStaff, BusinessPatron, \
     BusinessPatronLike, BusinessPatronNetwork, BusinessEventPatronStatuses, BusinessEventPatronStatus, \
-    BusinessEventRating, BusinessDiscoveryMethod, BusinessEventDiscover
+    BusinessEventRating, BusinessDiscoveryMethod, BusinessEventDiscover, MeetingAttendee, Meeting, MeetingType
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -299,6 +299,24 @@ class BusinessEventPatronStatusView(ModelView):
 class BusinessEventRatingView(ModelView):
     datamodel = MongoEngineInterface(BusinessEventRating)
 
+
+# #################################################
+
+
+# ###############  MEETING ########################
+class MeetingTypeView(ModelView):
+    datamodel = MongoEngineInterface(MeetingType)
+
+
+class MeetingView(ModelView):
+    datamodel = MongoEngineInterface(Meeting)
+
+
+class MeetingAttendeeView(ModelView):
+    datamodel = MongoEngineInterface(MeetingAttendee)
+
+###################################################
+
 # #####################################
 #          ADD CHARTS
 
@@ -331,6 +349,11 @@ class EventChartView(ChartView):
     search_columns = ['tool','timestamp']
     label_columns = ToolEventAllView.label_columns
     group_by_columns = ['classification','event']
+
+
+# ########################## CRUSISING CLUB
+
+
 
 
 
@@ -496,55 +519,55 @@ appbuilder.add_view(EventChartView,
 #  ETL VIEWS
 appbuilder.add_view(EtlView,
                     "ETLs",
-                    icon="fa-long-arrow-down",
+                    icon="fa-bezier-curve",
                     category="ETLs")
 
 appbuilder.add_view(EtlParameterTypeView,
                     "Parameter type",
-                    icon="fa-long-arrow-down",
+                    icon="fa-clipboard-check",
                     category="ETLs")
 
 appbuilder.add_view(EtlParameterView,
                     "Parameters",
-                    icon="fa-long-arrow-down",
+                    icon="fa-clipboard-list",
                     category="ETLs")
 
 
 # BUSINESS VIEWS
 appbuilder.add_view(GenderView,
                     "Gender",
-                    icon="fa-long-arrow-down",
+                    icon="fa-venus-mars",
                     category="Business")
 
 appbuilder.add_view(EducationLevelView,
                     "Educational level",
-                    icon="fa-long-arrow-down",
+                    icon="fa-graduation-cap",
                     category="Business")
 
 
 appbuilder.add_view(BusinessTypeView,
                     "Company type",
-                    icon="fa-long-arrow-down",
+                    icon="fa-briefcase",
                     category="Business")
 
 appbuilder.add_view(BusinessEventTypeView,
                     "Company event type",
-                    icon="fa-long-arrow-down",
+                    icon="fa-business-time",
                     category="Business")
 
 appbuilder.add_view(BusinessView,
                     "Company info",
-                    icon="fa-long-arrow-down",
+                    icon="fa-info",
                     category="Business")
 
 appbuilder.add_view(BusinessStaffView,
                     "Employees",
-                    icon="fa-long-arrow-down",
+                    icon="fa-id-badge",
                     category="Business")
 
 appbuilder.add_view(Like,
                     "Hobbies and likes",
-                    icon="fa-long-arrow-down",
+                    icon="fa-thumbs-up",
                     category="Business")
 
 appbuilder.add_view(BusinessEventView,
@@ -596,3 +619,22 @@ appbuilder.add_view(BusinessEventRatingView,
                     "Event rating",
                     icon="fa-long-arrow-down",
                     category="Business")
+
+
+# ############### MEETING VIEW ############
+appbuilder.add_view(MeetingTypeView,
+                    "Meeting type",
+                    icon="fa-long-arrow-down",
+                    category="Meeting")
+
+appbuilder.add_view(MeetingView,
+                    "Meeting",
+                    icon="fa-long-arrow-down",
+                    category="Meeting")
+
+appbuilder.add_view(MeetingAttendeeView,
+                    "Meeeting Attendee",
+                    icon="fa-long-arrow-down",
+                    category="Meeting")
+
+# ################## CRUISING CLUB ######################
