@@ -19,7 +19,11 @@ from app.models import ToolEvent, Tool, ToolClassification, \
     ProjectStatuses, EtlScheduler, Etl, EtlParameter, EtlParameterType, Gender, BusinessEventType, BusinessType, \
     Business, EducationLevel, BusinessStaff, Like, BusinessEvent, BusinessEventStaff, BusinessPatron, \
     BusinessPatronLike, BusinessPatronNetwork, BusinessEventPatronStatuses, BusinessEventPatronStatus, \
-    BusinessEventRating, BusinessDiscoveryMethod, BusinessEventDiscover, MeetingAttendee, Meeting, MeetingType
+    BusinessEventRating, BusinessDiscoveryMethod, BusinessEventDiscover, MeetingAttendee, Meeting, MeetingType, \
+    BCCCountry, BCCMembershipType, BCCHobby, BCCReasonJoin, BCCPerson, BCCStatus, BCCPersonStatus, BCCPersonHobby, \
+    BCCDuesList, BCCRegistration, BCCPersonReasonJoin, BCCActivity, BCCVisit, BCCVisitActivity, BCCVisitNetwork, \
+    BCCRelationship, BCCBarItem, BCCVesselType, BCCVesselSize, BCCVesselTypeSizePrice, BCCVessel, \
+    BCCRelationshipType, BCCBarVisitTabPayment, BCCBarVisitTabPurchase, BCCBarVisitTab
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -351,10 +355,113 @@ class EventChartView(ChartView):
     group_by_columns = ['classification','event']
 
 
-# ########################## CRUSISING CLUB
+#######################################################################################################################
+# ########################## CRUISING CLUB START *********************************************
+
+class BCCCountryView(ModelView):
+    datamodel = MongoEngineInterface(BCCCountry)
 
 
+class BCCMembershipTypeView(ModelView):
+    datamodel = MongoEngineInterface(BCCMembershipType)
 
+
+class BCCHobbyView(ModelView):
+    datamodel = MongoEngineInterface(BCCHobby)
+
+
+class BCCReasonJoinView(ModelView):
+    datamodel = MongoEngineInterface(BCCReasonJoin)
+
+
+class BCCPersonView(ModelView):
+    datamodel = MongoEngineInterface(BCCPerson)
+
+
+class BCCStatusView(ModelView):
+    datamodel = MongoEngineInterface(BCCStatus)
+
+
+class BCCPersonStatusView(ModelView):
+    datamodel = MongoEngineInterface(BCCPersonStatus)
+
+
+class BCCPersonHobbyView(ModelView):
+    datamodel = MongoEngineInterface(BCCPersonHobby)
+
+
+class BCCDuesListView(ModelView):
+    datamodel = MongoEngineInterface(BCCDuesList)
+
+
+class BCCRelationshipTypeView(ModelView):
+    datamodel = MongoEngineInterface(BCCRelationshipType)
+
+
+class BCCRelationshipView(ModelView):
+    datamodel = MongoEngineInterface(BCCRelationship)
+
+
+class BCCPersonReasonJoinView(ModelView):
+    datamodel = MongoEngineInterface(BCCPersonReasonJoin)
+
+
+class BCCActivityView(ModelView):
+    datamodel = MongoEngineInterface(BCCActivity)
+
+
+class BCCVisitView(ModelView):
+    datamodel = MongoEngineInterface(BCCVisit)
+    list_columns = ['person','arrived','departed']
+
+
+class BCCVisitActivityView(ModelView):
+    datamodel = MongoEngineInterface(BCCVisitActivity)
+
+
+class BCCVisitNetworkView(ModelView):
+    datamodel = MongoEngineInterface(BCCVisitNetwork)
+
+#  ## BAR
+
+class BCCBarItemView(ModelView):
+    datamodel = MongoEngineInterface(BCCBarItem)
+    list_columns = ['item', 'price']
+
+class BCCBarVisitTabPurchaseView(ModelView):
+    datamodel = MongoEngineInterface(BCCBarVisitTabPurchase)
+
+class BCCBarVisitTabView(ModelView):
+    datamodel = MongoEngineInterface(BCCBarVisitTab)
+    list_columns = ['tab','timestamp']
+
+
+class BCCBarVisitTabPaymentView(ModelView):
+    datamodel = MongoEngineInterface(BCCBarVisitTabPayment)
+    list_columns = ['tab','payment','timestamp']
+
+#  VESSEL
+class BCCVesselTypeView(ModelView):
+    datamodel = MongoEngineInterface(BCCVesselType)
+
+
+class BCCVesselSizeView(ModelView):
+    datamodel = MongoEngineInterface(BCCVesselSize)
+
+
+class BBCVesselTypeSizePriceView(ModelView):
+    datamodel = MongoEngineInterface(BCCVesselTypeSizePrice)
+
+
+class BCCVesselView(ModelView):
+    datamodel = MongoEngineInterface(BCCVessel)
+
+
+class BCCRegistrationView(ModelView):
+    datamodel = MongoEngineInterface(BCCRegistration)
+
+######################################################################################################################
+##########################  CRUISING CLUB END ######################################################
 
 
 
@@ -637,4 +744,142 @@ appbuilder.add_view(MeetingAttendeeView,
                     icon="fa-long-arrow-down",
                     category="Meeting")
 
-# ################## CRUISING CLUB ######################
+# ################## CRUISING CLUB START ######################################################################
+##############################################################################################################
+
+
+appbuilder.add_view(BCCCountryView,
+                    "Country",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCMembershipTypeView,
+                    "Membership Type",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCHobbyView,
+                    "Member hobbies",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCReasonJoinView,
+                    "Reasons for joining",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCPersonView,
+                    "Club attendees",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCStatusView,
+                    "Member status",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCPersonStatusView,
+                    "Member status",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+
+appbuilder.add_view(BCCPersonHobbyView,
+                    "Member hobbies",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCDuesListView,
+                    "Dues by month",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCRelationshipTypeView,
+                    "Relationship type",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCRelationshipView,
+                    "Relationships",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCPersonReasonJoinView,
+                    "Reasons for joining",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCActivityView,
+                    "Club activities",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+
+appbuilder.add_view(BCCVisitActivityView,
+                    "Member/Guest activity",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCVisitNetworkView,
+                    "Member Networks",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCBarItemView,
+                    "Bar items",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCBarVisitTabView,
+                    "Bar tabs",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCBarVisitTabPurchaseView,
+                    "Bar tab purchase",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+
+appbuilder.add_view(BCCBarVisitTabPaymentView,
+                    "Bar tab payment",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCVesselTypeView,
+                    'Vessel Type',
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCVesselSizeView,
+                    "Vessel Size",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+
+appbuilder.add_view(BBCVesselTypeSizePriceView,
+                    "Type Size ",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCVesselView,
+                    "Vessel info",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCRegistrationView,
+                    "Registration page",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+appbuilder.add_view(BCCVisitView,
+                    "Member/Guest visit info",
+                    icon="fa-ship",
+                    category="Cruising Club")
+
+
+
+
+
+######################################################################################################################
+##########################  CRUISING CLUB END ######################################################

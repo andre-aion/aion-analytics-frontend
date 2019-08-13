@@ -1,3 +1,5 @@
+import datetime
+
 from flask_appbuilder import Model
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Date
 from sqlalchemy.orm import relationship
@@ -764,6 +766,7 @@ class MeetingAttendee(Document):
         return self.name
 
 ############### -------------------------  CRUISING CLUB
+
 class BCCCountry(Document):
     __tablename__ = 'bcc_country'
     country = StringField(required=True,max_length=60)
@@ -809,6 +812,7 @@ class BCCReasonJoin(Document):
     def __str__(self):
         return self.reason
 
+
 class BCCPerson(Document):
     __tablename__ = 'bcc_person'
     name = StringField(required=True,unique=True)
@@ -818,6 +822,8 @@ class BCCPerson(Document):
     job_title = StringField()
     place_of_employment = StringField()
     referrer = StringField()
+    phone_no = StringField(max_length=10)
+    email = StringField(max_length=30)
     address_1 = StringField(required=True)
     address_2 = StringField()
     city = StringField(required=True)
@@ -825,7 +831,6 @@ class BCCPerson(Document):
     parish = StringField()
     country = StringField(required=True,default='Barbados')
     postal_code = StringField()
-
 
     def __unicode__(self):
         return self.name
@@ -835,29 +840,133 @@ class BCCPerson(Document):
 
     def __str__(self):
         return self.name
+    
+
+class BCCStatus(Document):
+    __tablename__ = 'bcc_person_status'
+    status = StringField(required=True)
+    
+    def __unicode__(self):
+        return self.status
+
+    def __repr__(self):
+        return self.status
+
+    def __str__(self):
+        return self.status
 
 
-class BCCPersonHobbies(Document):
-    __tablename__ = 'bcc_person_hobbies'
+class BCCPersonStatus(Document):
+    __tablename__ = 'bcc_person_status'
+    person = ReferenceField(BCCPerson,required=True)
+    status = ReferenceField(BCCStatus,required=True)
+    timestamp = DateTimeField()
+
+
+class BCCPersonHobby(Document):
+    __tablename__ = 'bcc_person_hobby'
     person = ReferenceField(BCCPerson)
     hobby = ReferenceField(BCCHobby)
+
 
 class BCCDuesList(Document):
     __tablename__ = 'bcc_dues_list'
     month = StringField(required=True)
     amount = FloatField(required=True)
 
+    def __unicode__(self):
+        return self.month
 
-class BCCRegistration(Document):
-    __tablename__ = 'bcc_dues_list'
-    timestamp = DateTimeField()
-    type = ReferenceField(BCCMembershipType)
+    def __repr__(self):
+        return self.month
+
+    def __str__(self):
+        return self.month
+
+
+
+class BCCVesselType(Document):
+    __tablename__ = 'bcc_vessel_type'
+    type = StringField(required=True)
+    
+    def __unicode__(self):
+        return self.type
+
+    def __repr__(self):
+        return self.type
+
+    def __str__(self):
+        return self.type
+
+
+
+class BCCVesselSize(Document):
+    __tablename__ = 'bcc_vessel_size'
+    size = StringField(required=True)
+    
+    def __unicode__(self):
+        return self.size
+
+    def __repr__(self):
+        return self.size
+
+    def __str__(self):
+        return self.size
+
+
+
+class BCCVesselTypeSizePrice(Document):
+    __tablename__ = 'bcc_vessel_size_price'
+    type = ReferenceField(BCCVesselType,required=True)
+    size = ReferenceField(BCCVesselSize,required=True)
+    fee = FloatField(required=True)
+ 
+    
+
+class BCCVessel(Document):
+    __tablename__ = 'bcc_vessel'
     person = ReferenceField(BCCPerson)
     registration_no = StringField(max_length=8)
+    type = ReferenceField(BCCVesselType)
+    length = FloatField()
+    width = FloatField()
+    color = StringField()
+
+
+
+class BCCRegistration(Document):
+    __tablename__ = 'bcc_registration'
+    membership_type = ReferenceField(BCCMembershipType)
+    person = ReferenceField(BCCPerson)
+    vessel_info = ReferenceField(BCCVesselType)
+    vessel_price_storage = ReferenceField(BCCVesselTypeSizePrice)
+    timestamp = DateTimeField()
+
+
+
+class BCCRelationshipType(Document):
+    __tablename__ = 'bcc_relationship_type'
+    relationship = StringField(required=True)
+
+    def __unicode__(self):
+        return self.relationship
+
+    def __repr__(self):
+        return self.relationship
+
+    def __str__(self):
+        return self.relationship
+
+
+class BCCRelationship(Document):
+    __tablename__ = 'bcc_relationship'
+    person = ReferenceField(BCCRegistration)
+    relationship = ReferenceField(BCCRelationshipType)
+
 
 
 class BCCPersonReasonJoin(Document):
-    __tablename__ = 'bcc_reason_join'
+    __tablename__ = 'bcc_person_reason_join'
     person = ReferenceField(BCCPerson)
     reason = ReferenceField(BCCReasonJoin)
 
@@ -879,9 +988,10 @@ class BCCActivity(Document):
 
 class BCCVisit(Document):
     __tablename__ = 'bcc_visit'
-    person = ReferenceField()
+    person = ReferenceField(BCCPerson)
     arrived = DateTimeField()
     departed = DateTimeField()
+
 
     def __unicode__(self):
         return self.person
@@ -890,15 +1000,15 @@ class BCCVisit(Document):
         return self.person
 
     def __str__(self):
-        return self.person
-
-
+        tmp = self.departed
+        if tmp is None:
+            tmp == "Still here..."
+        return """{}:{}-{}""".format(self.person,self.arrived,tmp)
 
 class BCCVisitActivity(Document):
     __tablename__ = 'bcc_visit_activity'
     visit = ReferenceField(BCCPerson)
     activity = ReferenceField(BCCActivity)
-    
     
 
 class BCCVisitNetwork(Document):
@@ -907,10 +1017,10 @@ class BCCVisitNetwork(Document):
     friend = ReferenceField(BCCPerson)
 
 
-class BCCBarItems(Document):
+class BCCBarItem(Document):
     __tablename__ = 'bcc_bar_items'
     item = StringField(max_length=40,required=True)
-    price = FloatField(required=True)
+    price = FloatField(required=True,default=0.0)
 
     def __unicode__(self):
         return self.item
@@ -922,13 +1032,49 @@ class BCCBarItems(Document):
         return self.item
 
 
-class BCCTab(Document):
+class BCCBarVisitTab(Document):
     __tablename__ = 'bcc_tab'
-    visitor = ReferenceField(BCCVisit,Required=True)
-    item = ReferenceField(Required=True)
+    visit = ReferenceField(BCCVisit,Required=True)
+    timestamp = DateTimeField(required=True,default=datetime.datetime.now())
+
+    def amount(self):
+        # Put your query here
+        # return len(db.session.query(Result).filter(id_person == self.id).all())
+        amount = 0
+        try:
+            tab_purchases = BCCBarVisitTabPurchase.objects('tab'==self.id)
+            if tab_purchases:
+                for purchase in tab_purchases:
+                    amount += purchase.amount
+            print("SET BY CURRENT TAB")
+            return '${}'.format(amount)
+        except:
+            print('TAB CALCULATION EXCETPTION')
+            return '$0.00'
+
+
+    def __unicode__(self):
+        return self.visit
+
+    def __repr__(self):
+        return self.visit
+
+    def __str__(self):
+        return self.visit
+
+
+class BCCBarVisitTabPurchase(Document):
+    __tablename__ = 'bcc_visit_purchase'
+    tab = ReferenceField(BCCBarVisitTab,Required=True)
+    item = ReferenceField(BCCBarItem, Required=True)
     amount = IntField(required=True,default=1)
     timestamp = DateTimeField(required=True)
-    
 
 
 
+class BCCBarVisitTabPayment(Document):
+    __tablename__ = 'bcc_tab_payment'
+    tab = ReferenceField(BCCBarVisitTab,Required=True)
+    amount_owed = FloatField()
+    payment = FloatField(Required=True,default=0)
+    timestamp = DateTimeField(Required=True)
