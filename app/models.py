@@ -4,9 +4,17 @@ from flask_appbuilder import Model
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Date
 from sqlalchemy.orm import relationship
 from flask_appbuilder.models.mixins import AuditMixin
-from mongoengine import Document, DateField, DictField
+from mongoengine import Document, DateField, DictField, DynamicDocument
 from mongoengine import DateTimeField, StringField, ReferenceField, ListField, FloatField, IntField,BooleanField
 
+import random
+import string
+
+
+def randomString(stringLength=10):
+    """Generate a random string of fixed length """
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(stringLength))
 from app import dbmongo
 
 """
@@ -767,6 +775,10 @@ class MeetingAttendee(Document):
 
 ############### -------------------------  CRUISING CLUB
 
+def Time_Now():
+    return datetime.datetime.utcnow()
+
+
 class BCCCountry(Document):
     __tablename__ = 'bcc_country'
     country = StringField(required=True,max_length=60)
@@ -815,7 +827,8 @@ class BCCReasonJoin(Document):
 
 class BCCPerson(Document):
     __tablename__ = 'bcc_person'
-    name = StringField(required=True,unique=True)
+    name = StringField(required=True)
+    member_number = StringField(required=True,unique=True)
     gender = ReferenceField(Gender)
     dob = DateField()
     highest_ed = ReferenceField(EducationLevel)
@@ -839,7 +852,7 @@ class BCCPerson(Document):
         return self.name
 
     def __str__(self):
-        return self.name
+        return """{}-{} """.format(self.name,self.member_number)
     
 
 class BCCStatus(Document):
@@ -989,7 +1002,7 @@ class BCCActivity(Document):
 class BCCVisit(Document):
     __tablename__ = 'bcc_visit'
     person = ReferenceField(BCCPerson)
-    arrived = DateTimeField()
+    arrived = DateTimeField(required=True,default=datetime.datetime.now())
     departed = DateTimeField()
 
 
@@ -1009,7 +1022,9 @@ class BCCVisitActivity(Document):
     __tablename__ = 'bcc_visit_activity'
     visit = ReferenceField(BCCPerson)
     activity = ReferenceField(BCCActivity)
-    
+    start = DateTimeField(required=True,default=datetime.datetime.now())
+    end = DateTimeField()
+
 
 class BCCVisitNetwork(Document):
     __tablename__ = 'bcc_visit_network'
@@ -1017,9 +1032,41 @@ class BCCVisitNetwork(Document):
     friend = ReferenceField(BCCPerson)
 
 
+class BCCArea(Document):
+    __tablename__ = 'bcc_area'
+    area = StringField(required=True)
+    description = StringField(max_length=150)
+
+    def __unicode__(self):
+        return self.area
+
+    def __repr__(self):
+        return self.area
+
+    def __str__(self):
+        return self.area
+
+
+class BCCItemCategory(Document):
+    __tablename__ = 'bcc_item_categories'
+    category = StringField(max_length=40,required=True)
+    area = ReferenceField(BCCArea,required=True)
+    description = StringField(max_length=150)
+
+    def __unicode__(self):
+        return self.category
+
+    def __repr__(self):
+        return self.category
+
+    def __str__(self):
+        return self.category
+
+
 class BCCBarItem(Document):
     __tablename__ = 'bcc_bar_items'
     item = StringField(max_length=40,required=True)
+    category = ReferenceField(BCCItemCategory, required=True)
     price = FloatField(required=True,default=0.0)
 
     def __unicode__(self):
@@ -1029,20 +1076,21 @@ class BCCBarItem(Document):
         return self.item
 
     def __str__(self):
-        return self.item
+        return """{}-price = ${}""".format(self.item,self.price)
 
 
-class BCCBarVisitTab(Document):
-    __tablename__ = 'bcc_tab'
+class BCCBarVisitTab(DynamicDocument):
+    __tablename__ = 'bcc_bar_tab'
+    tab = StringField(required=True,default=randomString(10))
     visit = ReferenceField(BCCVisit,Required=True)
-    timestamp = DateTimeField(required=True,default=datetime.datetime.now())
+    opened_at = DateTimeField(required=True,default=Time_Now())
 
     def amount(self):
         # Put your query here
         # return len(db.session.query(Result).filter(id_person == self.id).all())
         amount = 0
         try:
-            tab_purchases = BCCBarVisitTabPurchase.objects('tab'==self.id)
+            tab_purchases = BCCBarVisitTabPurchase.objects('tab'==self.tab)
             if tab_purchases:
                 for purchase in tab_purchases:
                     amount += purchase.amount
@@ -1053,14 +1101,15 @@ class BCCBarVisitTab(Document):
             return '$0.00'
 
 
+
     def __unicode__(self):
-        return self.visit
+        return self.tab
 
     def __repr__(self):
-        return self.visit
+        return self.tab
 
     def __str__(self):
-        return self.visit
+        return """{}:{}""".format(self.tab,self.opened_at)
 
 
 class BCCBarVisitTabPurchase(Document):
@@ -1068,13 +1117,84 @@ class BCCBarVisitTabPurchase(Document):
     tab = ReferenceField(BCCBarVisitTab,Required=True)
     item = ReferenceField(BCCBarItem, Required=True)
     amount = IntField(required=True,default=1)
-    timestamp = DateTimeField(required=True)
+    timestamp = DateTimeField(required=True,default=Time_Now())
+
+    def total(self):
+        total = 0
+        items = BCCBarItem.objects('_id' == self.item)
+        print('_________',items)
+        for item in items:
+            if item is not None:
+                total = item.price * self.amount
+
+        return """${}""".format(round(total, 2))
+
+    def __unicode__(self):
+        return self.item
+
+    def __repr__(self):
+        return self.item
+
+    def __str__(self):
+        return """{} {}(s)={}""".format(self.amount, self.item,self.total())
 
 
-
-class BCCBarVisitTabPayment(Document):
+class BCCBarVisitTabPayment(DynamicDocument):
     __tablename__ = 'bcc_tab_payment'
     tab = ReferenceField(BCCBarVisitTab,Required=True)
-    amount_owed = FloatField()
     payment = FloatField(Required=True,default=0)
-    timestamp = DateTimeField(Required=True)
+    timestamp = DateTimeField(Required=True,default=Time_Now())
+
+    def amount(self):
+        # Put your query here
+        # return len(db.session.query(Result).filter(id_person == self.id).all())
+        amount = 0
+        try:
+            tab_purchases = BCCBarVisitTabPurchase.objects('tab' == self.tab)
+            if tab_purchases:
+                for purchase in tab_purchases:
+                    amount += purchase.amount
+            print("SET BY CURRENT TAB")
+            return '${}'.format(amount)
+        except:
+            print('TAB CALCULATION EXCEPTION')
+            return '$0.00'
+
+#  #### RENTAL
+
+class BCCVisitRentalItem(Document):
+    __tablename__ = 'bcc_rental_items'
+    item = StringField(max_length=40,required=True)
+    category = ReferenceField(BCCItemCategory, required=True)
+    price = FloatField(required=True,default=0.0)
+    period = StringField(max_length=40,required=True)
+    serial_no = StringField(required=True,max_length=40)
+
+    def __unicode__(self):
+        return self.item
+
+    def __repr__(self):
+        return self.item
+
+    def __str__(self):
+        return """{}-price = ${}""".format(self.item,self.price)
+
+
+class BCCVisitRental(Document):
+    __tablename__ = 'bcc_visit_rental'
+    visit = ReferenceField(BCCVisit,Required=True)
+    item = ReferenceField(BCCVisitRentalItem,Required=True)
+    timestamp_taken = DateTimeField(Required=True)
+    timestamp_to_be_returned = DateTimeField(Required=True)
+    timestamp_returned = DateTimeField()
+
+    def __unicode__(self):
+        return self.item
+
+    def __repr__(self):
+        return self.item
+
+    def __str__(self):
+        return """{}: taken @ {} - returned @ {}""".format(self.item, self.timestamp_taken, self.timestamp_returned)
+
+
