@@ -13,7 +13,7 @@ from wtforms.validators import EqualTo
 
 from app import appbuilder, db, dbmongo
 from app.forms import ContactForm, ElectionEventForm, StartDateValidate, ElectionEventAttendeeForm, \
-    AppointmentUnavailabilityForm, DoctorAvailabilityValidate
+    AppointmentUnavailabilityForm, DoctorAvailabilityValidate, AppointmentBookingForm
 from app.models import ToolEvent, Tool, ToolClassification, \
     ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo, Glossary, Project, Employee, \
     ProjectType, ProjectTask, RiskMatrix, RiskLikelihood, RiskSeverity, Risk, RiskSolution, RiskCategory, RiskAnalysis, \
@@ -29,7 +29,8 @@ from app.models import ToolEvent, Tool, ToolClassification, \
     BCCVisitRentalItem, BCCVisitRental, BCCArea, ElectionEvent, ElectionEventAttendees, InventoryProductType, \
     InventoryProduct, InventoryProductCost, InventoryOrder, AppointmentProcedure, AppointmentProcedureItemsUsed, \
     AppointmentClient, AppointmentWorkDays, AppointmentWorkHours, AppointmentHoliday, AppointmentUnavailability, \
-    Appointment, AppointmentClientStatus
+    AppointmentClientStatus, InventorySupplier, InventoryUsage, AppointmentProcedureCost, \
+    AppointmentBooking
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -278,6 +279,93 @@ class RiskCategoryView(ModelView):
     datamodel = MongoEngineInterface(RiskCategory)
     list_columns = ['name','desc']
 
+appbuilder.add_view(ProjectView,
+                    'Projects',
+                    icon='fa-folder',
+                    category='Projects')
+
+appbuilder.add_view(EmployeeView,
+                    'Staff',
+                    icon='fa-users',
+                    category='Projects')
+
+appbuilder.add_view(ProjectMilestoneView,
+                    'Milestones',
+                    icon='fa-clipboard',
+                    category='Projects')
+
+appbuilder.add_view(ProjectTaskView,
+                    'Tasks',
+                    icon='fa-tasks',
+                    category='Projects')
+
+appbuilder.add_view(ProjectTypeView,
+                    'Type',
+                    icon='fa-folder',
+                    category='Projects')
+
+
+appbuilder.add_view(ProjectStatusView,
+                    'Project status',
+                    icon='fa-info',
+                    category='Projects')
+
+# -- Delivery rating
+appbuilder.add_view(ProjectDeliveryView,
+                    'Task Delivery',
+                    icon='fa-check-square',
+                    category='Projects')
+
+appbuilder.add_view(ProjectDeliveryTrackerView,
+                    'Delivery Tracker',
+                    icon='fa-industry',
+                    category='Projects')
+
+appbuilder.add_view(ProjectDeliveryRatingView,
+                    'Delivery rating',
+                    icon='fa-star',
+                    category='Projects')
+
+appbuilder.add_view(ProjectStatusesView,
+                    'Statuses',
+                    icon='fa-star',
+                    category='Projects')
+
+# -- RISK
+appbuilder.add_view(RiskCategoryView,
+                    'Risk category',
+                    icon='fa-tags',
+                    category='Risk Assessment')
+
+appbuilder.add_view(RiskSeverityView,
+                    'Severity',
+                    icon='fa-balance-scale',
+                    category='Risk Assessment')
+
+appbuilder.add_view(RiskLikelihoodView,
+                    'Likelihood',
+                    icon='fa-percent',
+                    category='Risk Assessment')
+
+appbuilder.add_view(RiskMatrixView,
+                    'Risk Matrix',
+                    icon='fa-th-large',
+                    category='Risk Assessment')
+
+appbuilder.add_view(RiskView,
+                    'Risks',
+                    icon='fa-exclamation-triangle',
+                    category='Risk Assessment')
+
+appbuilder.add_view(RiskSolutionView,
+                    'Risk solutions',
+                    icon='fa-ambulance',
+                    category='Risk Assessment')
+
+appbuilder.add_view(RiskAnalysisView,
+                    'Risks analysis',
+                    icon='fa-calculator',
+                    category='Risk Assessment')
 
 # --------------------------------- ETL SCHEDULER ------------------------
 
@@ -807,12 +895,10 @@ appbuilder.add_view(ElectionEventView,
                     icon="fa-ship",
                     category="Elections")
 
-class ElectionEventAttendeesView(ModelView,AuditMixin):
+class ElectionEventAttendeesView(ModelView):
     datamodel = MongoEngineInterface(ElectionEventAttendees)
-    list_columns = ['event','name','gender','role','dob','job',
-                    "created_by", "created_on", "changed_by", "changed_on"]
+    list_columns = ['event','name','gender','role','dob','job']
     add_form = ElectionEventAttendeeForm
-
 
 
 appbuilder.add_view(ElectionEventAttendeesView,
@@ -843,93 +929,7 @@ appbuilder.add_link('e.g. Churn decision tree',
 
 
 # --------------------- MONGO VIEWS
-appbuilder.add_view(ProjectView,
-                    'Projects',
-                    icon='fa-folder',
-                    category='Projects')
 
-appbuilder.add_view(EmployeeView,
-                    'Staff',
-                    icon='fa-users',
-                    category='Projects')
-
-appbuilder.add_view(ProjectMilestoneView,
-                    'Milestones',
-                    icon='fa-clipboard',
-                    category='Projects')
-
-appbuilder.add_view(ProjectTaskView,
-                    'Tasks',
-                    icon='fa-tasks',
-                    category='Projects')
-
-appbuilder.add_view(ProjectTypeView,
-                    'Type',
-                    icon='fa-folder',
-                    category='Projects')
-
-
-appbuilder.add_view(ProjectStatusView,
-                    'Project status',
-                    icon='fa-info',
-                    category='Projects')
-
-# -- Delivery rating
-appbuilder.add_view(ProjectDeliveryView,
-                    'Task Delivery',
-                    icon='fa-check-square',
-                    category='Projects')
-
-appbuilder.add_view(ProjectDeliveryTrackerView,
-                    'Delivery Tracker',
-                    icon='fa-industry',
-                    category='Projects')
-
-appbuilder.add_view(ProjectDeliveryRatingView,
-                    'Delivery rating',
-                    icon='fa-star',
-                    category='Projects')
-
-appbuilder.add_view(ProjectStatusesView,
-                    'Statuses',
-                    icon='fa-star',
-                    category='Projects')
-
-# -- RISK
-appbuilder.add_view(RiskCategoryView,
-                    'Risk category',
-                    icon='fa-tags',
-                    category='Risk Assessment')
-
-appbuilder.add_view(RiskSeverityView,
-                    'Severity',
-                    icon='fa-balance-scale',
-                    category='Risk Assessment')
-
-appbuilder.add_view(RiskLikelihoodView,
-                    'Likelihood',
-                    icon='fa-percent',
-                    category='Risk Assessment')
-
-appbuilder.add_view(RiskMatrixView,
-                    'Risk Matrix',
-                    icon='fa-th-large',
-                    category='Risk Assessment')
-
-appbuilder.add_view(RiskView,
-                    'Risks',
-                    icon='fa-exclamation-triangle',
-                    category='Risk Assessment')
-
-appbuilder.add_view(RiskSolutionView,
-                    'Risk solutions',
-                    icon='fa-ambulance',
-                    category='Risk Assessment')
-
-appbuilder.add_view(RiskAnalysisView,
-                    'Risks analysis',
-                    icon='fa-calculator',
-                    category='Risk Assessment')
 
 #   CHART VIEWS
 appbuilder.add_view(EventChartView,
@@ -973,7 +973,7 @@ class InventoryProductView(ModelView):
     datamodel = MongoEngineInterface(InventoryProduct)
 
 appbuilder.add_view(InventoryProductView,
-                    "Product",
+                    "Product inventory",
                     icon="fa-medkit",
                     category="Inventory")
 
@@ -994,7 +994,21 @@ appbuilder.add_view(InventoryOrderView,
                     category="Inventory")
 
 
+class InventorySupplierView(ModelView):
+    datamodel = MongoEngineInterface(InventorySupplier)
 
+appbuilder.add_view(InventorySupplierView,
+                    "Product supplier",
+                    icon="fa-medkit",
+                    category="Inventory")
+
+class InventoryUsageView(ModelView):
+    datamodel = MongoEngineInterface(InventoryUsage)
+
+appbuilder.add_view(InventoryUsageView,
+                    "Product usage",
+                    icon="fa-medkit",
+                    category="Inventory")
 
 ################  APPOINTMENTS ##############################
 ###############################################################
@@ -1003,15 +1017,27 @@ def get_user():
 
 class AppointmentProcedureView(ModelView):
     datamodel = MongoEngineInterface(AppointmentProcedure)
-
+    list_columns = ['procedure.name','length_in_minutes']
 
 appbuilder.add_view(AppointmentProcedureView,
                     "Procedure",
                     icon="fa-medkit",
                     category="Appointments")
 
+class AppointmentProcedureCostView(ModelView):
+    datamodel = MongoEngineInterface(AppointmentProcedureCost)
+    list_columns = ['procedure.name','cost','date']
+
+
+appbuilder.add_view(AppointmentProcedureCostView,
+                    "Procedure cost",
+                    icon="fa-medkit",
+                    category="Appointments")
+
+
 class AppointmentProcedureItemsUsedView(ModelView):
     datamodel = MongoEngineInterface(AppointmentProcedureItemsUsed)
+    list_columns = ['procedure.name', 'product','amount']
 
 
 appbuilder.add_view(AppointmentProcedureItemsUsedView,
@@ -1030,7 +1056,7 @@ appbuilder.add_view(AppointmentClientView,
                     category="Appointments")
 
 
-class AppointmentClientStatusView(ModelView,AuditMixin):
+class AppointmentClientStatusView(ModelView):
     datamodel = MongoEngineInterface(AppointmentClientStatus)
     list_columns = ['person.name','status']
 
@@ -1075,9 +1101,8 @@ appbuilder.add_view(AppointmentHolidaysView,
 class AppointmentUnavailabilityView(ModelView):
     datamodel = MongoEngineInterface(AppointmentUnavailability)
     list_columns = ['doctor','start','end']
-    base_filters = [["created_by", FilterEqualFunction, get_user]]
+    #base_filters = [["created_by", FilterEqualFunction, get_user]]
     add_form = AppointmentUnavailabilityForm
-
 
 
 appbuilder.add_view(AppointmentUnavailabilityView,
@@ -1086,17 +1111,17 @@ appbuilder.add_view(AppointmentUnavailabilityView,
                     category="Appointments")
 
 
-class AppointmentView(ModelView, AuditMixin):
-    datamodel = MongoEngineInterface(Appointment)
+class AppointmentBookingView(ModelView):
+    datamodel = MongoEngineInterface(AppointmentBooking)
     list_columns = ['doctor','timestamp','procedure']
-    base_filters = [["created_by", FilterEqualFunction, get_user]]
-    add_form = AppointmentUnavailabilityForm
+    #base_filters = [["created_by", FilterEqualFunction, get_user]]
+    add_form = AppointmentBookingForm
 
     validators_columns = {
         'availability': [DoctorAvailabilityValidate('doctor','timestamp')]
     }
 
-appbuilder.add_view(AppointmentView,
+appbuilder.add_view(AppointmentBookingView,
                     "Make appointments",
                     icon="fa-medkit",
                     category="Appointments")

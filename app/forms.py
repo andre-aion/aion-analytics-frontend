@@ -2,16 +2,25 @@ from datetime import datetime
 
 import bson
 from flask_appbuilder.forms import DynamicForm, DateTimeField, DateTimePickerWidget
+from flask_login import current_user
 from flask_mongoengine.wtf import model_form
 from mongoengine import ReferenceField, DateField, IntField, BooleanField
 
 from wtforms import SelectField, StringField, IntegerField, TextAreaField, FloatField, FieldList
 from wtforms.validators import DataRequired, Email, Length, Optional, NumberRange, ValidationError
 from wtforms.widgets import TextArea
-from app import dbmongo, db
-from app.models import Employee, ProjectType, Project, Risk, ElectionEvent, AppointmentWorkDays, AppointmentHolidays, \
-    AppointmentUnavailability, AppointmentProcedure, AppointmentClient
-from flask_login import current_user
+from app import dbmongo, db, app
+from app.models import Employee, ProjectType, Project, Risk, ElectionEvent, AppointmentWorkDays, \
+    AppointmentUnavailability, AppointmentProcedure, AppointmentClient, AppointmentHoliday
+
+import MySQLdb
+import pandas as pd
+from flask import session, g
+
+
+
+connection = MySQLdb.connect(user='admin',password='password',
+                             database='aion_analytics',host='127.0.0.1')
 
 DATEFORMAT = "%Y-%m-%d %H:%M:%S"
 class ContactForm(DynamicForm):
@@ -127,20 +136,8 @@ def project():
             lst.append(item.name)
     return lst
 
-'''
-class ProjectForm(DynamicForm):
-    name = StringField('Project name')
-    type = SelectField('ProjectType',choices=[(i, i) for i in project_type()])
-    manager = SelectField('Manager',choices=[(e, e) for e in employees()])
-    manager_gender = SelectField('Gender',choices=[('male','male'),('female','female')])
-    manager_age = IntegerField("Manager's age")
-    startdate_proposed = DateTimeField('Actual start date',widget=DateTimePickerWidget())
-    enddate_proposed = DateTimeField('Actual start date',widget=DateTimePickerWidget())
-    startdate_actual = DateTimeField('Actual start date',widget=DateTimePickerWidget())
-    enddate_actual = DateTimeField('Actual start date',widget=DateTimePickerWidget())
-    status = SelectField('Project status',choices = [('open', 'open'), ('closed', 'closed')])
 
-'''
+
 
 
 # --------------------  CUSTOM VALIDATORS ----------------------------------
@@ -214,21 +211,51 @@ class StartDateValidate(object):
 
 
 # ------------------------------  VALIDATOR, AVAILABILITY ------------
+
 def all_doctors():
     lst = []
-    for doctor in db.User.objects:
-        if 'doctor' in db.User.roles:
-            lst.append(doctor.name)
+    sql = "select first_name, last_name from ab_user"
+    df = pd.read_sql(sql,connection)
+    if df is not None and len(df) > 0:
+
+        df['name'] = df.apply(lambda x: x['first_name'] + ' '+x['last_name'],axis=1)
+        lst = list(df.name.unique())
     return lst
 
+@app.before_request
+def before_request():
+    print(current_user)
 
 
 
-class AppointmentForm(DynamicForm):
+def logged_in_doctor():
+    before_request()
+    is_a_doctor = False
+    if current_user is not None:
+        lst = all_doctors()
+        sql = """select abu.id, first_name, last_name from ab_user abu
+        inner join ab_user_role abur on abu.id = abur.user_id
+        inner join ab_role abr on abur.role_id = abr.id 
+        where abr.name = 'appointment_doctor' """
+        df = pd.read_sql(sql,connection)
+        if df is not None and len(df) > 0:
+            df['name'] = df.apply(lambda x: x['first_name'] + ' ' + x['last_name'], axis=1)
+            df = df[df['name'] == current_user]
+            if df is not None and len(df) > 0:
+                print(df)
+                ids = list(df['id'].unique())[0]
+                print(ids)
+        else:
+            return None
+
+        return current_user
+    return 'not a doctor'
+
+class AppointmentBookingForm(DynamicForm):
     doctor = SelectField('doctor',choices=[(i, i) for i in all_doctors()])
     timestamp = DateTimeField('Requested time',widget=DateTimePickerWidget())
-    procedure = ReferenceField(AppointmentProcedure)
-    customer = ReferenceField(AppointmentClient)
+    procedure = StringField()
+    customer = StringField()
     override = BooleanField(default=False)  # overide workdays or holidays or schedule
     available = StringField(default=False)
 
@@ -255,7 +282,7 @@ class DoctorAvailabilityValidate(object):
                     allow_booking = False
 
                 # ensure that is not on a holiday
-                holidays = AppointmentHolidays.objects.get('date' == field.data.date())
+                holidays = AppointmentHoliday.objects.get('date' == field.data.date())
                 if holidays is not None and len(holidays) > 0:
                     allow_booking = False
                 else:
@@ -273,8 +300,8 @@ class DoctorAvailabilityValidate(object):
 
 class AppointmentUnavailabilityForm(DynamicForm):
     __tablename__ = 'appointment_unavailability'
-    doctor = StringField(default=current_user.id)
-    start = DateTimeField()
-    end = DateTimeField()
+    doctor = StringField('Logged in',default=logged_in_doctor())
+    start = DateTimeField('Start',widget=DateTimePickerWidget())
+    end = DateTimeField('End',widget=DateTimePickerWidget())
     reason = StringField()
 

@@ -1397,6 +1397,15 @@ class AppointmentProcedure(Document):
     def __str__(self):
         return self.name
 
+class AppointmentProcedureCost(Document):
+    __tablename__ = 'appointment_type'
+    procedure = ReferenceField(AppointmentProcedure, required=True)
+    cost = FloatField(required=True)
+    date = DateField()
+
+    def __str__(self):
+        return """{} - {} @ {}(s)""".format(self.procedure,
+                                            self.cost,self.date)
 
 class AppointmentProcedureItemsUsed(Document):
     __tablename__ = 'appointment_type'
@@ -1449,7 +1458,7 @@ class AppointmentClientStatus(Document):
     
 class AppointmentWorkDays(Document):
     __tablename__ = 'appointment_days'
-    day = StringField(required=True)
+    day = StringField(required=True,unique=True)
 
     def __unicode__(self):
         return self.day
@@ -1463,7 +1472,7 @@ class AppointmentWorkDays(Document):
 
 class AppointmentWorkHours(DynamicDocument):
     __tablename__ = 'appointment_hours'
-    hour = IntField(required=True)
+    hour = IntField(required=True,unique=True)
 
     def __unicode__(self):
         return self.hour
@@ -1478,8 +1487,8 @@ class AppointmentWorkHours(DynamicDocument):
 
 
 class AppointmentHoliday(Document):
-    __tablename__ = 'appointment_holidays'
-    holiday = StringField()
+    __tablename__ = 'appointment_holiday'
+    holiday = StringField(required=True,unique=True)
     date = DateField(required=True)
     reason = StringField()
 
@@ -1495,19 +1504,21 @@ class AppointmentHoliday(Document):
         return """{}:{}""".format(self.holiday, self.date)
 
 
+
+
 class AppointmentUnavailability(Document):
     __tablename__ = 'appointment_unavailability'
-    doctor = StringField(default=current_user.name)
+    doctor = StringField()
     start = DateTimeField()
     end = DateTimeField()
     reason = StringField()
+
 
     def __str__(self):
         return """{}- {}:{}""".format(self.doctor, self.start,self.end)
 
 
-
-class Appointment(Document):
+class AppointmentBooking(Document):
     __tablename__ = 'appointment_booking'
     doctor = StringField(required=True)
     timestamp = DateTimeField(required=True)
