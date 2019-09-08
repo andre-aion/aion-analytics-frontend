@@ -2,6 +2,7 @@ from flask import g
 from bokeh.util.session_id import generate_session_id
 from flask import render_template
 from flask_appbuilder.fields import QuerySelectField
+from flask_appbuilder.models.mixins import AuditMixin
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_appbuilder.models.mongoengine.interface import MongoEngineInterface
 
@@ -11,12 +12,13 @@ from wtforms import SelectField
 from wtforms.validators import EqualTo
 
 from app import appbuilder, db, dbmongo
-from app.forms import ContactForm, ElectionEventForm, StartDateValidate, ElectionEventAttendeeForm
+from app.forms import ContactForm, ElectionEventForm, StartDateValidate, ElectionEventAttendeeForm, \
+    AppointmentUnavailabilityForm, DoctorAvailabilityValidate
 from app.models import ToolEvent, Tool, ToolClassification, \
     ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo, Glossary, Project, Employee, \
     ProjectType, ProjectTask, RiskMatrix, RiskLikelihood, RiskSeverity, Risk, RiskSolution, RiskCategory, RiskAnalysis, \
     ProjectMilestone, ProjectStatus, ProjectDelivery, ProjectDeliveryTracker, ProjectDeliveryRating, \
-    ProjectStatuses, EtlScheduler, Etl, EtlParameter, EtlParameterType, Gender, BusinessEventType, BusinessType, \
+    ProjectStatuses, Etl, EtlParameter, EtlParameterType, Gender, BusinessEventType, BusinessType, \
     Business, EducationLevel, BusinessStaff, Like, BusinessEvent, BusinessEventStaff, BusinessPatron, \
     BusinessPatronLike, BusinessPatronNetwork, BusinessEventPatronStatuses, BusinessEventPatronStatus, \
     BusinessEventRating, BusinessDiscoveryMethod, BusinessEventDiscover, MeetingAttendee, Meeting, MeetingType, \
@@ -25,7 +27,9 @@ from app.models import ToolEvent, Tool, ToolClassification, \
     BCCRelationship, BCCBarItem, BCCVesselType, BCCVesselSize, BCCVesselTypeSizePrice, BCCVessel, \
     BCCRelationshipType, BCCBarVisitTabPayment, BCCBarVisitTabPurchase, BCCBarVisitTab, BCCItemCategory, \
     BCCVisitRentalItem, BCCVisitRental, BCCArea, ElectionEvent, ElectionEventAttendees, InventoryProductType, \
-    InventoryProduct, InventoryProductCost, InventoryOrder, InventoryUsage
+    InventoryProduct, InventoryProductCost, InventoryOrder, AppointmentProcedure, AppointmentProcedureItemsUsed, \
+    AppointmentClient, AppointmentWorkDays, AppointmentWorkHours, AppointmentHoliday, AppointmentUnavailability, \
+    Appointment, AppointmentClientStatus
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -354,6 +358,92 @@ class BusinessEventRatingView(ModelView):
     datamodel = MongoEngineInterface(BusinessEventRating)
 
 
+# BUSINESS VIEWS
+appbuilder.add_view(GenderView,
+                    "Gender",
+                    icon="fa-venus-mars",
+                    category="Business")
+
+appbuilder.add_view(EducationLevelView,
+                    "Educational level",
+                    icon="fa-graduation-cap",
+                    category="Business")
+
+
+appbuilder.add_view(BusinessTypeView,
+                    "Company type",
+                    icon="fa-briefcase",
+                    category="Business")
+
+appbuilder.add_view(BusinessEventTypeView,
+                    "Company event type",
+                    icon="fa-business-time",
+                    category="Business")
+
+appbuilder.add_view(BusinessView,
+                    "Company info",
+                    icon="fa-info",
+                    category="Business")
+
+appbuilder.add_view(BusinessStaffView,
+                    "Employees",
+                    icon="fa-id-badge",
+                    category="Business")
+
+appbuilder.add_view(Like,
+                    "Hobbies and likes",
+                    icon="fa-thumbs-up",
+                    category="Business")
+
+appbuilder.add_view(BusinessEventView,
+                    "Event",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessEventStaffView,
+                    "Event staff",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessDiscoveryMethodView,
+                    "Company discovery options",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessDiscoverView,
+                    "Event discovery",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessPatronView,
+                    "Event patrons",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessPatronLikeView,
+                    "Patron likes",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessPatronNetworkView,
+                    "Patron networks",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessEventPatronStatusesView,
+                    "Event patron status options",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessEventPatronStatusView,
+                    "Event patron status",
+                    icon="fa-long-arrow-down",
+                    category="Business")
+
+appbuilder.add_view(BusinessEventRatingView,
+                    "Event rating",
+                    icon="fa-long-arrow-down",
+                    category="Business")
 # #################################################
 
 
@@ -368,6 +458,23 @@ class MeetingView(ModelView):
 
 class MeetingAttendeeView(ModelView):
     datamodel = MongoEngineInterface(MeetingAttendee)
+
+
+# ############### MEETING VIEW ############
+appbuilder.add_view(MeetingTypeView,
+                    "Meeting type",
+                    icon="fa-long-arrow-down",
+                    category="Meeting")
+
+appbuilder.add_view(MeetingView,
+                    "Meeting",
+                    icon="fa-long-arrow-down",
+                    category="Meeting")
+
+appbuilder.add_view(MeetingAttendeeView,
+                    "Meeeting Attendee",
+                    icon="fa-long-arrow-down",
+                    category="Meeting")
 
 ###################################################
 
@@ -700,10 +807,12 @@ appbuilder.add_view(ElectionEventView,
                     icon="fa-ship",
                     category="Elections")
 
-class ElectionEventAttendeesView(ModelView):
+class ElectionEventAttendeesView(ModelView,AuditMixin):
     datamodel = MongoEngineInterface(ElectionEventAttendees)
-    list_columns = ['event','name','gender','role','dob','job']
+    list_columns = ['event','name','gender','role','dob','job',
+                    "created_by", "created_on", "changed_by", "changed_on"]
     add_form = ElectionEventAttendeeForm
+
 
 
 appbuilder.add_view(ElectionEventAttendeesView,
@@ -846,109 +955,6 @@ appbuilder.add_view(EtlParameterView,
                     category="ETLs")
 
 
-# BUSINESS VIEWS
-appbuilder.add_view(GenderView,
-                    "Gender",
-                    icon="fa-venus-mars",
-                    category="Business")
-
-appbuilder.add_view(EducationLevelView,
-                    "Educational level",
-                    icon="fa-graduation-cap",
-                    category="Business")
-
-
-appbuilder.add_view(BusinessTypeView,
-                    "Company type",
-                    icon="fa-briefcase",
-                    category="Business")
-
-appbuilder.add_view(BusinessEventTypeView,
-                    "Company event type",
-                    icon="fa-business-time",
-                    category="Business")
-
-appbuilder.add_view(BusinessView,
-                    "Company info",
-                    icon="fa-info",
-                    category="Business")
-
-appbuilder.add_view(BusinessStaffView,
-                    "Employees",
-                    icon="fa-id-badge",
-                    category="Business")
-
-appbuilder.add_view(Like,
-                    "Hobbies and likes",
-                    icon="fa-thumbs-up",
-                    category="Business")
-
-appbuilder.add_view(BusinessEventView,
-                    "Event",
-                    icon="fa-long-arrow-down",
-                    category="Business")
-
-appbuilder.add_view(BusinessEventStaffView,
-                    "Event staff",
-                    icon="fa-long-arrow-down",
-                    category="Business")
-
-appbuilder.add_view(BusinessDiscoveryMethodView,
-                    "Company discovery options",
-                    icon="fa-long-arrow-down",
-                    category="Business")
-
-appbuilder.add_view(BusinessDiscoverView,
-                    "Event discovery",
-                    icon="fa-long-arrow-down",
-                    category="Business")
-
-appbuilder.add_view(BusinessPatronView,
-                    "Event patrons",
-                    icon="fa-long-arrow-down",
-                    category="Business")
-
-appbuilder.add_view(BusinessPatronLikeView,
-                    "Patron likes",
-                    icon="fa-long-arrow-down",
-                    category="Business")
-
-appbuilder.add_view(BusinessPatronNetworkView,
-                    "Patron networks",
-                    icon="fa-long-arrow-down",
-                    category="Business")
-
-appbuilder.add_view(BusinessEventPatronStatusesView,
-                    "Event patron status options",
-                    icon="fa-long-arrow-down",
-                    category="Business")
-
-appbuilder.add_view(BusinessEventPatronStatusView,
-                    "Event patron status",
-                    icon="fa-long-arrow-down",
-                    category="Business")
-
-appbuilder.add_view(BusinessEventRatingView,
-                    "Event rating",
-                    icon="fa-long-arrow-down",
-                    category="Business")
-
-
-# ############### MEETING VIEW ############
-appbuilder.add_view(MeetingTypeView,
-                    "Meeting type",
-                    icon="fa-long-arrow-down",
-                    category="Meeting")
-
-appbuilder.add_view(MeetingView,
-                    "Meeting",
-                    icon="fa-long-arrow-down",
-                    category="Meeting")
-
-appbuilder.add_view(MeetingAttendeeView,
-                    "Meeeting Attendee",
-                    icon="fa-long-arrow-down",
-                    category="Meeting")
 
 
 ###############      MEDICAL START  ############################
@@ -960,7 +966,7 @@ class InventoryProductTypeView(ModelView):
 
 appbuilder.add_view(InventoryProductTypeView,
                     "Product type",
-                    icon="fa-product",
+                    icon="fa-medkit",
                     category="Inventory")
 
 class InventoryProductView(ModelView):
@@ -968,7 +974,7 @@ class InventoryProductView(ModelView):
 
 appbuilder.add_view(InventoryProductView,
                     "Product",
-                    icon="fa-product",
+                    icon="fa-medkit",
                     category="Inventory")
 
 class InventoryProductCostView(ModelView):
@@ -976,7 +982,7 @@ class InventoryProductCostView(ModelView):
 
 appbuilder.add_view(InventoryProductCostView,
                     "Product cost",
-                    icon="fa-product",
+                    icon="fa-medkit",
                     category="Inventory")
 
 class InventoryOrderView(ModelView):
@@ -984,15 +990,114 @@ class InventoryOrderView(ModelView):
 
 appbuilder.add_view(InventoryOrderView,
                     "Product order",
-                    icon="fa-product",
+                    icon="fa-medkit",
                     category="Inventory")
 
 
-class InventoryUsageView(ModelView):
-    datamodel = MongoEngineInterface(InventoryUsage)
 
 
-appbuilder.add_view(InventoryUsageView,
-                    "Product usage",
-                    icon="fa-product",
-                    category="Inventory")
+################  APPOINTMENTS ##############################
+###############################################################
+def get_user():
+    return g.user
+
+class AppointmentProcedureView(ModelView):
+    datamodel = MongoEngineInterface(AppointmentProcedure)
+
+
+appbuilder.add_view(AppointmentProcedureView,
+                    "Procedure",
+                    icon="fa-medkit",
+                    category="Appointments")
+
+class AppointmentProcedureItemsUsedView(ModelView):
+    datamodel = MongoEngineInterface(AppointmentProcedureItemsUsed)
+
+
+appbuilder.add_view(AppointmentProcedureItemsUsedView,
+                    "Procedure items used",
+                    icon="fa-medkit",
+                    category="Appointments")
+
+
+class AppointmentClientView(ModelView):
+    datamodel = MongoEngineInterface(AppointmentClient)
+    list_columns = ['name', 'gender','dob','email']
+
+appbuilder.add_view(AppointmentClientView,
+                    "Clients",
+                    icon="fa-medkit",
+                    category="Appointments")
+
+
+class AppointmentClientStatusView(ModelView,AuditMixin):
+    datamodel = MongoEngineInterface(AppointmentClientStatus)
+    list_columns = ['person.name','status']
+
+
+appbuilder.add_view(AppointmentClientStatusView,
+                    "Client status",
+                    icon="fa-medkit",
+                    category="Appointments")
+
+
+class AppointmentWorkDaysView(ModelView):
+    datamodel = MongoEngineInterface(AppointmentWorkDays)
+
+
+appbuilder.add_view(AppointmentWorkDaysView,
+                    "Work days",
+                    icon="fa-medkit",
+                    category="Appointments")
+
+
+class AppointmentWorkHoursView(ModelView):
+    datamodel = MongoEngineInterface(AppointmentWorkHours)
+
+
+appbuilder.add_view(AppointmentWorkHoursView,
+                    "Work hours",
+                    icon="fa-medkit",
+                    category="Appointments")
+
+
+class AppointmentHolidaysView(ModelView):
+    datamodel = MongoEngineInterface(AppointmentHoliday)
+    list_columns = ['holiday', 'date']
+
+
+appbuilder.add_view(AppointmentHolidaysView,
+                    "Holidays",
+                    icon="fa-medkit",
+                    category="Appointments")
+
+
+class AppointmentUnavailabilityView(ModelView):
+    datamodel = MongoEngineInterface(AppointmentUnavailability)
+    list_columns = ['doctor','start','end']
+    base_filters = [["created_by", FilterEqualFunction, get_user]]
+    add_form = AppointmentUnavailabilityForm
+
+
+
+appbuilder.add_view(AppointmentUnavailabilityView,
+                    "Doctor unavailability",
+                    icon="fa-medkit",
+                    category="Appointments")
+
+
+class AppointmentView(ModelView, AuditMixin):
+    datamodel = MongoEngineInterface(Appointment)
+    list_columns = ['doctor','timestamp','procedure']
+    base_filters = [["created_by", FilterEqualFunction, get_user]]
+    add_form = AppointmentUnavailabilityForm
+
+    validators_columns = {
+        'availability': [DoctorAvailabilityValidate('doctor','timestamp')]
+    }
+
+appbuilder.add_view(AppointmentView,
+                    "Make appointments",
+                    icon="fa-medkit",
+                    category="Appointments")
+

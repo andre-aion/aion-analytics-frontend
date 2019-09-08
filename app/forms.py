@@ -3,14 +3,15 @@ from datetime import datetime
 import bson
 from flask_appbuilder.forms import DynamicForm, DateTimeField, DateTimePickerWidget
 from flask_mongoengine.wtf import model_form
-from mongoengine import ReferenceField, DateField, IntField
+from mongoengine import ReferenceField, DateField, IntField, BooleanField
 
 from wtforms import SelectField, StringField, IntegerField, TextAreaField, FloatField, FieldList
 from wtforms.validators import DataRequired, Email, Length, Optional, NumberRange, ValidationError
 from wtforms.widgets import TextArea
-from app import dbmongo
+from app import dbmongo, db
 from app.models import Employee, ProjectType, Project, Risk, ElectionEvent, AppointmentWorkDays, AppointmentHolidays, \
-    AppointmentEmployeeUnAvailability
+    AppointmentUnavailability, AppointmentProcedure, AppointmentClient
+from flask_login import current_user
 
 DATEFORMAT = "%Y-%m-%d %H:%M:%S"
 class ContactForm(DynamicForm):
@@ -54,6 +55,11 @@ class ElectionEventForm(DynamicForm):
     artists_performed = StringField('Who performed')
     food = StringField('Meal provided')
 
+rate_choices = []
+
+for i in range(0,101):
+    rate_choices.append((str(i),str(i)))
+
 class ElectionEventAttendeeForm(DynamicForm):
     event = StringField()
     name = StringField()
@@ -86,7 +92,7 @@ class ElectionEventAttendeeForm(DynamicForm):
     event_discovery = SelectField('How did you find out about this event',
                                   choices=[('Friend','Friend'),('Family','Family'),
                                            ('Radio','Radio'),('TV','TV')])
-    rate_event = SelectField('Please rate the event',choices=[(1,1),(2,2),(3,3),(4,4),(5,5)])
+    rate_event = SelectField('Please rate the event',choices=rate_choices)
     #events_attended = IntField()
 
 
@@ -208,15 +214,34 @@ class StartDateValidate(object):
 
 
 # ------------------------------  VALIDATOR, AVAILABILITY ------------
-class AvailabilityValidate(object):
-    def __init__(self,available,message=None):
-        if not available:
-            message = 'Sorry that date or time is unavailable, please try another date/date and time'
-        self.message = message
+def all_doctors():
+    lst = []
+    for doctor in db.User.objects:
+        if 'doctor' in db.User.roles:
+            lst.append(doctor.name)
+    return lst
 
-    def available(self, form, field):
+
+
+
+class AppointmentForm(DynamicForm):
+    doctor = SelectField('doctor',choices=[(i, i) for i in all_doctors()])
+    timestamp = DateTimeField('Requested time',widget=DateTimePickerWidget())
+    procedure = ReferenceField(AppointmentProcedure)
+    customer = ReferenceField(AppointmentClient)
+    override = BooleanField(default=False)  # overide workdays or holidays or schedule
+    available = StringField(default=False)
+
+
+class DoctorAvailabilityValidate(object):
+    def __init__(self,doctor,message=None):
+        self.message = message
+        self.doctor = doctor
+
+    def __call__(self, form, field):
         try:
-            days = AppointmentWorkDays.objects()
+            # self.doctor is doctor name
+            days = AppointmentWorkDays.objects.get()
             allow_booking = True
             workdays = []
             if not form.data.override:
@@ -230,17 +255,26 @@ class AvailabilityValidate(object):
                     allow_booking = False
 
                 # ensure that is not on a holiday
-                holidays = AppointmentHolidays.objects('date'==field.data.date())
+                holidays = AppointmentHolidays.objects.get('date' == field.data.date())
                 if holidays is not None and len(holidays) > 0:
                     allow_booking = False
                 else:
-                    unavailibilty = AppointmentEmployeeUnAvailability.objects(
-                                                                              'start' <= field.data,
-                                                                              'end' >= field.data)
-                    if unavailibilty is not None and len(unavailibilty) > 0:
+                    unavailabilty = AppointmentUnavailability\
+                        .objects.get('start' <= field.data,'end' >= field.data,
+                                     'doctor' == self.doctor)
+                    if unavailabilty is not None and len(unavailabilty) > 0:
                         allow_booking = False
 
             return allow_booking
-
         except:
             return False
+
+
+
+class AppointmentUnavailabilityForm(DynamicForm):
+    __tablename__ = 'appointment_unavailability'
+    doctor = StringField(default=current_user.id)
+    start = DateTimeField()
+    end = DateTimeField()
+    reason = StringField()
+

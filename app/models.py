@@ -3,10 +3,10 @@ import datetime
 from flask_appbuilder import Model
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Date
 from sqlalchemy.orm import relationship
-from flask_appbuilder.models.mixins import AuditMixin
 from mongoengine import Document, DateField, DictField, DynamicDocument
 from mongoengine import DateTimeField, StringField, ReferenceField, \
     FloatField, IntField,BooleanField,ListField
+from flask_login import current_user
 import random
 import string
 
@@ -1364,12 +1364,6 @@ class InventoryOrder(Document):
     delivered_by = ReferenceField(InventoryContact)
     amount_delivered = FloatField()
 
-    def __unicode__(self):
-        return self.product
-
-    def __repr__(self):
-        return self.product
-
     def __str__(self):
         return """{} ordered @ {} = ${}""".format(self.product,
                                                   self.timestamp_ordered,self.cost)
@@ -1381,6 +1375,9 @@ class InventoryUsage(Document):
     timestamp = DateTimeField(required=True,default=Time_Now())
     used_by = ReferenceField(InventoryContact)
     amount_used = DateTimeField(required=True,default=Time_Now())
+    
+    def __str__(self):
+        return """{} {}(s) used""".format(self.amount_used, self.product)
 
 
 # #####################  APPOINTMENTS #########################
@@ -1401,9 +1398,20 @@ class AppointmentProcedure(Document):
         return self.name
 
 
-class AppointmentContact(Document):
-    __tablename__ = 'appointment_contact'
-    name = StringField()
+class AppointmentProcedureItemsUsed(Document):
+    __tablename__ = 'appointment_type'
+    procedure = ReferenceField(AppointmentProcedure,required=True)
+    product = ReferenceField(InventoryProduct,required=True)
+    amount = FloatField(max_length=300)
+
+    def __str__(self):
+        return """{} - {} {}(s)""".format(self.procedure,self.amount,self.product)
+
+
+
+class AppointmentClient(Document):
+    __tablename__ = 'appointment_client'
+    name = StringField(required=True)
     dob = DateField()
     gender = ReferenceField(Gender)
     address1 = StringField()
@@ -1417,7 +1425,7 @@ class AppointmentContact(Document):
     twitter = StringField()
     facebook = StringField()
     instagram = StringField()
-    email = StringField()
+    email = StringField(required=True)
 
 
     def __unicode__(self):
@@ -1429,16 +1437,16 @@ class AppointmentContact(Document):
     def __str__(self):
         return self.name
 
-class AppointmentContactStatus(Document):
+class AppointmentClientStatus(Document):
     __tablename__ = 'appointment_contact_status'
-    person = ReferenceField(AppointmentContact)
+    name = ReferenceField(AppointmentClient)
     status = StringField(required=True)
-    timestamp = DateTimeField(required=True)
 
 
     def __str__(self):
         return """{} - {}""".format(self.person,self.status)
-
+    
+    
 class AppointmentWorkDays(Document):
     __tablename__ = 'appointment_days'
     day = StringField(required=True)
@@ -1469,43 +1477,51 @@ class AppointmentWorkHours(DynamicDocument):
         return self.hour
 
 
-class AppointmentHolidays(Document):
+class AppointmentHoliday(Document):
     __tablename__ = 'appointment_holidays'
+    holiday = StringField()
     date = DateField(required=True)
     reason = StringField()
 
-    def __str__(self):
-        return """{}- {}:{}""".format(self.employee,self.start,self.end)
+    def __unicode__(self):
+        return self.holiday
 
-class AppointmentEmployeeUnAvailability(Document):
-    __tablename__ = 'appointment_employee_availability'
-    employee = ReferenceField(AppointmentContact)
+
+    def __repr__(self):
+        return self.holiday
+
+
+    def __str__(self):
+        return """{}:{}""".format(self.holiday, self.date)
+
+
+class AppointmentUnavailability(Document):
+    __tablename__ = 'appointment_unavailability'
+    doctor = StringField(default=current_user.name)
     start = DateTimeField()
     end = DateTimeField()
     reason = StringField()
 
     def __str__(self):
-        return """{}- {}:{}""".format(self.employee,self.start,self.end)
+        return """{}- {}:{}""".format(self.doctor, self.start,self.end)
 
 
-class AppointmentBookings(Document):
+
+class Appointment(Document):
     __tablename__ = 'appointment_booking'
-    employee = ReferenceField(AppointmentContact,required=True)
-    appointment = DateTimeField(required=True)
+    doctor = StringField(required=True)
+    timestamp = DateTimeField(required=True)
     procedure = ReferenceField(AppointmentProcedure,required=True)
-    customer = ReferenceField(AppointmentContact,required=True)
+    customer = ReferenceField(AppointmentClient,required=True)
     override = BooleanField(default=False) # overide workdays or holidays or schedule
+    available = BooleanField(default=False)
 
-
-
-    def __unicode__(self):
-        return self.employee
-
-    def __repr__(self):
-        return self.employee
 
     def __str__(self):
         return """{},{} @ {} - {}""".format(self.customer,self.procedure,
-                                            self.appointment,self.employee)
+                                            self.timestamp,self.doctor)
+
+
+
 
 
