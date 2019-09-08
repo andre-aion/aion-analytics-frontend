@@ -1629,17 +1629,26 @@ class SalesContactUniversity(Document):
     contact = ReferenceField(SalesContact)
     university = StringField()
 
+    def __str__(self):
+        return """{}- {}""".format(self.contact.name, self.start,self.university)
+
 class SalesContactAffiliations(Document):
     __tablename__ = 'sales_contact_affiliations'
     contact = ReferenceField(SalesContact)
     affiliation = StringField()
     position = StringField()
 
+    def __str__(self):
+        return """{}- {}""".format(self.contact.name, self.affiliation)
+
 class SalesContactDonations(Document):
     __tablename__ = 'sales_contact_donations'
     contact = ReferenceField(SalesContact)
     entity = StringField()
     amount = FloatField()
+
+    def __str__(self):
+        return """{}- {}""".format(self.contact.name, self.amount)
 
 class SalesContactBoardservice(Document):
     __tablename__ = 'sales_contact_boardservice'
@@ -1649,10 +1658,24 @@ class SalesContactBoardservice(Document):
     start = DateField()
     end = DateField()
 
+    def __str__(self):
+        return """{}-{} from {} to {}""".format(self.contact.name, self.entity,
+                                                self.start, self.end)
+
 
 class SalesCallTracker(Document):
     __tablename__ = 'sales_call_tracker'
     contact = ReferenceField(SalesContact)
+    contact_type = StringField()  #call,email,other
+    timestamp = DateTimeField(default=Time_Now())
+    registered = BooleanField()
+    notes = StringField(max_length=500)
+
+    def __str__(self):
+        return """{}-{} @ {}. registered:{}""".format(self.contact.name, self.contact_type,
+                                                    self.timestamp, self.registered)
+
+
 
 
 
