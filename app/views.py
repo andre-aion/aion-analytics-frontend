@@ -30,7 +30,8 @@ from app.models import ToolEvent, Tool, ToolClassification, \
     InventoryProduct, InventoryProductCost, InventoryOrder, AppointmentProcedure, AppointmentProcedureItemsUsed, \
     AppointmentClient, AppointmentWorkDays, AppointmentWorkHours, AppointmentHoliday, AppointmentUnavailability, \
     AppointmentClientStatus, InventorySupplier, InventoryUsage, AppointmentProcedureCost, \
-    AppointmentBooking
+    AppointmentBooking, SalesIndustryType, SalesIndustrySector, SalesTargetCompany, SalesContact, \
+    SalesContactUniversity, SalesContactDonation, SalesContactBoardservice, SalesCallTracker, SalesFollowUp
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -1126,3 +1127,88 @@ appbuilder.add_view(AppointmentBookingView,
                     icon="fa-medkit",
                     category="Appointments")
 
+
+# #################### SALES #########################
+##########################################################################3
+class SalesIndustryTypeView(ModelView):
+    datamodel = MongoEngineInterface(SalesIndustryType)
+
+appbuilder.add_view(SalesIndustryTypeView,
+                    "Industry type",
+                    icon="fa-shopping-cart",
+                    category="Sales")
+
+
+class SalesIndustrySectorView(ModelView):
+    datamodel = MongoEngineInterface(SalesIndustrySector)
+
+appbuilder.add_view(SalesIndustrySectorView,
+                    "Industry sector",
+                    icon="fa-shopping-cart",
+                    category="Sales")
+
+
+class SalesTargetCompanyView(ModelView):
+    datamodel = MongoEngineInterface(SalesTargetCompany)
+    list_columns = ['name','type.type','sector.sector','city']
+
+appbuilder.add_view(SalesTargetCompanyView,
+                    "Sales target company",
+                    icon="fa-shopping-cart",
+                    category="Sales")
+
+
+class SalesContactView(ModelView):
+    datamodel = MongoEngineInterface(SalesContact)
+
+appbuilder.add_view(SalesContactView,
+                    "Sales contact",
+                    icon="fa-shopping-cart",
+                    category="Sales")
+
+class SalesContactUniversity(ModelView):
+    datamodel = MongoEngineInterface(SalesContactUniversity)
+    list_columns = ['contact.name','university']
+
+appbuilder.add_view(SalesContactView,
+                    "Sales contact university",
+                    icon="fa-shopping-cart",
+                    category="Sales")
+
+class SalesContactDonation(ModelView):
+    datamodel = MongoEngineInterface(SalesContactDonation)
+    list_columns = ['contact.name','donation', 'amount']
+
+appbuilder.add_view(SalesContactView,
+                    "Sales contact donation",
+                    icon="fa-shopping-cart",
+                    category="Sales")
+
+class SalesContactBoardservice(ModelView):
+    datamodel = MongoEngineInterface(SalesContactBoardservice)
+    list_columns = ['contact.name','entity','start','end']
+
+appbuilder.add_view(SalesContactView,
+                    "Sales contact boardservice",
+                    icon="fa-shopping-cart",
+                    category="Sales")
+
+
+class SalesCallTracker(ModelView):
+    datamodel = MongoEngineInterface(SalesCallTracker)
+    list_columns = ['contact.name','contact_type','timestamp','registered']
+
+appbuilder.add_view(SalesContactView,
+                    "Sales call tracker",
+                    icon="fa-shopping-cart",
+                    category="Sales")
+
+
+class SalesFollowUp(ModelView):
+    datamodel = MongoEngineInterface(SalesFollowUp)
+    list_columns = ['contact.name','contact_type','timestamp']
+
+appbuilder.add_view(SalesFollowUp,
+                    "Sales call tracker",
+                    icon="fa-shopping-cart",
+                    category="Sales")

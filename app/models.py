@@ -1552,25 +1552,26 @@ class SalesIndustryType(Document):
         return self.type
 
 
-class SalesIndustrySectorType(Document):
-    __tablename__ = 'sales_industry_sector_type'
-    type = StringField(required=True)
+class SalesIndustrySector(Document):
+    __tablename__ = 'sales_industry_sector'
+    sector = StringField(required=True)
 
     def __unicode__(self):
-        return self.type
+        return self.sector
 
     def __repr__(self):
-        return self.type
+        return self.sector
 
     def __str__(self):
-        return self.type
+        return self.sector
 
 
 
-class SalesCompany(Document):
-    __tablename__ = 'sales_company'
+class SalesTargetCompany(Document):
+    __tablename__ = 'sales_target_company'
     name = StringField(required=True, unique=True)
-    type = ReferenceField(BusinessType, required=True)
+    type = ReferenceField(SalesIndustryType, required=True)
+    sector= ReferenceField(SalesIndustrySector, required=True)
     address = StringField()
     city = StringField()
     state = StringField()
@@ -1606,7 +1607,7 @@ class SalesContact(Document):
     email = StringField()
     facebook = StringField()
     linkedin = StringField()
-    company = ReferenceField(SalesCompany)
+    company = ReferenceField(SalesTargetCompany)
     title = StringField()
     address = StringField()
     city = StringField()
@@ -1632,7 +1633,7 @@ class SalesContactUniversity(Document):
     def __str__(self):
         return """{}- {}""".format(self.contact.name, self.start,self.university)
 
-class SalesContactAffiliations(Document):
+class SalesContactAffiliation(Document):
     __tablename__ = 'sales_contact_affiliations'
     contact = ReferenceField(SalesContact)
     affiliation = StringField()
@@ -1641,7 +1642,7 @@ class SalesContactAffiliations(Document):
     def __str__(self):
         return """{}- {}""".format(self.contact.name, self.affiliation)
 
-class SalesContactDonations(Document):
+class SalesContactDonation(Document):
     __tablename__ = 'sales_contact_donations'
     contact = ReferenceField(SalesContact)
     entity = StringField()
@@ -1654,7 +1655,6 @@ class SalesContactBoardservice(Document):
     __tablename__ = 'sales_contact_boardservice'
     contact = ReferenceField(SalesContact)
     entity = StringField()
-    amount = FloatField()
     start = DateField()
     end = DateField()
 
@@ -1677,5 +1677,15 @@ class SalesCallTracker(Document):
 
 
 
+class SalesFollowUp(Document):
+    __tablename__ = 'sales_follow_up'
+    contact = ReferenceField(SalesContact)
+    contact_type = StringField()  #call,email,other
+    timestamp = DateTimeField()
+    notes = StringField(max_length=500)
+
+    def __str__(self):
+        return """{}-{} @ {}""".format(self.contact.name, self.contact_type,
+                                        self.when)
 
 
