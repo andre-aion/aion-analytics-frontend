@@ -1317,6 +1317,7 @@ class InventoryContact(Document):
     __tablename__ = 'inventory_contact'
     name = StringField()
     dob = DateField()
+    gender = StringField()
     educational_level = StringField()
     phone_number1 = StringField()
     phone_number2 = StringField()
@@ -1533,6 +1534,125 @@ class AppointmentBooking(Document):
                                             self.timestamp,self.doctor)
 
 
+
+# #########################################################
+################# SALES ##############
+
+class SalesIndustryType(Document):
+    __tablename__ = 'sales_industry_type'
+    type = StringField(required=True)
+
+    def __unicode__(self):
+        return self.type
+
+    def __repr__(self):
+        return self.type
+
+    def __str__(self):
+        return self.type
+
+
+class SalesIndustrySectorType(Document):
+    __tablename__ = 'sales_industry_sector_type'
+    type = StringField(required=True)
+
+    def __unicode__(self):
+        return self.type
+
+    def __repr__(self):
+        return self.type
+
+    def __str__(self):
+        return self.type
+
+
+
+class SalesCompany(Document):
+    __tablename__ = 'sales_company'
+    name = StringField(required=True, unique=True)
+    type = ReferenceField(BusinessType, required=True)
+    address = StringField()
+    city = StringField()
+    state = StringField()
+    country = StringField()
+    phone_number1 = StringField()
+    phone_number2 = StringField()
+    Fax = StringField()
+    desc = StringField()
+    size = IntField()
+    financial_ranking = FloatField()
+    twitter = StringField()
+    instagram = StringField()
+    facebook = StringField()
+    email = StringField()
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+class SalesContact(Document):
+    __tablename__ = 'sales_contact'
+    name = StringField()
+    dob = DateField()
+    gender = StringField()
+    educational_level = StringField()
+    phone_office = StringField()
+    phone_mobile = StringField()
+    email = StringField()
+    facebook = StringField()
+    linkedin = StringField()
+    company = ReferenceField(SalesCompany)
+    title = StringField()
+    address = StringField()
+    city = StringField()
+    state = StringField()
+    country = StringField()
+    zip_code = StringField()
+
+    def __unicode__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+
+class SalesContactUniversity(Document):
+    __tablename__ = 'sales_contact_uni'
+    contact = ReferenceField(SalesContact)
+    university = StringField()
+
+class SalesContactAffiliations(Document):
+    __tablename__ = 'sales_contact_affiliations'
+    contact = ReferenceField(SalesContact)
+    affiliation = StringField()
+    position = StringField()
+
+class SalesContactDonations(Document):
+    __tablename__ = 'sales_contact_donations'
+    contact = ReferenceField(SalesContact)
+    entity = StringField()
+    amount = FloatField()
+
+class SalesContactBoardservice(Document):
+    __tablename__ = 'sales_contact_boardservice'
+    contact = ReferenceField(SalesContact)
+    entity = StringField()
+    amount = FloatField()
+    start = DateField()
+    end = DateField()
+
+
+class SalesCallTracker(Document):
+    __tablename__ = 'sales_call_tracker'
+    contact = ReferenceField(SalesContact)
 
 
 
