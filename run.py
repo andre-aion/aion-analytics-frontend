@@ -11,3 +11,4 @@ app.run(host='0.0.0.0', debug=True)
 
 # sudo systemctl start analytics-frontend
 # sudo systemctl stop analytics-frontend
+

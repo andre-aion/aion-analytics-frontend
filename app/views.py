@@ -11,7 +11,7 @@ from wtforms import SelectField
 from wtforms.validators import EqualTo
 
 from app import appbuilder, db, dbmongo
-from app.forms import ContactForm, EmployeeForm, StartDateValidate
+from app.forms import ContactForm, ElectionEventForm, StartDateValidate, ElectionEventAttendeeForm
 from app.models import ToolEvent, Tool, ToolClassification, \
     ToolHasClassification, ToolEventName, ToolEventAll, ContactInfo, Glossary, Project, Employee, \
     ProjectType, ProjectTask, RiskMatrix, RiskLikelihood, RiskSeverity, Risk, RiskSolution, RiskCategory, RiskAnalysis, \
@@ -24,7 +24,8 @@ from app.models import ToolEvent, Tool, ToolClassification, \
     BCCDuesList, BCCRegistration, BCCPersonReasonJoin, BCCActivity, BCCVisit, BCCVisitActivity, BCCVisitNetwork, \
     BCCRelationship, BCCBarItem, BCCVesselType, BCCVesselSize, BCCVesselTypeSizePrice, BCCVessel, \
     BCCRelationshipType, BCCBarVisitTabPayment, BCCBarVisitTabPurchase, BCCBarVisitTab, BCCItemCategory, \
-    BCCVisitRentalItem, BCCVisitRental, BCCArea
+    BCCVisitRentalItem, BCCVisitRental, BCCArea, ElectionEvent, ElectionEventAttendees, InventoryProductType, \
+    InventoryProduct, InventoryProductCost, InventoryOrder, InventoryUsage
 from flask_appbuilder import expose, BaseView, has_access, ModelView, action, CompactCRUDMixin
 from flask_appbuilder.charts.views import DirectByChartView, ChartView
 from flask_appbuilder.charts.views import GroupByChartView
@@ -93,9 +94,57 @@ class ContactInfoView(ModelView):
     search_columns = ['sector']
     add_form = ContactForm
 
+
 class GlossaryView(ModelView):
     datamodel = SQLAInterface(Glossary)
     list_columns = ['term','description','note']
+
+appbuilder.add_view(ToolEventView,
+                    'Tool events',
+                    icon="fa-edit",
+                    category='Tools'
+                    )
+
+appbuilder.add_view(ToolEventAllView,
+                    'Tool events info',
+                    icon="fa-edit",
+                    category='Tools'
+                    )
+
+appbuilder.add_view(ToolEventNameView,
+                    'events',
+                    icon="fa-calendar",
+                    category='Tools'
+                    )
+
+appbuilder.add_view(ToolClassificationView,
+                    'classification',
+                    icon="fa-folder",
+                    category='Tools'
+                    )
+
+appbuilder.add_view(ToolHasClassificationView,
+                    'tool classification',
+                    icon="fa-folder",
+                    category='Tools'
+                    )
+
+appbuilder.add_view(ToolView,
+                    'tool',
+                    icon="fa-wrench",
+                    category='Tools'
+                    )
+
+appbuilder.add_view(ContactInfoView,
+                    'Contact info',
+                    icon='fa-address-card-o',
+                    category='Contacts')
+
+appbuilder.add_view(GlossaryView,
+                    'Glossary',
+                    icon='fa-book',
+                    category='Glossary')
+
 
 class DatascienceView(BaseView):
     default_view = 'analytics'
@@ -482,10 +531,189 @@ class BCCVisitRentalView(ModelView):
     datamodel = MongoEngineInterface(BCCVisitRental)
     list_columns = ['visit','item','timestamp_taken','timestamp_returned']
 
+appbuilder.add_view(BCCCountryView,
+                    "Country",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+appbuilder.add_view(BCCMembershipTypeView,
+                    "Membership Type",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+appbuilder.add_view(BCCHobbyView,
+                    "Member hobbies",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+appbuilder.add_view(BCCReasonJoinView,
+                    "Reasons for joining",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+appbuilder.add_view(BCCPersonView,
+                    "Club attendees",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+appbuilder.add_view(BCCStatusView,
+                    "Member status",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+appbuilder.add_view(BCCPersonStatusView,
+                    "Member statuses",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+
+appbuilder.add_view(BCCPersonHobbyView,
+                    "Member hobbies",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+appbuilder.add_view(BCCDuesListView,
+                    "Dues by month",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+appbuilder.add_view(BCCRelationshipTypeView,
+                    "Relationship type",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+appbuilder.add_view(BCCRelationshipView,
+                    "Relationships",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+appbuilder.add_view(BCCPersonReasonJoinView,
+                    "Reasons for joining",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+appbuilder.add_view(BCCActivityView,
+                    "Club activities",
+                    icon="fa-ship",
+                    category="Cruising Club Visit")
+
+
+appbuilder.add_view(BCCVisitActivityView,
+                    "Member/Guest activity",
+                    icon="fa-ship",
+                    category="Cruising Club Visit")
+
+appbuilder.add_view(BCCVisitNetworkView,
+                    "Member Networks",
+                    icon="fa-ship",
+                    category="Cruising Club Visit")
+
+appbuilder.add_view(BCCAreaView,
+                    "Bcc Areas",
+                    icon="fa-ship",
+                    category="Cruising Club Rentals")
+
+appbuilder.add_view(BCCItemCategoryView,
+                    "BCC categories",
+                    icon="fa-ship",
+                    category="Cruising Club Rentals")
+
+appbuilder.add_view(BCCVisitRentalItemView,
+                    "Rental items",
+                    icon="fa-ship",
+                    category="Cruising Club Rentals")
+
+appbuilder.add_view(BCCVisitRentalView,
+                    "Rental",
+                    icon="fa-ship",
+                    category="Cruising Club Rentals")
+
+appbuilder.add_view(BCCBarItemView,
+                    "Bar items",
+                    icon="fa-ship",
+                    category="Cruising Club Bar")
+
+
+appbuilder.add_view(BCCBarVisitTabView,
+                    "Bar tabs",
+                    icon="fa-ship",
+                    category="Cruising Club Bar")
+
+
+appbuilder.add_view(BCCBarVisitTabPurchaseView,
+                    "Bar tab purchase",
+                    icon="fa-ship",
+                    category="Cruising Club Bar")
+
+
+appbuilder.add_view(BCCBarVisitTabPaymentView,
+                    "Bar tab payment",
+                    icon="fa-ship",
+                    category="Cruising Club Bar")
+
+appbuilder.add_view(BCCVesselTypeView,
+                    'Vessel Type',
+                    icon="fa-ship",
+                    category="Cruising Club Vessel")
+
+appbuilder.add_view(BCCVesselSizeView,
+                    "Vessel Size",
+                    icon="fa-ship",
+                    category="Cruising Club Vessel")
+
+
+appbuilder.add_view(BBCVesselTypeSizePriceView,
+                    "Type Size ",
+                    icon="fa-ship",
+                    category="Cruising Club Vessel")
+
+appbuilder.add_view(BCCVesselView,
+                    "Vessel info",
+                    icon="fa-ship",
+                    category="Cruising Club Vessel")
+
+appbuilder.add_view(BCCRegistrationView,
+                    "Registration page",
+                    icon="fa-ship",
+                    category="Cruising Club Registration")
+
+appbuilder.add_view(BCCVisitView,
+                    "Member/Guest visit info",
+                    icon="fa-ship",
+                    category="Cruising Club Visit")
+
+
 
 ######################################################################################################################
 ##########################  CRUISING CLUB END ######################################################
 
+# ###########################################################
+########### ELECTIONS START ##############################
+
+class ElectionEventView(ModelView):
+    datamodel = MongoEngineInterface(ElectionEvent)
+    list_columns = ['name','type','timestamp_started','location','city','food','artists']
+    add_form = ElectionEventForm
+
+appbuilder.add_view(ElectionEventView,
+                    "Election Events",
+                    icon="fa-ship",
+                    category="Elections")
+
+class ElectionEventAttendeesView(ModelView):
+    datamodel = MongoEngineInterface(ElectionEventAttendees)
+    list_columns = ['event','name','gender','role','dob','job']
+    add_form = ElectionEventAttendeeForm
+
+
+appbuilder.add_view(ElectionEventAttendeesView,
+                    "Election Event Attendees",
+                    icon="fa-ship",
+                    category="Elections")
+
+
+# ###########################################################
+########### ELECTIONS END ##############################
 
 
 # #####################################
@@ -504,51 +732,6 @@ appbuilder.add_link('e.g. Churn decision tree',
                     category='Datascience')
 
 
-appbuilder.add_view(ToolEventView,
-                    'Tool events',
-                    icon="fa-edit",
-                    category='Tools'
-                    )
-
-appbuilder.add_view(ToolEventAllView,
-                    'Tool events info',
-                    icon="fa-edit",
-                    category='Tools'
-                    )
-
-appbuilder.add_view(ToolEventNameView,
-                    'events',
-                    icon="fa-calendar",
-                    category='Tools'
-                    )
-
-appbuilder.add_view(ToolClassificationView,
-                    'classification',
-                    icon="fa-folder",
-                    category='Tools'
-                    )
-
-appbuilder.add_view(ToolHasClassificationView,
-                    'tool classification',
-                    icon="fa-folder",
-                    category='Tools'
-                    )
-
-appbuilder.add_view(ToolView,
-                    'tool',
-                    icon="fa-wrench",
-                    category='Tools'
-                    )
-
-appbuilder.add_view(ContactInfoView,
-                    'Contact info',
-                    icon='fa-address-card-o',
-                    category='Contacts')
-
-appbuilder.add_view(GlossaryView,
-                    'Glossary',
-                    icon='fa-book',
-                    category='Glossary')
 
 # --------------------- MONGO VIEWS
 appbuilder.add_view(ProjectView,
@@ -767,165 +950,49 @@ appbuilder.add_view(MeetingAttendeeView,
                     icon="fa-long-arrow-down",
                     category="Meeting")
 
-# ################## CRUISING CLUB START ######################################################################
-##############################################################################################################
+
+###############      MEDICAL START  ############################
+
+###########  INVENTORY MGMT  START ###########
+
+class InventoryProductTypeView(ModelView):
+    datamodel = MongoEngineInterface(InventoryProductType)
+
+appbuilder.add_view(InventoryProductTypeView,
+                    "Product type",
+                    icon="fa-product",
+                    category="Inventory")
+
+class InventoryProductView(ModelView):
+    datamodel = MongoEngineInterface(InventoryProduct)
+
+appbuilder.add_view(InventoryProductView,
+                    "Product",
+                    icon="fa-product",
+                    category="Inventory")
+
+class InventoryProductCostView(ModelView):
+    datamodel = MongoEngineInterface(InventoryProductCost)
+
+appbuilder.add_view(InventoryProductCostView,
+                    "Product cost",
+                    icon="fa-product",
+                    category="Inventory")
+
+class InventoryOrderView(ModelView):
+    datamodel = MongoEngineInterface(InventoryOrder)
+
+appbuilder.add_view(InventoryOrderView,
+                    "Product order",
+                    icon="fa-product",
+                    category="Inventory")
 
 
-appbuilder.add_view(BCCCountryView,
-                    "Country",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
-
-appbuilder.add_view(BCCMembershipTypeView,
-                    "Membership Type",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
-
-appbuilder.add_view(BCCHobbyView,
-                    "Member hobbies",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
-
-appbuilder.add_view(BCCReasonJoinView,
-                    "Reasons for joining",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
-
-appbuilder.add_view(BCCPersonView,
-                    "Club attendees",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
-
-appbuilder.add_view(BCCStatusView,
-                    "Member status",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
-
-appbuilder.add_view(BCCPersonStatusView,
-                    "Member statuses",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
+class InventoryUsageView(ModelView):
+    datamodel = MongoEngineInterface(InventoryUsage)
 
 
-appbuilder.add_view(BCCPersonHobbyView,
-                    "Member hobbies",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
-
-appbuilder.add_view(BCCDuesListView,
-                    "Dues by month",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
-
-appbuilder.add_view(BCCRelationshipTypeView,
-                    "Relationship type",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
-
-appbuilder.add_view(BCCRelationshipView,
-                    "Relationships",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
-
-appbuilder.add_view(BCCPersonReasonJoinView,
-                    "Reasons for joining",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
-
-appbuilder.add_view(BCCActivityView,
-                    "Club activities",
-                    icon="fa-ship",
-                    category="Cruising Club Visit")
-
-
-appbuilder.add_view(BCCVisitActivityView,
-                    "Member/Guest activity",
-                    icon="fa-ship",
-                    category="Cruising Club Visit")
-
-appbuilder.add_view(BCCVisitNetworkView,
-                    "Member Networks",
-                    icon="fa-ship",
-                    category="Cruising Club Visit")
-
-appbuilder.add_view(BCCAreaView,
-                    "Bcc Areas",
-                    icon="fa-ship",
-                    category="Cruising Club Rentals")
-
-appbuilder.add_view(BCCItemCategoryView,
-                    "BCC categories",
-                    icon="fa-ship",
-                    category="Cruising Club Rentals")
-
-appbuilder.add_view(BCCVisitRentalItemView,
-                    "Rental items",
-                    icon="fa-ship",
-                    category="Cruising Club Rentals")
-
-appbuilder.add_view(BCCVisitRentalView,
-                    "Rental",
-                    icon="fa-ship",
-                    category="Cruising Club Rentals")
-
-appbuilder.add_view(BCCBarItemView,
-                    "Bar items",
-                    icon="fa-ship",
-                    category="Cruising Club Bar")
-
-
-appbuilder.add_view(BCCBarVisitTabView,
-                    "Bar tabs",
-                    icon="fa-ship",
-                    category="Cruising Club Bar")
-
-
-appbuilder.add_view(BCCBarVisitTabPurchaseView,
-                    "Bar tab purchase",
-                    icon="fa-ship",
-                    category="Cruising Club Bar")
-
-
-appbuilder.add_view(BCCBarVisitTabPaymentView,
-                    "Bar tab payment",
-                    icon="fa-ship",
-                    category="Cruising Club Bar")
-
-appbuilder.add_view(BCCVesselTypeView,
-                    'Vessel Type',
-                    icon="fa-ship",
-                    category="Cruising Club Vessel")
-
-appbuilder.add_view(BCCVesselSizeView,
-                    "Vessel Size",
-                    icon="fa-ship",
-                    category="Cruising Club Vessel")
-
-
-appbuilder.add_view(BBCVesselTypeSizePriceView,
-                    "Type Size ",
-                    icon="fa-ship",
-                    category="Cruising Club Vessel")
-
-appbuilder.add_view(BCCVesselView,
-                    "Vessel info",
-                    icon="fa-ship",
-                    category="Cruising Club Vessel")
-
-appbuilder.add_view(BCCRegistrationView,
-                    "Registration page",
-                    icon="fa-ship",
-                    category="Cruising Club Registration")
-
-appbuilder.add_view(BCCVisitView,
-                    "Member/Guest visit info",
-                    icon="fa-ship",
-                    category="Cruising Club Visit")
-
-
-
-
-
-
-######################################################################################################################
-##########################  CRUISING CLUB END ######################################################
+appbuilder.add_view(InventoryUsageView,
+                    "Product usage",
+                    icon="fa-product",
+                    category="Inventory")

@@ -24,7 +24,7 @@ CSRF_ENABLED = True
 APP_NAME = "analytics-frontend"
 
 # Uncomment to setup Setup an App icon
-APP_ICON = "/static/img/logo.png"
+APP_ICON = "/static/img/old_logo.jpeg"
 
 #----------------------------------------------------
 # AUTHENTICATION CONFIG

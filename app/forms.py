@@ -3,13 +3,14 @@ from datetime import datetime
 import bson
 from flask_appbuilder.forms import DynamicForm, DateTimeField, DateTimePickerWidget
 from flask_mongoengine.wtf import model_form
-from mongoengine import ReferenceField
+from mongoengine import ReferenceField, DateField, IntField
 
 from wtforms import SelectField, StringField, IntegerField, TextAreaField, FloatField, FieldList
 from wtforms.validators import DataRequired, Email, Length, Optional, NumberRange, ValidationError
 from wtforms.widgets import TextArea
 from app import dbmongo
-from app.models import Employee, ProjectType, Project, Risk
+from app.models import Employee, ProjectType, Project, Risk, ElectionEvent, AppointmentWorkDays, AppointmentHolidays, \
+    AppointmentEmployeeUnAvailability
 
 DATEFORMAT = "%Y-%m-%d %H:%M:%S"
 class ContactForm(DynamicForm):
@@ -37,7 +38,60 @@ class ContactForm(DynamicForm):
     pain_points = TextAreaField('If you have pain points for us to discuss please list them (separated by a comma)')
     interest_in_conference = SelectField("Are you interested in attending the conference?",
                                          choices=[('', ''), ('yes', 'Yes'), ('no', 'No')])
+########################################################
+########## ELECTIONS ENDED ###########################
 
+
+class ElectionEventForm(DynamicForm):
+    type = SelectField('Type',choices=[('rally','rally'),('lime','lime')])
+    name = StringField()
+    location = StringField()
+    venue_type = StringField()
+    city = StringField()
+    timestamp_started_actual = DateTimeField('Actual Start datetime',widget=DateTimePickerWidget())
+    timestamp_started_proposed = DateTimeField('Proposed Start datetime',widget=DateTimePickerWidget())
+    timestamp_ended = DateTimeField()
+    artists_performed = StringField('Who performed')
+    food = StringField('Meal provided')
+
+class ElectionEventAttendeeForm(DynamicForm):
+    event = StringField()
+    name = StringField()
+
+    gender = SelectField('Gender',choices=[('male','male'),('female','female'),('other','other')])
+    dob = DateTimeField('Date of Birth',widget=DateTimePickerWidget())
+
+    city_of_residence = SelectField('In which city do you live?',
+                                     choices=[('Trincity','Trincity'),('Arima','Arima')])
+    role = SelectField('What is your role today?',
+                       choices=[('headline','headliner'),('attendee','attendee'),
+                                ('volunteer','volunteer')])
+
+    job = StringField()
+    twitter = StringField()
+    instagram = StringField()
+    facebook = StringField()
+    email = StringField()
+    phone_number = StringField()
+    interests = StringField()
+    concerns = StringField()
+    most_interesting_topics_today = StringField()
+
+    voting_for = SelectField('Who do you intend to vote for',
+                             choices=[('PNM','PNM'),('UNC','UNC'),('NAR','NAR'),('Other','Other')])
+
+
+    want_to_volunteer = SelectField('Do you want to volunteer',
+                                    choices=[('yes','Yes'),('No','No'),('Other','Other')])
+    event_discovery = SelectField('How did you find out about this event',
+                                  choices=[('Friend','Friend'),('Family','Family'),
+                                           ('Radio','Radio'),('TV','TV')])
+    rate_event = SelectField('Please rate the event',choices=[(1,1),(2,2),(3,3),(4,4),(5,5)])
+    #events_attended = IntField()
+
+
+########################################################
+########## ELECTIONS ENDED ###########################
 
 # ------------  PROJECT
 class EmployeeForm(DynamicForm):
@@ -152,3 +206,41 @@ class StartDateValidate(object):
 
 # --------------------------------------------------------------------------
 
+
+# ------------------------------  VALIDATOR, AVAILABILITY ------------
+class AvailabilityValidate(object):
+    def __init__(self,available,message=None):
+        if not available:
+            message = 'Sorry that date or time is unavailable, please try another date/date and time'
+        self.message = message
+
+    def available(self, form, field):
+        try:
+            days = AppointmentWorkDays.objects()
+            allow_booking = True
+            workdays = []
+            if not form.data.override:
+                if days is not None and len(days) > 0:
+                    for item in days:
+                        workdays.append(item.day.lower())
+                else:
+                     workdays = ['monday','tuesday','wednesday','thursday','friday']
+
+                if field.data.strftime["%A"] not in workdays:
+                    allow_booking = False
+
+                # ensure that is not on a holiday
+                holidays = AppointmentHolidays.objects('date'==field.data.date())
+                if holidays is not None and len(holidays) > 0:
+                    allow_booking = False
+                else:
+                    unavailibilty = AppointmentEmployeeUnAvailability.objects(
+                                                                              'start' <= field.data,
+                                                                              'end' >= field.data)
+                    if unavailibilty is not None and len(unavailibilty) > 0:
+                        allow_booking = False
+
+            return allow_booking
+
+        except:
+            return False
