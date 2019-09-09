@@ -1,0 +1,14 @@
+{% extends 'appbuilder/base.html' %}
+
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='css/analytics_index.css')}}"></link>
+{% endblock %}
+
+{% block content %}
+<div class = "aion-analytics-div embed-responsive embed-responsive-4by3">
+    <iframe width="1900px" class="embed-responsive-item" src="{{ data }}">
+
+    </iframe>
+</div>
+{% endblock %}

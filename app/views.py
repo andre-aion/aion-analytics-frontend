@@ -40,6 +40,68 @@ from flask_appbuilder.fieldwidgets import DateTimePickerWidget, Select2Widget
 from flask_appbuilder.forms import DateTimeField
 from flask_appbuilder.models.mongoengine.filters import FilterStartsWith, FilterEqualFunction
 
+
+class DatascienceView(BaseView):
+    default_view = 'analytics'
+    @expose('/analytics')
+    @has_access
+    def analytics(self):
+        # pull a new session from a running Bokeh server
+        bokeh_server_url = 'http://amdatt.ml:5006'
+        #bokeh_session = pull_session(url=bokeh_server_url)
+        bokeh_session = generate_session_id()
+        script = "{}?bokeh-session-id={}".format(bokeh_server_url, bokeh_session)
+        return render_template('analytics_index.html', data=script,
+                               base_template=appbuilder.base_template,
+                               appbuilder=appbuilder)
+
+    @expose('/rf_tree')
+    def rf_tree(self):
+        # im = ImageManager()
+        src = '/static/img/tier1_tree.png'
+        return render_template('rf_tree.html', base_template=appbuilder.base_template,
+                               data=src, appbuilder=appbuilder)
+
+class MybnbView(BaseView):
+    default_view = 'mybnb'
+    @expose('/mybnb')
+    @has_access
+    def mybnb(self):
+        # pull a new session from a running Bokeh server
+        bokeh_server_url = 'http://amdatt.ml:5007'
+        # bokeh_session = pull_session(url=bokeh_server_url)
+        bokeh_session = generate_session_id()
+        script = "{}?bokeh-session-id={}".format(bokeh_server_url, bokeh_session)
+        return render_template('mybnb.html', data=script,
+                               base_template=appbuilder.base_template,
+                               appbuilder=appbuilder)
+
+
+# #####################################
+#          ADD VIEWS FOR ANALYTICS
+
+
+appbuilder.add_view(DatascienceView,
+                    'Election analytics',
+                    icon='fa-line-chart',
+                    category='Datascience')
+
+appbuilder.add_view(MybnbView,
+                    'MyBnB projections',
+                    icon='fa-line-chart',
+                    category='Datascience')
+
+
+appbuilder.add_link('e.g. Churn decision tree',
+                    href='/static/img/tier1_tree.png',
+                    icon='fa-tree',
+                    category='Datascience')
+
+# #####################################
+#          END VIEWS FOR ANALYTICS
+
+
+
 # MYSQL VIEWS
 class ToolEventView(ModelView):
     datamodel = SQLAInterface(ToolEvent)
@@ -152,26 +214,7 @@ appbuilder.add_view(GlossaryView,
                     category='Glossary')
 
 
-class DatascienceView(BaseView):
-    default_view = 'analytics'
-    @expose('/analytics')
-    @has_access
-    def analytics(self):
-        # pull a new session from a running Bokeh server
-        bokeh_server_url = 'http://amdatt.ml:5006'
-        #bokeh_session = pull_session(url=bokeh_server_url)
-        bokeh_session = generate_session_id()
-        script = "{}?bokeh-session-id={}".format(bokeh_server_url, bokeh_session)
-        return render_template('analytics_index.html', data=script,
-                               base_template=appbuilder.base_template,
-                               appbuilder=appbuilder)
 
-    @expose('/rf_tree')
-    def rf_tree(self):
-        # im = ImageManager()
-        src = '/static/img/tier1_tree.png'
-        return render_template('rf_tree.html', base_template=appbuilder.base_template,
-                               data=src, appbuilder=appbuilder)
 
 
 # ################### MONGO MODELS ####
@@ -912,20 +955,7 @@ appbuilder.add_view(ElectionEventAttendeesView,
 ########### ELECTIONS END ##############################
 
 
-# #####################################
-#          ADD VIEWS
 
-
-appbuilder.add_view(DatascienceView,
-                    'Analytics',
-                    icon='fa-line-chart',
-                    category='Datascience')
-
-
-appbuilder.add_link('e.g. Churn decision tree',
-                    href='/static/img/tier1_tree.png',
-                    icon='fa-tree',
-                    category='Datascience')
 
 
 
@@ -1166,49 +1196,49 @@ appbuilder.add_view(SalesContactView,
                     icon="fa-shopping-cart",
                     category="Sales")
 
-class SalesContactUniversity(ModelView):
+class SalesContactUniversityView(ModelView):
     datamodel = MongoEngineInterface(SalesContactUniversity)
     list_columns = ['contact.name','university']
 
-appbuilder.add_view(SalesContactView,
+appbuilder.add_view(SalesContactUniversityView,
                     "Sales contact university",
                     icon="fa-shopping-cart",
                     category="Sales")
 
-class SalesContactDonation(ModelView):
+class SalesContactDonationView(ModelView):
     datamodel = MongoEngineInterface(SalesContactDonation)
     list_columns = ['contact.name','donation', 'amount']
 
-appbuilder.add_view(SalesContactView,
+appbuilder.add_view(SalesContactDonationView,
                     "Sales contact donation",
                     icon="fa-shopping-cart",
                     category="Sales")
 
-class SalesContactBoardservice(ModelView):
+class SalesContactBoardserviceView(ModelView):
     datamodel = MongoEngineInterface(SalesContactBoardservice)
     list_columns = ['contact.name','entity','start','end']
 
-appbuilder.add_view(SalesContactView,
+appbuilder.add_view(SalesContactBoardserviceView,
                     "Sales contact boardservice",
                     icon="fa-shopping-cart",
                     category="Sales")
 
 
-class SalesCallTracker(ModelView):
+class SalesCallTrackerView(ModelView):
     datamodel = MongoEngineInterface(SalesCallTracker)
     list_columns = ['contact.name','contact_type','timestamp','registered']
 
-appbuilder.add_view(SalesContactView,
+appbuilder.add_view(SalesCallTrackerView,
                     "Sales call tracker",
                     icon="fa-shopping-cart",
                     category="Sales")
 
 
-class SalesFollowUp(ModelView):
+class SalesFollowUpView(ModelView):
     datamodel = MongoEngineInterface(SalesFollowUp)
     list_columns = ['contact.name','contact_type','timestamp']
 
-appbuilder.add_view(SalesFollowUp,
-                    "Sales call tracker",
+appbuilder.add_view(SalesFollowUpView,
+                    "Sales call follow up",
                     icon="fa-shopping-cart",
                     category="Sales")
